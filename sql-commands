@@ -17,7 +17,7 @@ NUMERIC TYPES:
 INT, SMALLINT, TINYINT, MEDIUMINT, BIGINT, DECIMAL, NUMERIC, FLOAT, DOUBLE, BIT
 
 STRING TYPES:
-CHAR, VARCHAR, BINARY, VARBINARY, BLOB, TINYBLOB, MEDIUMBLOB, LONGBLOB, TEXT, TINYTEXT, MEDIUMTEXT, LONGTEXT, ENUM
+CHAR, VARCHAR(n-length), BINARY, VARBINARY, BLOB, TINYBLOB, MEDIUMBLOB, LONGBLOB, TEXT, TINYTEXT, MEDIUMTEXT, LONGTEXT, ENUM
 
 DATE TYPES:
 DATE, DATETIME, TIMESTAMP, TIME, YEAR
@@ -32,26 +32,63 @@ CREATE DB;
 
 SHOW DATABASES;
 
-DROP DATABASE <name>;
+DROP DATABASE <database_name>;
 
 # tells mysql which database we want to work with
-USE <database name>; 
+
+USE <database_name>; 
 
 # tell currently used database
+
 SELECT database();
 
 if you delete a database use you are currently using, the SELECT database(); command will return NULL
 
 # create a table in easy to read multi-line composition
+
 CREATE TABLE <tablename_in_plural_form>
 	(
 		column_name data_type, 
 		column_name data_type
 	);
 
+ex:
 
+CREATE TABLE pastries
+    (
+        name VARCHAR(50), 
+        quantity INT
+    );
 
+# when in target db, show tables in current db
 
+SHOW TABLES;
 
+# when in target db, show data from target table
 
+DESC <table_name>;
 
+SHOW COLUMNS FROM <table_name>;
+
+# when in target db, remove target table
+
+DROP TABLE <table_name>;
+
+# insert data into a table in a target db
+# each value has to correspond to the column data type
+# order of column arguments has to match value arguments
+
+INSERT INTO <table_name>
+	(
+		column_name,
+		column_name
+	)
+VALUES
+	(
+		value,
+		value
+	);
+
+# select the data for viewing in a table when in a target db
+
+SELECT * FROM <table_name>;
