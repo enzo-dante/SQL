@@ -89,6 +89,39 @@ VALUES
 		value
 	);
 
+# insert multiple values into a table in a target db
+
+INSERT INTO verbs(
+        name,
+        age
+    )
+    VALUES
+        ('Peanut', 4),
+        ('Butter', 10),
+        ('Jelly', 7);
+
 # select the data for viewing in a table when in a target db
 
 SELECT * FROM <table_name>;
+
+# If you're wondering how to insert a string (VARCHAR) value that contains quotations, then here's how.
+
+Escape the quotes with a backslash: 
+"This text has \"quotes\" in it" or 'This text has \'quotes\' in it'
+
+Alternate single and double quotes:
+"This text has 'quotes' in it" or 'This text has "quotes" in it'
+
+# mysql warnings
+
+If you happen to encounter an error instead of a warning.
+
+The solution is to run the following command in your mysql shell: 
+set sql_mode='';
+
+SHOW WARNINGS;
+
+example:
+
+if a VARCHAR(5) column, has a string that exceeds 5 characters
+
