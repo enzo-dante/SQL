@@ -125,3 +125,85 @@ example:
 
 if a VARCHAR(5) column, has a string that exceeds 5 characters
 
+# null means value is unknown
+
+null DOES NOT mean zero
+
+To enforce NOT NULL when creating a table, use NOT NULL
+
+ex:
+
+CREATE TABLE cats2
+	(
+		name VARCHAR(100) NOT NULL,
+		age INT NOT NULL
+	);
+
+# default values 
+
+to set a default value, set DEFAULT and value when creating a table
+
+ex:
+
+CREATE TABLE cats3
+	(
+		name VARCHAR(100) DEFAULT 'unnamed',
+		age INT DEFAULT 99
+	);
+
+# using both DEFAULT VALUES and NOT NULL
+
+This is not redundant because this prevents the user from manually inserting a NULL value
+
+Below ex would insert a NULL value:
+
+INSERT INTO cats3(name, age) VALUES('Montana', NULL);
+
+Below ex would prevent a NULL value and have a default value when creating a table:
+
+CREATE TABLE cats5
+	(
+		name VARCHAR(4) NOT NULL DEFAULT 'unnamed',
+		age INT NOT NULL DEFAULT 99
+	);
+
+Below ex would return an ERROR:
+
+INSERT INTO cats5
+    (
+        name,
+        age
+    )
+    VALUES
+    ('Cali', NULL);
+
+# Primary Keys are used as unique IDs for organizing data in a table
+
+when DESC a table, the key column would list PRI instead of empty
+
+if you attempt to add data that has a duplicate primary value, will return ERROR
+ex:
+
+CREATE TABLE cats6
+	(
+		cat_id INT NOT NULL PRIMARY KEY,
+		name VARCHAR(100),
+		age INT,
+	);
+
+INSERT INTO cats6
+    (cat_id, name, age)
+    VALUES
+    (1, 'fred', 33);
+
+# Auto Increment Primary Keys removes manual input for Primary Keys
+
+ex:
+
+CREATE TABLE cats7
+	(
+		cat_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		name VARCHAR(100),
+		age INT,
+	);
+
