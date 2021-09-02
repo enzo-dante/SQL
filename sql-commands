@@ -207,3 +207,41 @@ CREATE TABLE cats7
 		age INT,
 	);
 
+# CRUD = create, read, update, delete
+
+# read = SELECT 
+
+* = return all columns
+
+can target specific columns
+
+ex: SELECT name FROM cats;
+
+can target multiple columns with a comma seperated list
+- order matters in the comma seperated list
+
+ex: SELECT name, age FROM cats;
+
+# WHERE = specific filtering commands
+
+Below selects all columns from cats table where age is 4 
+
+SELECT * FROM cats WHERE age=4;
+
+Below selects all columns from cats table where name is Egg
+- case insensitive
+
+SELECT * FROM cats WHERE name='Egg';
+
+Below allows you to compare columns
+SELECT cat_id, age FROM cats WHERE cat_id=age;
+
+# aliases = specify how data is presented from query
+
+SELECT cat_id AS id, name FROM cats;
+
+SELECT name AS 'cat_name', breed AS 'type_of_cat' FROM cats;
+
+# UPDATE = change existing data
+
+
