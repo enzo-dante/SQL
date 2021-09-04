@@ -244,4 +244,41 @@ SELECT name AS 'cat_name', breed AS 'type_of_cat' FROM cats;
 
 # UPDATE = change existing data
 
+process should be use SELECT to target desired data set before using UPDATE
+
+ex: 
+
+SELECT * FROM cats
+	WHERE breed='Tabby';
+
+UPDATE cats 
+	SET breed='Shorthair'
+		WHERE breed='Tabby';
+
+ex 2:
+
+SELECT * FROM cats
+    WHERE breed='Maine Coon';
+    
+UPDATE cats
+    SET age=12
+        WHERE breed='Maine Coon';
+
+# DELETE = remove existing data
+
+process should be use SELECT to target desired data set before using DELETE
+- when data is deleted and there is an AUTO_INCREMENT PRIMARY KEY, the keys don't shift to compensate for the deleted dataset
+
+ex:
+
+SELECT * FROM cats
+    WHERE name='Egg';
+
+DELETE FROM cats
+    WHERE name='Egg';
+
+SELECT * FROM cats;
+
+# DELETE FROM <table_name> = delete all enteries in table, but table shell remains
+
 
