@@ -24,11 +24,14 @@ DATE, DATETIME, TIMESTAMP, TIME, YEAR
 
 # general rules
 always end the command line with a semicolon or the code won't execute
+
 the sql commands don't have to be capatalized, but it helps distinguish
+
+when creating a db, use a plural name
 
 # SQL COMMANDS
 
-CREATE DB;
+CREATE DATABASE <database_name>;
 
 SHOW DATABASES;
 
@@ -59,6 +62,18 @@ CREATE TABLE pastries
         name VARCHAR(50), 
         quantity INT
     );
+
+ex 2:
+
+'note that SIZE is a reserved SQL keyword so do not use it'
+
+CREATE TABLE shirts(
+    shirt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    article VARCHAR(100),
+    color VARCHAR(100),
+    shirt_size VARCHAR(1),
+    last_worn INT NOT NULL DEFAULT 0
+);
 
 # when in target db, show tables in current db
 
@@ -258,11 +273,12 @@ UPDATE cats
 ex 2:
 
 SELECT * FROM cats
-    WHERE breed='Maine Coon';
-    
-UPDATE cats
-    SET age=12
-        WHERE breed='Maine Coon';
+	WHERE color='off white';
+
+UPDATE shirts
+    SET shirt_size='X', color='not white'
+    WHERE color='off white';
+
 
 # DELETE = remove existing data
 
