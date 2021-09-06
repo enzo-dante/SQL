@@ -18,35 +18,108 @@ ENUM
 DATE, DATETIME, TIMESTAMP, TIME,
 YEAR
 
+# mySQL string commands
+
+https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
+
+> CONCAT_WS() or CONCAT() combines data for cleaner output
+
+> this does not change original values in the db, purely about printing values in defined table
+
+*defining column names and renaming them is OPTIONAL
+
+*below command will add provided string seperator (like a space) between merged column values and rename columns from target db
+
+```
+
+SELECT
+    <column_name> AS 'x',
+        CONCAT_WS('<string_seperator>, <column_name>, <column_name>)
+            AS 'z'
+FROM books;
+
+```
+
+*below command will add space with manual entry seperator between merged column values and rename columns from target db
+
+SELECT
+    title as 'Title', 
+    author_fname AS 'First',
+    author_lname AS 'Last',
+        CONCAT_WS(' ', title, author_fname, author_lname)
+            AS 'Full Name'
+FROM books;
+
+*below command will add space with manual entry seperator between merged column values and rename columns from target db
+
+SELECT
+    author_fname AS 'First',
+    author_lname AS 'Last',
+        CONCAT(author_fname, ' ', author_lname)
+            AS 'Full Name'
+FROM books;
+
+*below command will add space (or whatever string value) between merged values of the columns together
+
+SELECT
+    CONCAT(<column_name>,' ', <column_name>)
+FROM books;
+
+*below command will literally merge values of the columns together
+
+SELECT
+    CONCAT(<column_name>, <column_name>)
+FROM books;
+
 # SQL commands
 
 > when creating a db, use a plural name
+
+```
 
 CREATE DATABASE <database_name>;
 
 SHOW DATABASES;
 
+```
 > when dropping a db, check with SELECT that data is not essential
 
-> if you delete a database use you are currently using, the SELECT database(); command will return NULL
+*if you delete a database use you are currently using, the SELECT database(); command will return NULL
+
+```
 
 DROP DATABASE <database_name>;
 
+
+```
+
 > tells mysql which database we want to work with
+
+```
 
 USE <database_name>; 
 
+```
+
 > tell currently used database
+
+```
 
 SELECT database();
 
+```
+
 > create a table in easy to read multi-line composition
+
+```
 
 CREATE TABLE <tablename_in_plural_form>
 	(
 		column_name data_type, 
 		column_name data_type
 	);
+
+```
 
 ex:
 
@@ -70,21 +143,35 @@ CREATE TABLE shirts(
 
 > when in target db, show tables in current db
 
+```
+
 SHOW TABLES;
+
+```
 
 > when in target db, describe/show column structure from target table
 
+```
+
 DESC <table_name>;
+
+```
 
 SHOW COLUMNS FROM <table_name>;
 
 > when in target db, remove target table
 
+```
+
 DROP TABLE <table_name>;
 
+```
+
 > insert data into a table in a target db
-> each value has to correspond to the column data type
-> order of column arguments has to match value arguments
+
+*each value has to correspond to the column data type
+
+*order of column arguments has to match value arguments
 
 INSERT INTO <table_name>
 	(
@@ -99,6 +186,21 @@ VALUES
 
 > insert multiple values into a table in a target db
 
+```
+
+INSERT INTO <table_name>
+	(
+		column_name,
+		column_name
+	)
+VALUES
+	(value, value),
+  (value, value);
+
+```
+
+ex:
+
 INSERT INTO verbs(
         name,
         age
@@ -110,7 +212,11 @@ INSERT INTO verbs(
 
 > select the data for viewing in a table when in a target db
 
+```
+
 SELECT * FROM <table_name>;
+
+```
 
 > If you're wondering how to insert a string (VARCHAR) value that contains quotations, then here's how.
 
@@ -122,13 +228,17 @@ SELECT * FROM <table_name>;
 
 > mysql warnings
 
-> if you encounter an error instead of a warning, the solution is to run the following command in your mysql shell
+*if you encounter an error instead of a warning, the solution is to run the following command in your mysql shell
 
 *if a VARCHAR(5) column, has a string that exceeds 5 characters
+
+```
 
 set sql_mode='';
 
 SHOW WARNINGS;
+
+```
 
 > null means value is unknown
 
@@ -138,11 +248,15 @@ SHOW WARNINGS;
 
 ex:
 
+```
+
 CREATE TABLE cats2
 	(
 		name VARCHAR(100) NOT NULL,
 		age INT NOT NULL
 	);
+
+```
 
 > default values 
 
@@ -150,11 +264,15 @@ CREATE TABLE cats2
 
 ex:
 
+```
+
 CREATE TABLE cats3
 	(
 		name VARCHAR(100) DEFAULT 'unnamed',
 		age INT DEFAULT 99
 	);
+
+```
 
 > using both DEFAULT VALUES and NOT NULL
 
@@ -166,11 +284,15 @@ INSERT INTO cats3(name, age) VALUES('Montana', NULL);
 
 *below ex would prevent a NULL value and have a default value when creating a table:
 
+```
+
 CREATE TABLE cats5
 	(
 		name VARCHAR(4) NOT NULL DEFAULT 'unnamed',
 		age INT NOT NULL DEFAULT 99
 	);
+
+```
 
 *below ex would return an ERROR:
 
@@ -190,6 +312,8 @@ INSERT INTO cats5
 
 ex:
 
+```
+
 CREATE TABLE cats6
 	(
 		cat_id INT NOT NULL PRIMARY KEY,
@@ -202,9 +326,13 @@ INSERT INTO cats6
     VALUES
     (1, 'fred', 33);
 
+```
+
 > AUTO_INCREMENT PRIMARY KEY removes manual input for Primary Keys
 
 ex:
+
+```
 
 CREATE TABLE cats7
 	(
@@ -213,13 +341,19 @@ CREATE TABLE cats7
 		age INT,
 	);
 
+```
+
 > CRUD = create, read, update, delete
 
 *read = SELECT and * = return all columns
 
 ex:
 
+```
+
 SELECT * FROM cats;
+
+```
 
 *can target single or multiple columns with a comma seperated list
 
@@ -227,7 +361,11 @@ SELECT * FROM cats;
 
 ex:
 
+```
+
 SELECT cat_id, name FROM cats;
+
+```
 
 ex:
 
@@ -246,7 +384,11 @@ SELECT * FROM cats WHERE name='Egg';
 
 *below allows you to compare columns
 
+```
+
 SELECT cat_id, age FROM cats WHERE cat_id=age;
+
+```
 
 > aliases = specify how data is presented from query
 
@@ -256,7 +398,11 @@ SELECT cat_id AS id, name FROM cats;
 
 ex:
 
+```
+
 SELECT name AS 'cat_name', breed AS 'type_of_cat' FROM cats;
+
+```
 
 > UPDATE = change existing data
 
@@ -273,12 +419,16 @@ UPDATE cats
 
 ex:
 
+```
+
 SELECT * FROM cats
 	WHERE color='off white';
 
 UPDATE shirts
     SET shirt_size='XS', color='not white'
     WHERE color='off white';
+
+```
 
 > DELETE = remove existing data
 
@@ -288,6 +438,8 @@ UPDATE shirts
 
 ex:
 
+```
+
 SELECT * FROM cats
     WHERE name='Egg';
 
@@ -296,10 +448,14 @@ DELETE FROM cats
 
 SELECT * FROM cats;
 
+```
+
 *delete all enteries in table, but table shell remains
 
 ex:
 
+```
+
 DELETE FROM <table_name>
 
-
+```
