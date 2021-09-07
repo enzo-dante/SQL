@@ -1,3 +1,7 @@
+# SQL formatter
+
+https://www.freeformatter.com/sql-formatter.html#ad-output
+
 # table data types
 
 > NUMERIC TYPES:
@@ -22,56 +26,13 @@ YEAR
 
 https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
 
-> CONCAT_WS() or CONCAT() combines data for cleaner output
-
-> this does not change original values in the db, purely about printing values in defined table
-
-*defining column names and renaming them is OPTIONAL
-
-*below command will add provided string seperator (like a space) between merged column values and rename columns from target db
-
-```
-
-SELECT
-    <column_name> AS 'x',
-        CONCAT_WS('<string_seperator>, <column_name>, <column_name>)
-            AS 'z'
-FROM books;
-
-```
-
-*below command will add space with manual entry seperator between merged column values and rename columns from target db
-
-SELECT
-    title as 'Title', 
-    author_fname AS 'First',
-    author_lname AS 'Last',
-        CONCAT_WS(' ', title, author_fname, author_lname)
-            AS 'Full Name'
-FROM books;
-
-*below command will add space with manual entry seperator between merged column values and rename columns from target db
-
-SELECT
-    author_fname AS 'First',
-    author_lname AS 'Last',
-        CONCAT(author_fname, ' ', author_lname)
-            AS 'Full Name'
-FROM books;
-
-*below command will add space (or whatever string value) between merged values of the columns together
-
-SELECT
-    CONCAT(<column_name>,' ', <column_name>)
-FROM books;
-
-*below command will literally merge values of the columns together
-
-SELECT
-    CONCAT(<column_name>, <column_name>)
-FROM books;
-
 # SQL commands
+
+> comment out code
+
+highlight target code and on Mac press: 
+
+CMD + / 
 
 > when creating a db, use a plural name
 
