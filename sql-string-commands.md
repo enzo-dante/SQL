@@ -85,14 +85,21 @@ ex:
 
 ```
 
-SELECT 
-    CONCAT
-    (
+SELECT
+    CONCAT(
         SUBSTRING(title, 1, 10),
         '...'
-    ) AS 'Short Title'
+    ) AS 'short title',
+    CONCAT_WS(
+        ',',
+        author_lname,
+        author_fname
+    ) AS 'author',
+    CONCAT(
+        stock_quantity,
+        ' in stock'
+    ) AS 'quantity'
 FROM books;
-
 
 ```
 
@@ -228,4 +235,47 @@ SELECT
 FROM books;
 
 ```
+
+> SELECT UPPER(target_string) = convert to all caps
+
+```
+
+SELECT UPPER(target_string);
+
+```
+
+ex:
+
+```
+
+SELECT
+    UPPER(
+        CONCAT_WS(' ', author_fname, author_lname)
+    ) AS 'full name in caps'
+FROM books;
+
+```
+
+ex:
+
+```
+
+SELECT
+    REVERSE(
+            UPPER(
+            'Why does my cat look at me with such hatred?'
+        )
+    ) AS 'Back Up';
+
+
+```
+
+> SELECT LOWER(target_string) = convert to all lower cases
+
+```
+
+SELECT LOWER(target_string);
+
+```
+
 
