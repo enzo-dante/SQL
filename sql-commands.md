@@ -420,3 +420,168 @@ ex:
 DELETE FROM <table_name>
 
 ```
+
+> SELECT DISTINCT only returns unique column values 
+
+
+```
+
+SELECT DISTINCT <column_name> FROM <table_name>;
+
+```
+
+*the examples below produces the result of unique rows
+
+ex:
+
+```
+
+SELECT DISTINCT
+    CONCAT_WS(
+        ' ',
+        author_fname,
+        author_lname
+    ) AS 'authors full name'
+FROM books;
+
+SELECT DISTINCT
+    author_fname,
+    author_lname
+FROM books;
+
+```
+
+> ORDER BY is used to sort results
+
+*ascending by default
+
+```
+
+SELECT 
+    <column_name>
+FROM <database_name>
+    ORDER BY <column_name>;
+
+```
+
+*using a number with ORDER BY is a shortcut to refer to a specific column
+
+```
+
+SELECT
+    title
+        AS 'column 1',
+    author_fname
+        AS 'column 2',
+    author_lname
+        AS 'column 3'
+FROM books
+    ORDER BY 2;
+
+```
+
+*you can run an initial sort, and then a subsequent sort on the initially sorted return set by adding multiple <column_names> in a comma seperated list
+
+```
+
+SELECT
+    title
+        AS 'column 1',
+    author_fname
+        AS 'column 2',
+    author_lname
+        AS 'column 3'
+FROM books
+    ORDER BY 2, 3;
+
+```
+
+*the example below will select all distinct last names from books and then ORDER BY descending order
+
+ex:
+
+```
+SELECT DISTINCT
+    author_lname
+FROM books
+    ORDER BY author_lname DESC;
+
+```
+
+*the <column_name> and the ORDER BY <column_name> don't have to match
+
+```
+
+SELECT DISTINCT
+    title,
+    pages
+FROM books
+    ORDER BY released_year;
+
+```
+
+> LIMIT specifies a number for how many results selected
+
+*the LIMIT and ORDER BY pair are frequently used together
+
+ex:
+
+```
+
+SELECT
+    title,
+    released_year
+FROM books
+    ORDER BY released_year DESC
+    LIMIT 5;
+
+```
+
+*for pagination, you could use LIMIT to specify start point and how many to count
+
+the example below shows the comparison:
+
+```
+
+SELECT
+    title,
+    released_year
+FROM books
+    ORDER BY 2 DESC
+    LIMIT 5;
+
+SELECT
+    title,
+    released_year
+FROM books
+    ORDER BY released_year DESC
+    LIMIT 4, 5;
+
+```
+
+> LIKE for better search filtering for approximation
+
+*wildcards are used in LIKE to indicate anything before or after the approximator string a la: %da%
+
+*wildcards are optional & represent anything before or after for pattern matching
+
+```
+
+SELECT author_fname, title
+FROM books
+    WHERE author_fname LIKE '%da%'
+    ORDER BY author_fname;
+
+SELECT author_fname, title
+FROM books
+    WHERE author_fname LIKE 'da%'
+    ORDER BY author_fname;
+
+SELECT author_fname, title
+FROM books
+    WHERE author_fname LIKE '%da'
+    ORDER BY author_fname;
+
+```
+
+
