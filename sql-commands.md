@@ -559,7 +559,7 @@ FROM books
 
 ```
 
-> LIKE for better search filtering for approximation
+> LIKE with WHERE and WILDCARDS for better search filtering for approximation
 
 *wildcards are used in LIKE to indicate anything before or after the approximator string a la: %da%
 
@@ -581,6 +581,37 @@ SELECT author_fname, title
 FROM books
     WHERE author_fname LIKE '%da'
     ORDER BY author_fname;
+
+```
+
+*using "_" to specify number of characters in WHERE LIKE query
+
+*the example below filters for values of 4 index value length
+
+```
+
+SELECT title, stock_quantity
+FROM books
+    WHERE stock_quantity
+        LIKE '____'
+
+```
+
+*to use an actual % or _ symbol and the special character, than use an escape: \
+
+*anything%anything = '%\%%'
+
+*anything_anything = '%\_%'
+
+```
+
+SELECT title
+FROM books
+    WHERE title LIKE '%\%%';
+
+SELECT title
+FROM books
+    WHERE title LIKE '%\_%';
 
 ```
 
