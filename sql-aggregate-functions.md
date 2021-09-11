@@ -43,6 +43,29 @@ FROM books;
 
 ```
 
-> GROUP BY
+> GROUP BY aggregates identical data into single rows
+
+**a common technique is to use GROUP BY with COUNT**
+
+the example will COUNT how many books each author has written via COUNT(*) 
+
+COUNT(*) will count how many rows are grouped under the respective author
+
+```
+
+SELECT author_lname, COUNT(*)
+FROM books
+	GROUP BY author_lname;
+
+```
+
+**another common use is to use GROUP BY to calculate average**
+
+```
+
+
+
+```
+
 
 
