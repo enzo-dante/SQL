@@ -67,5 +67,119 @@ FROM books
 
 ```
 
+> MIN and MAX to find minimum and maximum respectively in a table
 
+```
+
+SELECT MIN(<column_name>)
+FROM <database_name>;
+
+SELECT MAX(<column_name>)
+FROM <database_name>;
+
+```
+
+**both methods below provide a solution to making sure MIN/MAX query is aligning correctly with respective column.**
+
+**the 1st approach and superior method in terms of performance**
+
+```
+
+SELECT
+   * 
+FROM
+   books 
+ORDER BY
+   pages ASC LIMIT 1;
+
+```
+
+**The 2nd approach is to use a subquery with an inner SELECT executing first meaning the sequence executes starts in the middle and works it's way out**
+
+**the issue with the subquery approach below is that you are running to seperate SELECT querries which would be an issue in terms of performance for large datasets**
+
+```
+
+SELECT
+   title, pages
+FROM
+   books
+WHERE
+   pages =
+   (
+      SELECT
+         MAX(pages)
+      FROM
+         books
+   )
+;
+
+```
+
+> MIN & MAX with GROUP BY
+
+**ex) find the year each author published their first book**
+
+```
+
+SELECT
+   author_fname,
+   author_lname,
+   MIN(released_year)
+FROM
+   books
+GROUP BY
+   author_lname,
+   author_fname;
+
+```
+
+**ex) find the longest page count for each author**
+
+```
+
+SELECT
+   author_fname,
+   author_lname,
+   MAX(pages) as 'MAX pages' 
+FROM
+   books 
+GROUP BY
+   author_fname,
+   author_lname;
+
+```
+
+**ex) find the longest page count for each author using ALIASES and CONCAT**
+
+```
+
+SELECT
+   CONCAT_WS(' ', author_fname, author_lname) AS 'author',
+	 MAX(pages) AS 'longest book'
+FROM
+   books
+GROUP BY
+   author_lname,
+   author_fname;
+
+```
+
+> SUM & GROUP BY adds all the subcategory data together
+
+
+```
+
+SELECT
+   CONCAT(author_fname, ' ', author_lname, ' has written a total of ', SUM(pages), ' pages') AS 'author',
+   SUM(pages) AS 'sum' 
+FROM
+   books 
+GROUP BY
+   author_fname,
+   author_lname 
+ORDER BY
+   2 DESC;
+
+```
 
