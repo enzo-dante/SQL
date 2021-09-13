@@ -7,7 +7,7 @@ https://www.freeformatter.com/sql-formatter.html#ad-output
 > NUMERIC TYPES:
 
 INT, SMALLINT, TINYINT, MEDIUMINT,
-BIGINT, DECIMAL, NUMERIC, FLOAT,
+BIGINT, DECIMAL(total_num_digits, digits_after_decimal), NUMERIC, FLOAT,
 DOUBLE, BIT
 
 > STRING TYPES:
@@ -182,4 +182,19 @@ ORDER BY
    2 DESC;
 
 ```
+
+> AVG & GROUP BY gets average of all subcategories
+
+**ex) calculate the average stock quantity for books released in the same year**
+
+```
+
+SELECT
+    released_year,
+    AVG(stock_quantity)
+FROM books
+GROUP BY released_year;
+
+```
+
 
