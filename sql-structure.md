@@ -16,22 +16,31 @@ VARCHAR, not CHAR which requires a fixed length, is most common string data type
 
 > NUMERIC TYPES:
 
-INT, SMALLINT, TINYINT,
-MEDIUMINT, BIGINT, DECIMAL,
-NUMERIC, FLOAT, DOUBLE, BIT
+**for accounting, use DECIMAL() as default**
+
+INT, SMALLINT, TINYINT, MEDIUMINT,
+BIGINT,
+DECIMAL(total_num_digits, digits_after_decimal),
+NUMERIC, FLOAT,
+DOUBLE, BIT
 
 > STRING TYPES:
 
-CHAR, VARCHAR(n-length), BINARY, 
-VARBINARY, BLOB, TINYBLOB,
-MEDIUMBLOB, LONGBLOB, TEXT,
-TINYTEXT, MEDIUMTEXT, LONGTEXT,
+CHAR, VARCHAR(n-length), BINARY, VARBINARY,
+BLOB, TINYBLOB, MEDIUMBLOB, LONGBLOB,
+TEXT, TINYTEXT, MEDIUMTEXT, LONGTEXT,
 ENUM
 
 > DATE TYPES:
 
-DATE, DATETIME, TIMESTAMP, 
-TIME, YEAR
+DATE = 'YYYY-MM-DD' format,
+DATETIME = DATE + TIME,
+TIME = 'HH:MM:SS',
+CURDATE() = give current date,
+CURTIME() = give current time,
+NOW() = give current date time,
+TIMESTAMP,
+YEAR
 
 # general rules
 

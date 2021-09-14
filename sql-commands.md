@@ -6,8 +6,12 @@ https://www.freeformatter.com/sql-formatter.html#ad-output
 
 > NUMERIC TYPES:
 
+**for accounting, use DECIMAL() as default**
+
 INT, SMALLINT, TINYINT, MEDIUMINT,
-BIGINT, DECIMAL, NUMERIC, FLOAT,
+BIGINT,
+DECIMAL(total_num_digits, digits_after_decimal),
+NUMERIC, FLOAT,
 DOUBLE, BIT
 
 > STRING TYPES:
@@ -19,7 +23,13 @@ ENUM
 
 > DATE TYPES:
 
-DATE, DATETIME, TIMESTAMP, TIME,
+DATE = 'YYYY-MM-DD' format,
+DATETIME = DATE + TIME,
+TIME = 'HH:MM:SS',
+CURDATE() = give current date,
+CURTIME() = give current time,
+NOW() = give current date time,
+TIMESTAMP,
 YEAR
 
 # mySQL string commands
@@ -28,7 +38,7 @@ https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
 
 # SQL commands
 
-> comment out code
+> Comment Out Code
 
 highlight target code and on Mac press: 
 
@@ -614,36 +624,4 @@ FROM books
     WHERE title LIKE '%\_%';
 
 ```
-
-> SELECT DATETIME, DATE, TIME
-
-NOW() = give current date time,
-CURDATE() = give current date,
-CURTIME() = give current time,
-
-
-INSERT INTO people(name, birthdate, birthtime, birthdt)
-VALUES('Microwave', CURDATE(), CURTIME(), NOW());
-
-
-> SELECT DAY(), DAYNAME(), DAYOFWEEK()
-
-**extract day and returns either a number or day from DATETIME or DATE**
-
-```
-
-SELECT name, DAY(<column_name>), DAYNAME(<column_name>), DAYOFWEEK(<column_name>)
-FROM <database_name>;
-
-```
-
-> SELECT MONTH(), MONTHNAME()
-
-**extract day and returns either a number or day from DATETIME or DATE**
-
-
-> SELECT HOUR(), MINUTE(), SECOND()
-
-**extracts requested time interal from TIME data type**
-
 

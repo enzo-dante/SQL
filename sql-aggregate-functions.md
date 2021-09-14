@@ -34,7 +34,7 @@ YEAR
 
 # SQL aggregate functions
 
-> comment out code
+> Comment Out Code
 
 highlight target code and on Mac press: 
 

@@ -6,8 +6,12 @@ https://www.freeformatter.com/sql-formatter.html#ad-output
 
 > NUMERIC TYPES:
 
+**for accounting, use DECIMAL() as default**
+
 INT, SMALLINT, TINYINT, MEDIUMINT,
-BIGINT, DECIMAL, NUMERIC, FLOAT,
+BIGINT,
+DECIMAL(total_num_digits, digits_after_decimal),
+NUMERIC, FLOAT,
 DOUBLE, BIT
 
 > STRING TYPES:
@@ -19,7 +23,13 @@ ENUM
 
 > DATE TYPES:
 
-DATE, DATETIME, TIMESTAMP, TIME,
+DATE = 'YYYY-MM-DD' format,
+DATETIME = DATE + TIME,
+TIME = 'HH:MM:SS',
+CURDATE() = give current date,
+CURTIME() = give current time,
+NOW() = give current date time,
+TIMESTAMP,
 YEAR
 
 # mySQL string commands
@@ -46,6 +56,8 @@ FROM books;
 
 *below command will add space with manual entry seperator between merged column values and rename columns from target db
 
+```
+
 SELECT
     title as 'Title', 
     author_fname AS 'First',
@@ -54,7 +66,11 @@ SELECT
             AS 'Full Name'
 FROM books;
 
+```
+
 *below command will add space with manual entry seperator between merged column values and rename columns from target db
+
+```
 
 SELECT
     author_fname AS 'First',
@@ -63,13 +79,21 @@ SELECT
             AS 'Full Name'
 FROM books;
 
+```
+
 *below command will add space (or whatever string value) between merged values of the columns together
+
+```
 
 SELECT
     CONCAT(<column_name>,' ', <column_name>)
 FROM books;
 
+```
+
 *below command will literally merge values of the columns together
+
+```
 
 SELECT
     CONCAT(<column_name>, <column_name>)
@@ -80,6 +104,8 @@ FROM books;
 *after select, first function is inner most function and works outward
 
 *selects all title from books table, returns only a substring, and then concatenatesa string to all substring titles
+
+```
 
 ex:
 
