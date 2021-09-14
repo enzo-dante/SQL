@@ -6,8 +6,12 @@ https://www.freeformatter.com/sql-formatter.html#ad-output
 
 > NUMERIC TYPES:
 
+**for accounting, use DECIMAL() as default**
+
 INT, SMALLINT, TINYINT, MEDIUMINT,
-BIGINT, DECIMAL(total_num_digits, digits_after_decimal), NUMERIC, FLOAT,
+BIGINT,
+DECIMAL(total_num_digits, digits_after_decimal),
+NUMERIC, FLOAT,
 DOUBLE, BIT
 
 > STRING TYPES:
@@ -19,7 +23,13 @@ ENUM
 
 > DATE TYPES:
 
-DATE, DATETIME, TIMESTAMP, TIME,
+DATE = 'YYYY-MM-DD' format,
+DATETIME = DATE + TIME, 
+TIME = 'HH:MM:SS',
+CURDATE() = give current date,
+CURTIME() = give current time,
+NOW() = give current date time,
+TIMESTAMP, 
 YEAR
 
 # SQL aggregate functions
