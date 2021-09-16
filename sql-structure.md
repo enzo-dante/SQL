@@ -14,33 +14,56 @@ INTs, FLOATs, and BIGINTs are most common numeric data type
 
 VARCHAR, not CHAR which requires a fixed length, is most common string data type
 
+"sql-format-date-time.md" 228L, 3821B written
+# SQL formatter
+
+https://www.freeformatter.com/sql-formatter.html#ad-output
+
+# table data types
+
 > NUMERIC TYPES:
 
 **for accounting, use DECIMAL() as default**
 
-INT, SMALLINT, TINYINT, MEDIUMINT,
-BIGINT,
+INT, SMALLINT, TINYINT, MEDIUMINT, BIGINT,
 DECIMAL(total_num_digits, digits_after_decimal),
-NUMERIC, FLOAT,
-DOUBLE, BIT
+NUMERIC,
+FLOAT,
+DOUBLE,
+BIT
 
 > STRING TYPES:
 
-CHAR, VARCHAR(n-length), BINARY, VARBINARY,
+CHAR,
+VARCHAR(n-length),
+BINARY,
+VARBINARY,
 BLOB, TINYBLOB, MEDIUMBLOB, LONGBLOB,
 TEXT, TINYTEXT, MEDIUMTEXT, LONGTEXT,
 ENUM
 
 > DATE TYPES:
 
+DATETIME = DATE and TIME,
 DATE = 'YYYY-MM-DD' format,
-DATETIME = DATE + TIME,
+
+NOW() = give current date time,
 TIME = 'HH:MM:SS',
 CURDATE() = give current date,
 CURTIME() = give current time,
-NOW() = give current date time,
-TIMESTAMP,
+
+TIMESTAMP = only works in range 2038-1970,
 YEAR
+
+# mySQL Documentation
+
+> mySQL string commands
+
+https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
+
+> mySQL date and time functions
+
+https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format
 
 # general rules
 
