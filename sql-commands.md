@@ -373,6 +373,132 @@ SELECT cat_id, age FROM cats WHERE cat_id=age;
 
 ```
 
+> WHERE <column_name> != <variable> 
+
+__filters WHERE query that does not equal variable__
+
+```
+ 
+SELECT title FROM books WHERE released_year != 2017;
+ 
+SELECT title, author_lname FROM books WHERE author_lname != 'Harris';
+
+```
+
+> WHERE <column_name> LIKE WILDCARDS for better search filtering for approximation
+
+*wildcards are used in LIKE to indicate anything before or after the approximator string a la: %da%
+
+*wildcards are optional & represent anything before or after for pattern matching
+
+```
+
+SELECT author_fname, title
+FROM books
+    WHERE author_fname LIKE '%da%'
+    ORDER BY author_fname;
+
+SELECT author_fname, title
+FROM books
+    WHERE author_fname LIKE 'da%'
+    ORDER BY author_fname;
+
+SELECT author_fname, title
+FROM books
+    WHERE author_fname LIKE '%da'
+    ORDER BY author_fname;
+
+```
+
+**using "_" to specify number of characters in WHERE LIKE query**
+
+**the example below filters for values of 4 index value length**
+
+```
+
+SELECT title, stock_quantity
+FROM books
+    WHERE stock_quantity
+        LIKE '____'
+
+```
+
+to use an actual % or _ symbol and the special character, than use an escape: \
+
+anything%anything = '%\%%'
+
+anything_anything = '%\_%'
+
+```
+
+SELECT title
+FROM books
+    WHERE title LIKE '%\%%';
+
+SELECT title
+FROM books
+    WHERE title LIKE '%\_%';
+
+```
+
+> WHERE <column_name> NOT LIKE 'WILDCARD'
+
+__use NOT LIKE to filter for everything that is NOT LIKE the provided wildcard__
+
+```
+
+SELECT title FROM books WHERE title NOT LIKE 'W%';
+
+```
+
+> WHERE <column_name> >= <variable>
+>
+> WHERE <column_name> <= <variable>
+
+__you can use the greater than (>) or less than (<) in WHERE queries__
+
+__you can use the greater than (>=) or eqal to; less than (<=) or equal to in WHERE queries__
+
+__if you SELECT number > number; SQL will return a boolean: 1(true) or 0(false)__
+
+```
+
+SELECT title, released_year FROM books 
+WHERE released_year >= 2000 ORDER BY released_year;
+
+SELECT title, released_year FROM books
+WHERE released_year <= 2000;
+
+```
+
+__avoid string comparisons since it varies by programming language__
+
+__SQL does not recognize upper or lowercase as different__
+
+```
+
+SELECT 'A' > 'a';
+
+```
+
+> WHERE <column_name> >= <variable> 
+> AND <column_name> = <variable>
+> AND <column_name> LIKE '%WILDCARD';
+
+__using AND or && (depricated) will allow you to chain multiple logical operators in a single WHERE__
+
+__generally, you shouldn't use more than 3 logical operators, otherwise the table should be restructured__
+
+```
+
+SELECT *
+FROM books
+WHERE author_lname='Eggers'
+    AND released_year > 2010
+    AND title LIKE '%novel%';
+
+```
+
 > aliases = specify how data is presented from query
 
 ex:
@@ -580,60 +706,3 @@ FROM books
     LIMIT 4, 5;
 
 ```
-
-> LIKE with WHERE and WILDCARDS for better search filtering for approximation
-
-*wildcards are used in LIKE to indicate anything before or after the approximator string a la: %da%
-
-*wildcards are optional & represent anything before or after for pattern matching
-
-```
-
-SELECT author_fname, title
-FROM books
-    WHERE author_fname LIKE '%da%'
-    ORDER BY author_fname;
-
-SELECT author_fname, title
-FROM books
-    WHERE author_fname LIKE 'da%'
-    ORDER BY author_fname;
-
-SELECT author_fname, title
-FROM books
-    WHERE author_fname LIKE '%da'
-    ORDER BY author_fname;
-
-```
-
-*using "_" to specify number of characters in WHERE LIKE query
-
-*the example below filters for values of 4 index value length
-
-```
-
-SELECT title, stock_quantity
-FROM books
-    WHERE stock_quantity
-        LIKE '____'
-
-```
-
-*to use an actual % or _ symbol and the special character, than use an escape: \
-
-*anything%anything = '%\%%'
-
-*anything_anything = '%\_%'
-
-```
-
-SELECT title
-FROM books
-    WHERE title LIKE '%\%%';
-
-SELECT title
-FROM books
-    WHERE title LIKE '%\_%';
-
-```
-
