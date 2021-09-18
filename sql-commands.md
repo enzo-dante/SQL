@@ -1,6 +1,6 @@
 # SQL formatter
 
-https://www.freeformatter.com/sql-formatter.html#ad-output
+https://www.dpriver.com/pp/sqlformat.htm
 
 # table data types
 
@@ -203,17 +203,17 @@ SELECT * FROM <table_name>;
 
 > If you're wondering how to insert a string (VARCHAR) value that contains quotations, then here's how.
 
-*escape the quotes with a backslash: 
+__escape the quotes with a backslash:__
 "This text has \"quotes\" in it" or 'This text has \'quotes\' in it'
 
-*alternate single and double quotes:
+__alternate single and double quotes:__
 "This text has 'quotes' in it" or 'This text has "quotes" in it'
 
 > mysql warnings
 
-*if you encounter an error instead of a warning, the solution is to run the following command in your mysql shell
+__if you encounter an error instead of a warning, the solution is to run the following command in your mysql shell__
 
-*if a VARCHAR(5) column, has a string that exceeds 5 characters
+__if a VARCHAR(5) column, has a string that exceeds 5 characters__
 
 ```
 
@@ -259,26 +259,27 @@ CREATE TABLE cats3
 
 > using both DEFAULT VALUES and NOT NULL
 
-*This is not redundant because this prevents the user from manually inserting a NULL value
+__This is not redundant because this prevents the user from manually inserting a NULL value__
 
-*Below ex would insert a NULL value:
-
-INSERT INTO cats3(name, age) VALUES('Montana', NULL);
-
-*below ex would prevent a NULL value and have a default value when creating a table:
+__Below ex would insert a NULL value:__
 
 ```
+INSERT INTO cats3(name, age) VALUES('Montana', NULL);
+```
 
+__below ex would prevent a NULL value and have a default value when creating a table:__
+
+```
 CREATE TABLE cats5
 	(
 		name VARCHAR(4) NOT NULL DEFAULT 'unnamed',
 		age INT NOT NULL DEFAULT 99
 	);
-
 ```
 
 *below ex would return an ERROR:
 
+```
 INSERT INTO cats5
     (
         name,
@@ -286,17 +287,16 @@ INSERT INTO cats5
     )
     VALUES
     ('Cali', NULL);
-
+```
 > primary Keys are used as unique IDs for organizing data in a table
 
-*when DESC a table, the key column would list PRI instead of empty
+__when DESC a table, the key column would list PRI instead of empty__
 
-*if you attempt to add data that has a duplicate primary value, will return ERROR
+__if you attempt to add data that has a duplicate primary value, will return ERROR__
 
 ex:
 
 ```
-
 CREATE TABLE cats6
 	(
 		cat_id INT NOT NULL PRIMARY KEY,
@@ -308,7 +308,6 @@ INSERT INTO cats6
     (cat_id, name, age)
     VALUES
     (1, 'fred', 33);
-
 ```
 
 > AUTO_INCREMENT PRIMARY KEY removes manual input for Primary Keys
@@ -316,61 +315,59 @@ INSERT INTO cats6
 ex:
 
 ```
-
 CREATE TABLE cats7
 	(
 		cat_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(100),
 		age INT,
 	);
-
 ```
 
 > CRUD = create, read, update, delete
 
-*read = SELECT and * = return all columns
+__read = SELECT and * = return all columns__
 
 ex:
 
 ```
-
 SELECT * FROM cats;
-
 ```
 
-*can target single or multiple columns with a comma seperated list
+__can target single or multiple columns with a comma seperated list__
 
-*list order matters because it determine presentation
+__list order matters because it determine presentation__
 
 ex:
 
 ```
-
 SELECT cat_id, name FROM cats;
-
 ```
 
 ex:
 
+```
 SELECT name, age FROM cats;
+```
 
 > WHERE = specific filtering commands
 
-*below selects all columns from cats table where age is 4 
-
-SELECT * FROM cats WHERE age=4;
-
-*below selects all columns from cats table where name is Egg
-- case insensitive
-
-SELECT * FROM cats WHERE name='Egg';
-
-*below allows you to compare columns
+__below selects all columns from cats table where age is 4__
 
 ```
+SELECT * FROM cats WHERE age=4;
+```
 
+__below selects all columns from cats table where name is Egg__
+- case insensitive
+
+```
+SELECT * FROM cats WHERE name='Egg';
+```
+
+__below allows you to compare columns__
+
+```
 SELECT cat_id, age FROM cats WHERE cat_id=age;
-
 ```
 
 > WHERE <column_name> != <variable> 
@@ -378,21 +375,18 @@ SELECT cat_id, age FROM cats WHERE cat_id=age;
 __filters WHERE query that does not equal variable__
 
 ```
- 
 SELECT title FROM books WHERE released_year != 2017;
  
 SELECT title, author_lname FROM books WHERE author_lname != 'Harris';
-
 ```
 
 > WHERE <column_name> LIKE WILDCARDS for better search filtering for approximation
 
-*wildcards are used in LIKE to indicate anything before or after the approximator string a la: %da%
+__wildcards are used in LIKE to indicate anything before or after the approximator string a la: %da%__
 
-*wildcards are optional & represent anything before or after for pattern matching
+__wildcards are optional & represent anything before or after for pattern matching__
 
 ```
-
 SELECT author_fname, title
 FROM books
     WHERE author_fname LIKE '%da%'
@@ -407,20 +401,17 @@ SELECT author_fname, title
 FROM books
     WHERE author_fname LIKE '%da'
     ORDER BY author_fname;
-
 ```
 
-**using "_" to specify number of characters in WHERE LIKE query**
+__using "_" to specify number of characters in WHERE LIKE query__
 
-**the example below filters for values of 4 index value length**
+__the example below filters for values of 4 index value length__
 
 ```
-
 SELECT title, stock_quantity
 FROM books
     WHERE stock_quantity
         LIKE '____'
-
 ```
 
 to use an actual % or _ symbol and the special character, than use an escape: \
@@ -430,7 +421,6 @@ anything%anything = '%\%%'
 anything_anything = '%\_%'
 
 ```
-
 SELECT title
 FROM books
     WHERE title LIKE '%\%%';
@@ -438,7 +428,6 @@ FROM books
 SELECT title
 FROM books
     WHERE title LIKE '%\_%';
-
 ```
 
 > WHERE <column_name> NOT LIKE 'WILDCARD'
@@ -446,9 +435,7 @@ FROM books
 __use NOT LIKE to filter for everything that is NOT LIKE the provided wildcard__
 
 ```
-
 SELECT title FROM books WHERE title NOT LIKE 'W%';
-
 ```
 
 > WHERE <column_name> >= <variable>
@@ -462,13 +449,11 @@ __you can use the greater than (>=) or eqal to; less than (<=) or equal to in WH
 __if you SELECT number > number; SQL will return a boolean: 1(true) or 0(false)__
 
 ```
-
 SELECT title, released_year FROM books 
 WHERE released_year >= 2000 ORDER BY released_year;
 
 SELECT title, released_year FROM books
 WHERE released_year <= 2000;
-
 ```
 
 __avoid string comparisons since it varies by programming language__
@@ -476,9 +461,7 @@ __avoid string comparisons since it varies by programming language__
 __SQL does not recognize upper or lowercase as different__
 
 ```
-
 SELECT 'A' > 'a';
-
 ```
 
 > WHERE <column_name> >= <variable> 
@@ -490,16 +473,134 @@ __using AND or && (depricated) will allow you to chain multiple logical operator
 __generally, you shouldn't use more than 3 logical operators, otherwise the table should be restructured__
 
 ```
-
 SELECT *
 FROM books
 WHERE author_lname='Eggers'
     AND released_year > 2010
     AND title LIKE '%novel%';
-
 ```
 
-> aliases = specify how data is presented from query
+> OR = logical or this 
+
+__using AND or || (depricated) will allow you to chain multiple logical operators in a single WHERE__
+
+__only 1 part of the expression has to be true for the output to be true__
+
+__generally, you shouldn't use more than 3 logical operators, otherwise the table should be restructured__
+
+```
+SELECT title,
+       author_lname,
+       released_year,
+       stock_quantity
+FROM   books
+WHERE  author_lname = 'Eggers'
+        OR released_year > 2010
+        OR stock_quantity > 100;
+```
+
+> CAST() = convert 1 data type to another data type
+
+```
+SELECT CAST('2017-05-02' AS DATETIME);
+```
+
+> BETWEEN = SELECT data in an upper AND lower range 
+>
+> BETWEEN x AND y
+
+```
+SELECT title,
+       released_year
+FROM   books
+WHERE  released_year BETWEEN 2004 AND 2015; 
+```
+
+__BETWEEN x AND y are commonly used with CAST()__
+
+```
+SELECT
+    name,
+    birthdt
+FROM people
+WHERE
+    birthdt BETWEEN CAST('1980-01-01' AS DATETIME)
+    AND CAST('2000-01-01' AS DATETIME);
+```
+
+__BETWEEN is a more efficient use of AND with greater than or less than__
+
+```
+SELECT title,
+       released_year
+FROM   books
+WHERE  released_year >= 2004
+       AND released_year <= 2015; 
+```
+
+> NOT BETWEEN = SELECT data NOT in the upper AND lower range 
+
+```
+SELECT title,
+       released_year
+FROM   books
+WHERE  released_year NOT BETWEEN 2004 AND 2015
+ORDER  BY released_year DESC;
+```
+
+> IN = return set of values IN provided column
+
+__using IN is superior to OR with long comma seperated values__
+
+```
+SELECT title,
+       author_lname
+FROM   books
+WHERE  author_lname IN ( 'Carver', 'Lahiri', 'Smith' ); 
+```
+
+__IN functionality can be achieved using OR, but not as efficient__
+
+```
+SELECT title,
+       author_lname
+FROM   books
+WHERE  author_lname = 'Carver'
+        OR author_lname = 'Lahiri'
+        OR author_lname = 'Smith';
+```
+
+> NOT IN = return set of values NOT IN provided column
+
+__using NOT IN is superior to OR with long comma seperated values__
+
+example only returns odd released years after 2000
+
+```
+SELECT title,
+       released_year
+FROM   books
+WHERE  released_year >= 2000
+       AND released_year NOT IN ( 2000, 2002, 2004, 2006,
+                                  2008, 2010, 2012, 2014, 2016 );
+```
+
+> % = MODULO or remainder operator
+>
+> % allows you to test is something is even
+
+if you divide value by 2 and there is no remainder, it is even
+
+```
+SELECT title,
+       released_year
+FROM   books
+WHERE  released_year >= 2000
+       AND released_year % 2 != 0
+ORDER  BY released_year DESC;
+```
+
+> AS = specify alias for how data is presented from query
 
 ex:
 
