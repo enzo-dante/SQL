@@ -1,24 +1,41 @@
+# SQL vs mySQL
+
+- SQL is a query language, whereas MySQL is a relational database that uses SQL to query a database
+
+- a database, like a MySQL database, is just a bunch of tables aka a relational database
+
+- databases hold data tables: a collection of columns (headers) and rows (data)
+
+
+
+"sql-format-date-time.md" 228L, 3821B written
 # SQL formatter
 
-https://www.dpriver.com/pp/sqlformat.htm
+https://www.freeformatter.com/sql-formatter.html#ad-output
 
 # table data types
 
 > NUMERIC TYPES:
-
-**for accounting, use DECIMAL() as default**
+>
+> for accounting, use DECIMAL() as default
+> INTs, FLOATs, and BIGINTs are most common numeric data type
 
 INT, SMALLINT, TINYINT, MEDIUMINT, BIGINT,
+
 DECIMAL(total_num_digits, digits_after_decimal),
+
 NUMERIC,
 FLOAT,
 DOUBLE,
 BIT
 
 > STRING TYPES:
+>
+> VARCHAR, not CHAR which requires a fixed length, is most common string data type
 
 CHAR,
 VARCHAR(n-length),
+
 BINARY,
 VARBINARY,
 BLOB, TINYBLOB, MEDIUMBLOB, LONGBLOB,
@@ -28,15 +45,30 @@ ENUM
 > DATE TYPES:
 
 DATETIME = DATE and TIME,
+
 DATE = 'YYYY-MM-DD' format,
 
 NOW() = give current date time,
+
 TIME = 'HH:MM:SS',
+
 CURDATE() = give current date,
 CURTIME() = give current time,
 
 TIMESTAMP = only works in range 2038-1970,
+
 YEAR
+
+# general rules
+
+
+always end the command line with a semicolon or the code won't execute
+
+when creating a db, use a plural name
+
+# SQL formatter
+
+https://www.dpriver.com/pp/sqlformat.htm
 
 # mySQL Documentation
 
@@ -56,66 +88,61 @@ highlight target code and on Mac press:
 
 CMD + / 
 
-> when creating a db, use a plural name
+> CREATE DATABASE <plural_name>
+>
+> the sql commands don't have to be capatalized, but it helps distinguish
 
 ```
-
 CREATE DATABASE <database_name>;
 
 SHOW DATABASES;
-
 ```
+
 > when dropping a db, check with SELECT that data is not essential
-
-*if you delete a database use you are currently using, the SELECT database(); command will return NULL
+>
+> if you delete a database use you are currently using, the SELECT database(); command will return NULL
 
 ```
-
 DROP DATABASE <database_name>;
-
-
 ```
 
-> tells mysql which database we want to work with
+> USE = tells mysql which database we want to work with
 
 ```
-
 USE <database_name>; 
-
 ```
 
-> tell currently used database
+> SELECT = tell currently used database
 
 ```
-
 SELECT database();
-
 ```
 
-> create a table in easy to read multi-line composition
+> CREATE TABLE = instantiate a table in easy to read multi-line composition
 
 ```
-
 CREATE TABLE <tablename_in_plural_form>
 	(
 		column_name data_type, 
 		column_name data_type
 	);
-
 ```
 
 ex:
 
+```
 CREATE TABLE pastries
     (
         name VARCHAR(50), 
         quantity INT
     );
+```
 
 ex 2:
 
 'note that SIZE is a reserved SQL keyword so do not use it'
 
+```
 CREATE TABLE shirts(
     shirt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     article VARCHAR(100),
@@ -123,39 +150,37 @@ CREATE TABLE shirts(
     shirt_size VARCHAR(1),
     last_worn INT NOT NULL DEFAULT 0
 );
-
-> when in target db, show tables in current db
-
 ```
 
+> SHOW TABLES = when in target db, show tables in current db
+
+```
 SHOW TABLES;
-
 ```
 
-> when in target db, describe/show column structure from target table
+> DESC = when in target db, describe/show column structure from target table
 
 ```
-
 DESC <table_name>;
-
 ```
 
+```
 SHOW COLUMNS FROM <table_name>;
+```
 
 > when in target db, remove target table
 
 ```
-
 DROP TABLE <table_name>;
-
 ```
 
 > insert data into a table in a target db
 
-*each value has to correspond to the column data type
+__each value has to correspond to the column data type__
 
-*order of column arguments has to match value arguments
+__order of column arguments has to match value arguments__
 
+```
 INSERT INTO <table_name>
 	(
 		column_name,
@@ -166,11 +191,11 @@ VALUES
 		value,
 		value
 	);
-
-> insert multiple values into a table in a target db
-
 ```
 
+> INSERT INTO = insert multiple values into a table in a target db
+
+```
 INSERT INTO <table_name>
 	(
 		column_name,
@@ -179,11 +204,11 @@ INSERT INTO <table_name>
 VALUES
 	(value, value),
   (value, value);
-
 ```
 
 ex:
 
+```
 INSERT INTO verbs(
         name,
         age
@@ -192,8 +217,9 @@ INSERT INTO verbs(
         ('Peanut', 4),
         ('Butter', 10),
         ('Jelly', 7);
+```
 
-> select the data for viewing in a table when in a target db
+> SELECT = select the data for viewing in a table when in a target db
 
 ```
 
@@ -216,45 +242,39 @@ __if you encounter an error instead of a warning, the solution is to run the fol
 __if a VARCHAR(5) column, has a string that exceeds 5 characters__
 
 ```
-
 set sql_mode='';
 
 SHOW WARNINGS;
-
 ```
 
 > null means value is unknown
 
-*null DOES NOT mean zero
+__null DOES NOT mean zero__
 
-*to enforce NOT NULL when creating a table, use NOT NULL
+__to enforce NOT NULL when creating a table, use NOT NULL__
 
 ex:
 
 ```
-
 CREATE TABLE cats2
 	(
 		name VARCHAR(100) NOT NULL,
 		age INT NOT NULL
 	);
-
 ```
 
 > default values 
 
-*to set a default value, set DEFAULT and value when creating a table
+__to set a default value, set DEFAULT and value when creating a table__
 
 ex:
 
 ```
-
 CREATE TABLE cats3
 	(
 		name VARCHAR(100) DEFAULT 'unnamed',
 		age INT DEFAULT 99
 	);
-
 ```
 
 > using both DEFAULT VALUES and NOT NULL
@@ -380,224 +400,10 @@ SELECT title FROM books WHERE released_year != 2017;
 SELECT title, author_lname FROM books WHERE author_lname != 'Harris';
 ```
 
-> WHERE <column_name> LIKE WILDCARDS for better search filtering for approximation
-
-__wildcards are used in LIKE to indicate anything before or after the approximator string a la: %da%__
-
-__wildcards are optional & represent anything before or after for pattern matching__
-
-```
-SELECT author_fname, title
-FROM books
-    WHERE author_fname LIKE '%da%'
-    ORDER BY author_fname;
-
-SELECT author_fname, title
-FROM books
-    WHERE author_fname LIKE 'da%'
-    ORDER BY author_fname;
-
-SELECT author_fname, title
-FROM books
-    WHERE author_fname LIKE '%da'
-    ORDER BY author_fname;
-```
-
-__using "_" to specify number of characters in WHERE LIKE query__
-
-__the example below filters for values of 4 index value length__
-
-```
-SELECT title, stock_quantity
-FROM books
-    WHERE stock_quantity
-        LIKE '____'
-```
-
-to use an actual % or _ symbol and the special character, than use an escape: \
-
-anything%anything = '%\%%'
-
-anything_anything = '%\_%'
-
-```
-SELECT title
-FROM books
-    WHERE title LIKE '%\%%';
-
-SELECT title
-FROM books
-    WHERE title LIKE '%\_%';
-```
-
-> WHERE <column_name> NOT LIKE 'WILDCARD'
-
-__use NOT LIKE to filter for everything that is NOT LIKE the provided wildcard__
-
-```
-SELECT title FROM books WHERE title NOT LIKE 'W%';
-```
-
-> WHERE <column_name> >= <variable>
->
-> WHERE <column_name> <= <variable>
-
-__you can use the greater than (>) or less than (<) in WHERE queries__
-
-__you can use the greater than (>=) or eqal to; less than (<=) or equal to in WHERE queries__
-
-__if you SELECT number > number; SQL will return a boolean: 1(true) or 0(false)__
-
-```
-SELECT title, released_year FROM books 
-WHERE released_year >= 2000 ORDER BY released_year;
-
-SELECT title, released_year FROM books
-WHERE released_year <= 2000;
-```
-
-__avoid string comparisons since it varies by programming language__
-
-__SQL does not recognize upper or lowercase as different__
-
-```
-SELECT 'A' > 'a';
-```
-
-> WHERE <column_name> >= <variable> 
-> AND <column_name> = <variable>
-> AND <column_name> LIKE '%WILDCARD';
-
-__using AND or && (depricated) will allow you to chain multiple logical operators in a single WHERE__
-
-__generally, you shouldn't use more than 3 logical operators, otherwise the table should be restructured__
-
-```
-SELECT *
-FROM books
-WHERE author_lname='Eggers'
-    AND released_year > 2010
-    AND title LIKE '%novel%';
-```
-
-> OR = logical or this 
-
-__using AND or || (depricated) will allow you to chain multiple logical operators in a single WHERE__
-
-__only 1 part of the expression has to be true for the output to be true__
-
-__generally, you shouldn't use more than 3 logical operators, otherwise the table should be restructured__
-
-```
-SELECT title,
-       author_lname,
-       released_year,
-       stock_quantity
-FROM   books
-WHERE  author_lname = 'Eggers'
-        OR released_year > 2010
-        OR stock_quantity > 100;
-```
-
 > CAST() = convert 1 data type to another data type
 
 ```
 SELECT CAST('2017-05-02' AS DATETIME);
-```
-
-> BETWEEN = SELECT data in an upper AND lower range 
->
-> BETWEEN x AND y
-
-```
-SELECT title,
-       released_year
-FROM   books
-WHERE  released_year BETWEEN 2004 AND 2015; 
-```
-
-__BETWEEN x AND y are commonly used with CAST()__
-
-```
-SELECT
-    name,
-    birthdt
-FROM people
-WHERE
-    birthdt BETWEEN CAST('1980-01-01' AS DATETIME)
-    AND CAST('2000-01-01' AS DATETIME);
-```
-
-__BETWEEN is a more efficient use of AND with greater than or less than__
-
-```
-SELECT title,
-       released_year
-FROM   books
-WHERE  released_year >= 2004
-       AND released_year <= 2015; 
-```
-
-> NOT BETWEEN = SELECT data NOT in the upper AND lower range 
-
-```
-SELECT title,
-       released_year
-FROM   books
-WHERE  released_year NOT BETWEEN 2004 AND 2015
-ORDER  BY released_year DESC;
-```
-
-> IN = return set of values IN provided column
-
-__using IN is superior to OR with long comma seperated values__
-
-```
-SELECT title,
-       author_lname
-FROM   books
-WHERE  author_lname IN ( 'Carver', 'Lahiri', 'Smith' ); 
-```
-
-__IN functionality can be achieved using OR, but not as efficient__
-
-```
-SELECT title,
-       author_lname
-FROM   books
-WHERE  author_lname = 'Carver'
-        OR author_lname = 'Lahiri'
-        OR author_lname = 'Smith';
-```
-
-> NOT IN = return set of values NOT IN provided column
-
-__using NOT IN is superior to OR with long comma seperated values__
-
-example only returns odd released years after 2000
-
-```
-SELECT title,
-       released_year
-FROM   books
-WHERE  released_year >= 2000
-       AND released_year NOT IN ( 2000, 2002, 2004, 2006,
-                                  2008, 2010, 2012, 2014, 2016 );
-```
-
-> % = MODULO or remainder operator
->
-> % allows you to test is something is even
-
-if you divide value by 2 and there is no remainder, it is even
-
-```
-SELECT title,
-       released_year
-FROM   books
-WHERE  released_year >= 2000
-       AND released_year % 2 != 0
-ORDER  BY released_year DESC;
 ```
 
 > AS = specify alias for how data is presented from query
@@ -609,23 +415,23 @@ SELECT cat_id AS id, name FROM cats;
 ex:
 
 ```
-
 SELECT name AS 'cat_name', breed AS 'type_of_cat' FROM cats;
-
 ```
 
 > UPDATE = change existing data
 
-*process should be use SELECT to target desired data set before using UPDATE
+__process should be use SELECT to target desired data set before using UPDATE__
 
 ex: 
 
+```
 SELECT * FROM cats
 	WHERE breed='Tabby';
 
 UPDATE cats 
 	SET breed='Shorthair'
 		WHERE breed='Tabby';
+```
 
 ex:
 
@@ -642,14 +448,13 @@ UPDATE shirts
 
 > DELETE = remove existing data
 
-*process should be use SELECT to target desired data set before using DELETE
+__process should be use SELECT to target desired data set before using DELETE__
 
-*when data is deleted and there is an AUTO_INCREMENT PRIMARY KEY, the keys don't shift to compensate for the deleted dataset
+__when data is deleted and there is an AUTO_INCREMENT PRIMARY KEY, the keys don't shift to compensate for the deleted dataset__
 
 ex:
 
 ```
-
 SELECT * FROM cats
     WHERE name='Egg';
 
@@ -657,34 +462,25 @@ DELETE FROM cats
     WHERE name='Egg';
 
 SELECT * FROM cats;
-
 ```
 
-*delete all enteries in table, but table shell remains
+__delete all enteries in table, but table shell remains__
 
 ex:
 
 ```
-
 DELETE FROM <table_name>
-
 ```
 
 > SELECT DISTINCT only returns unique column values 
 
-
 ```
-
 SELECT DISTINCT <column_name> FROM <table_name>;
-
 ```
 
-*the examples below produces the result of unique rows
-
-ex:
+__the examples below produces the result of unique rows__
 
 ```
-
 SELECT DISTINCT
     CONCAT_WS(
         ' ',
@@ -697,26 +493,22 @@ SELECT DISTINCT
     author_fname,
     author_lname
 FROM books;
-
 ```
 
 > ORDER BY is used to sort results
 
-*ascending by default
+__ascending by default__
 
 ```
-
 SELECT 
     <column_name>
 FROM <database_name>
     ORDER BY <column_name>;
-
 ```
 
-*using a number with ORDER BY is a shortcut to refer to a specific column
+__using a number with ORDER BY is a shortcut to refer to a specific column__
 
 ```
-
 SELECT
     title
         AS 'column 1',
@@ -726,13 +518,11 @@ SELECT
         AS 'column 3'
 FROM books
     ORDER BY 2;
-
 ```
 
-*you can run an initial sort, and then a subsequent sort on the initially sorted return set by adding multiple <column_names> in a comma seperated list
+__you can run an initial sort, and then a subsequent sort on the initially sorted return set by adding multiple <column_names> in a comma seperated list__
 
 ```
-
 SELECT
     title
         AS 'column 1',
@@ -742,56 +532,47 @@ SELECT
         AS 'column 3'
 FROM books
     ORDER BY 2, 3;
-
 ```
 
-*the example below will select all distinct last names from books and then ORDER BY descending order
-
-ex:
+__the example below will select all distinct last names from books and then ORDER BY descending order__
 
 ```
 SELECT DISTINCT
     author_lname
 FROM books
     ORDER BY author_lname DESC;
-
 ```
 
-*the <column_name> and the ORDER BY <column_name> don't have to match
+__the <column_name> and the ORDER BY <column_name> don't have to match__
 
 ```
-
 SELECT DISTINCT
     title,
     pages
 FROM books
     ORDER BY released_year;
-
 ```
 
 > LIMIT specifies a number for how many results selected
 
-*the LIMIT and ORDER BY pair are frequently used together
+__the LIMIT and ORDER BY pair are frequently used together__
 
 ex:
 
 ```
-
 SELECT
     title,
     released_year
 FROM books
     ORDER BY released_year DESC
     LIMIT 5;
-
 ```
 
-*for pagination, you could use LIMIT to specify start point and how many to count
+__for pagination, you could use LIMIT to specify start point and how many to count__
 
 the example below shows the comparison:
 
 ```
-
 SELECT
     title,
     released_year
@@ -805,5 +586,4 @@ SELECT
 FROM books
     ORDER BY released_year DESC
     LIMIT 4, 5;
-
 ```
