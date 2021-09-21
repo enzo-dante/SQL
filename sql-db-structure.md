@@ -6,12 +6,9 @@
 
 - databases hold data tables: a collection of columns (headers) and rows (data)
 
-
-
-"sql-format-date-time.md" 228L, 3821B written
 # SQL formatter
 
-https://www.freeformatter.com/sql-formatter.html#ad-output
+https://www.dpriver.com/pp/sqlformat.htm
 
 # table data types
 
