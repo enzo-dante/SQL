@@ -104,3 +104,46 @@ CREATE TABLE orders
      FOREIGN KEY(customer_id) REFERENCES customers(id)
   );
 ```
+
+# JOIN
+
+> JOIN = take data from multiple tables and temporarily consolidate them in a meaningful way
+
+__an implicit/cross join does not consolidate data in any meaninfulway;
+it simply adds each row in 1 table to each row in another table, effectively cross multiplying the total number of rows__
+
+```
+SELECT * FROM customers, orders
+```
+
+> inner JOIN = the single most shared space between multiple circles in a Venn Diagram
+
+https://dataschool.com/how-to-teach-people-sql/inner-join-animated/
+
+__explicit inner JOIN__
+
+```
+SELECT first_name,
+       last_name,
+       order_date,
+       amount
+FROM   customers
+       JOIN orders
+         ON customers.id = orders.customer_id
+```
+
+__this implicit inner JOIN is inferior to an explicit inner JOIN__ 
+
+be explicit in defining which column belongs to which table in a WHERE clause
+
+```
+SELECT first_name,
+       last_name,
+       order_date,
+       amount
+FROM   customers,
+       orders
+WHERE  customers.id = orders.customer_id; 
+```
+
+
