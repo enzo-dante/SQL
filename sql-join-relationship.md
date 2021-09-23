@@ -107,20 +107,52 @@ CREATE TABLE orders
 
 # JOIN
 
+__logic for LEFT AND RIGHT JOIN(two most common types of JOIN):__
+https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
+
+__the below examples show how "flipping" LEFT and RIGHT JOIN would produce identical return tables if you just change the order__
+
+ex)
+```
+SELECT * FROM customers
+LEFT JOIN orders
+    ON customers.id = orders.customer_id;
+
+SELECT * FROM orders
+RIGHT JOIN customers
+    ON customers.id = orders.customer_id;
+
+```
+
+ex)
+```
+SELECT * FROM orders
+LEFT JOIN customers
+    ON customers.id = orders.customer_id;
+
+SELECT * FROM customers
+RIGHT JOIN orders
+    ON customers.id = orders.customer_id;
+```
+
 > JOIN = take data from multiple tables and temporarily consolidate them in a meaningful way
 
 __an implicit/cross join does not consolidate data in any meaninfulway;
 it simply adds each row in 1 table to each row in another table, effectively cross multiplying the total number of rows__
 
+__the created tables from a join operate like a normal table that can use normal table functions__
+
 ```
 SELECT * FROM customers, orders
 ```
 
-> inner JOIN = the single most shared space between multiple circles in a Venn Diagram
+> INNER JOIN = select all records from A and B where the JOIN condition is met
+>
+> the single most shared space between multiple circles in a Venn Diagram
 
 https://dataschool.com/how-to-teach-people-sql/inner-join-animated/
 
-__explicit inner JOIN__
+__explicit INNER JOIN, if you leave off INNER it will be implied that the JOIN is INNER__
 
 ```
 SELECT first_name,
@@ -130,6 +162,7 @@ SELECT first_name,
 FROM   customers
        JOIN orders
          ON customers.id = orders.customer_id
+ORDER BY amount;
 ```
 
 __this implicit inner JOIN is inferior to an explicit inner JOIN__ 
@@ -143,7 +176,66 @@ SELECT first_name,
        amount
 FROM   customers,
        orders
-WHERE  customers.id = orders.customer_id; 
+WHERE  customers.id = orders.customer_id
+ORDER BY amount;
 ```
 
+> ON DELETE CASCADE = allow the removal of an entire records that are shared by a FOREIGN key
+>
 
+__when CREATE TABLE and defining a FOREIGN KEY, if a record in table a is deleted, the corresponding record in table b will be deleted thus deleting entire record and preventing a thrown error__
+
+```
+CREATE TABLE orders
+  (
+     id          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     order_date  DATE,
+     amount      DECIMAL(8, 2),
+     customer_id INT,
+     FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE CASCADE
+  );
+```
+
+> IFNULL(argument_to_validated, replacement_value_if_valid)
+
+```
+IFNULL(SUM(amount), 0) AS total_spent
+```
+
+> LEFT JOIN = select everything from table A, along with any matching records in table B
+>
+> in a Venn Diagram, the entire LEFT circle, including the shared section, would be included
+
+__LEFT JOIN logic:__
+
+https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
+
+```
+SELECT first_name,
+       last_name,
+       IFNULL(SUM(amount), 0) AS total_spent
+FROM   customers
+       LEFT JOIN orders
+              ON customers.id = orders.customer_id
+GROUP  BY customers.id
+ORDER  BY total_spent; 
+```
+
+> RIGHT JOIN = select everything from table B, along with any matching records in table A
+>
+> in a Venn Diagram, the entire RIGHT circle, including the shared section, would be included
+
+__RIGHT JOIN logic:__
+
+https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
+
+```
+SELECT first_name,
+       last_name,
+       IFNULL(SUM(amount), 0) AS total_spent
+FROM   customers
+       RIGHT JOIN orders
+              ON customers.id = orders.customer_id
+GROUP  BY customers.id
+ORDER  BY total_spent; 
+```
