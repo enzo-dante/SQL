@@ -86,6 +86,8 @@ ex)
 
 1 orders table (that has a PRIMARY KEY order_id but also has a customer_id column that is a reference to the customers table PRIMARY KEY customer_id)
 
+> JOIN = take data from multiple tables and temporarily consolidate them in a meaningful way
+
 ```
 CREATE TABLE customers
   (
@@ -135,7 +137,7 @@ RIGHT JOIN orders
     ON customers.id = orders.customer_id;
 ```
 
-> JOIN = take data from multiple tables and temporarily consolidate them in a meaningful way
+> cross join 
 
 __an implicit/cross join does not consolidate data in any meaninfulway;
 it simply adds each row in 1 table to each row in another table, effectively cross multiplying the total number of rows__
@@ -179,6 +181,18 @@ FROM   customers,
 WHERE  customers.id = orders.customer_id
 ORDER BY amount;
 ```
+> again, an INNER JOIN would reperesent the middle section of a Venn Diagram with 2 intersecting circles
+
+```
+SELECT first_name,
+       title,
+       grade
+FROM   students
+       INNER JOIN papers
+               ON students.id = papers.student_id
+ORDER  BY grade DESC;
+
+```
 
 > ON DELETE CASCADE = allow the removal of an entire records that are shared by a FOREIGN key
 >
@@ -197,6 +211,16 @@ CREATE TABLE orders
 ```
 
 > IFNULL(argument_to_validated, replacement_value_if_valid)
+
+```
+SELECT first_name,
+       Ifnull(Avg(grade), 0) AS 'average'
+FROM   students
+       LEFT JOIN papers
+              ON students.id = papers.student_id
+GROUP  BY students.id, first_name
+ORDER BY 2 DESC; 
+```
 
 ```
 IFNULL(SUM(amount), 0) AS total_spent
@@ -238,4 +262,24 @@ FROM   customers
               ON customers.id = orders.customer_id
 GROUP  BY customers.id
 ORDER  BY total_spent; 
+```
+
+> CASE STATEMENTS, IFNULL, and JOIN
+
+__first case statement checks if value returns null and not 0__
+
+```
+SELECT first_name,
+       Ifnull(Avg(grade), 0) AS 'average',
+       CASE
+         WHEN Avg(grade) IS NULL THEN Upper('failing')
+         WHEN Avg(grade) >= 75 THEN Upper('passing')
+         ELSE Upper('failing')
+       END                   AS 'passing_status'
+FROM   students
+       LEFT JOIN papers
+              ON students.id = papers.student_id
+GROUP  BY students.id,
+          first_name
+ORDER  BY 2 DESC;
 ```
