@@ -66,7 +66,7 @@ ex: 1 book-to-many reviews relationship
 
 ex: many authors-to-many books relationship (a book can have mulitple authors)
 
-# 1-to-many relationship
+# 1-to-MANY relationship
 
 > PRIMARY KEY AUTO_INCREMENT ensures one column that is always unique for joined relationships
 
@@ -106,8 +106,6 @@ CREATE TABLE orders
      FOREIGN KEY(customer_id) REFERENCES customers(id)
   );
 ```
-
-# JOIN
 
 __logic for LEFT AND RIGHT JOIN(two most common types of JOIN):__
 https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
@@ -282,4 +280,39 @@ FROM   students
 GROUP  BY students.id,
           first_name
 ORDER  BY 2 DESC;
+```
+
+# Many-to-Many JOIN
+
+> JOIN/union tables = third external table that connect two other seperate tables in a many-to-many relationship
+
+ex) 
+reviewers table and series table are connected to each other by a review table
+- the tables are "connected" via JOIN using unique row id in reviewers and series tables
+
+```
+CREATE TABLE reviewers
+  (
+     id         INT NOT NULL auto_increment PRIMARY KEY,
+     first_name VARCHAR(100),
+     last_name  VARCHAR(100)
+  );
+
+CREATE TABLE series
+  (
+     id            INT NOT NULL auto_increment PRIMARY KEY,
+     title         VARCHAR(100),
+     released_year YEAR(4),
+     genre         VARCHAR(100)
+  );
+
+CREATE TABLE reviews
+  (
+     id          INT NOT NULL auto_increment PRIMARY KEY,
+     rating      DECIMAL(2, 1),
+     series_id   INT,
+     reviewer_id INT,
+     FOREIGN KEY(series_id) REFERENCES series(id) ON DELETE CASCADE,
+     FOREIGN KEY(reviewer_id) REFERENCES reviewers(id) ON DELETE CASCADE
+  );
 ```
