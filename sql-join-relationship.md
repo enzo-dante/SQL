@@ -88,6 +88,7 @@ ex)
 
 > JOIN = take data from multiple tables and temporarily consolidate them in a meaningful way
 
+__The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
 ```
 CREATE TABLE customers
   (
@@ -109,6 +110,8 @@ CREATE TABLE orders
 
 __logic for LEFT AND RIGHT JOIN(two most common types of JOIN):__
 https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
+
+__The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
 
 __the below examples show how "flipping" LEFT and RIGHT JOIN would produce identical return tables if you just change the order__
 
@@ -151,6 +154,8 @@ SELECT * FROM customers, orders
 > the single most shared space between multiple circles in a Venn Diagram
 
 https://dataschool.com/how-to-teach-people-sql/inner-join-animated/
+
+__The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
 
 __explicit INNER JOIN, if you leave off INNER it will be implied that the JOIN is INNER__
 
@@ -228,11 +233,11 @@ IFNULL(SUM(amount), 0) AS total_spent
 >
 > in a Venn Diagram, the entire LEFT circle, including the shared section, would be included
 
-__LEFT JOIN logic:__
+__The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
 
+__LEFT JOIN logic:__
 https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
 
-```
 SELECT first_name,
        last_name,
        IFNULL(SUM(amount), 0) AS total_spent
@@ -241,17 +246,16 @@ FROM   customers
               ON customers.id = orders.customer_id
 GROUP  BY customers.id
 ORDER  BY total_spent; 
-```
 
 > RIGHT JOIN = select everything from table B, along with any matching records in table A
 >
 > in a Venn Diagram, the entire RIGHT circle, including the shared section, would be included
 
 __RIGHT JOIN logic:__
-
 https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
 
-```
+__The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
+
 SELECT first_name,
        last_name,
        IFNULL(SUM(amount), 0) AS total_spent
@@ -260,13 +264,11 @@ FROM   customers
               ON customers.id = orders.customer_id
 GROUP  BY customers.id
 ORDER  BY total_spent; 
-```
 
 > CASE STATEMENTS, IFNULL, and JOIN
 
 __first case statement checks if value returns null and not 0__
 
-```
 SELECT first_name,
        Ifnull(Avg(grade), 0) AS 'average',
        CASE
@@ -280,7 +282,6 @@ FROM   students
 GROUP  BY students.id,
           first_name
 ORDER  BY 2 DESC;
-```
 
 # Many-to-Many JOIN
 
@@ -316,3 +317,57 @@ CREATE TABLE reviews
      FOREIGN KEY(reviewer_id) REFERENCES reviewers(id) ON DELETE CASCADE
   );
 ```
+exercise 1) join series and reviews
+```
+SELECT *
+FROM   series;
+
+SELECT *
+FROM   reviews;
+
+SELECT title,
+       rating
+FROM   series
+       INNNER JOIN reviews
+         ON series.id = reviews.series_id;
+```
+exercise 2) join series and reviews that are GROUP BY series id
+```
+SELECT title,
+       Avg(rating) AS 'avg_rating'
+FROM   series
+       INNER JOIN reviews
+         ON series.id = reviews.series_id
+GROUP  BY series.id
+ORDER  BY avg_rating;
+```
+exercise 3)
+```
+SELECT *
+FROM   reviewers
+       INNER JOIN reviews
+         ON reviewers.id = reviews.reviewer_id;
+
+SELECT first_name,
+       last_name,
+       rating
+FROM   reviewers
+       INNER JOIN reviews
+         ON reviewers.id = reviews.reviewer_id;
+```
+exercise 4) find unreviewed series
+
+__The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
+
+__since you need series without reviews, you need to use a LEFT JOIN (entire left circle including center of a venn diagram) and not an INNER JOIN (center of a venn diagram)__
+
+__also in the WHERE clause, to validate NULL use "rating IS NULL" because you CANNOT use "rating = NULL"__
+
+```
+SELECT title AS 'unreviewed series'
+FROM   series
+       LEFT JOIN reviews
+              ON series.id = reviews.series_id
+WHERE  rating IS NULL; 
+```
+
