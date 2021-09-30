@@ -370,4 +370,49 @@ FROM   series
               ON series.id = reviews.series_id
 WHERE  rating IS NULL; 
 ```
+exercise 5) ROUND(input, number_of_decimal_positions)
+```
+SELECT genre,
+       Round(Avg(rating), 2) AS 'avg_rating'
+FROM   series
+       INNER JOIN reviews
+               ON series.id = reviews.series_id
+GROUP  BY genre
+ORDER  BY genre;
+```
+exercise 6) you can use CASE statements or IF()
 
+option 1
+```
+SELECT first_name,
+       last_name,
+       Ifnull(Count(reviews.id), 0)                         AS 'COUNT',
+       Ifnull(Min(reviews.rating), 0)                       AS 'MIN',
+       Ifnull(Max(reviews.rating), 0)                       AS 'MAX',
+       Ifnull(Round(Avg(reviews.rating), 1), 0)             AS 'AVG',
+       IF(Count(reviews.rating) >= 1, UPPER('active'), UPPER('inactive')) AS 'STATUS'
+FROM   reviewers
+       left join reviews
+              ON reviewers.id = reviews.reviewer_id
+GROUP  BY reviewers.id
+ORDER  BY 6 DESC; 
+```
+option 2
+```
+SELECT first_name,
+       last_name,
+       Ifnull(Count(reviews.id), 0)   AS 'COUNT',
+       Ifnull(Min(reviews.rating), 0) AS 'MIN',
+       Ifnull(Max(reviews.rating), 0) AS 'MAX',
+       Ifnull(ROUND(Avg(reviews.rating), 1), 0) AS 'AVG',
+       CASE
+         WHEN reviews.id IS NULL THEN Upper('inactive')
+         WHEN COUNT(reviews.rating) >= 1 THEN UPPER('active')
+         ELSE Upper('active')
+       END                            AS 'STATUS'
+FROM   reviewers
+       LEFT JOIN reviews
+              ON reviewers.id = reviews.reviewer_id
+GROUP  BY reviewers.id
+ORDER BY 6 DESC;
+```
