@@ -416,3 +416,15 @@ FROM   reviewers
 GROUP  BY reviewers.id
 ORDER BY 6 DESC;
 ```
+exercise 7) INNER JOIN more than 2+ tables
+```
+SELECT title,
+       rating,
+       Concat_ws(' ', first_name, last_name) AS 'reviewer'
+FROM   reviewers
+       INNER JOIN reviews
+               ON reviewers.id = reviews.reviewer_id
+       INNER JOIN series
+               ON series.id = reviews.series_id
+ORDER  BY title;
+
