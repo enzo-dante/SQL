@@ -58,7 +58,6 @@ YEAR
 
 # general rules
 
-
 always end the command line with a semicolon or the code won't execute
 
 when creating a db, use a plural name
