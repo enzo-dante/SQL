@@ -60,19 +60,14 @@ https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
 
 *below command will add provided string seperator (like a space) between merged column values and rename columns from target db
 
-```
-
 SELECT
     <column_name> AS 'x',
         CONCAT_WS('<string_seperator>, <column_name>, <column_name>)
             AS 'z'
 FROM books;
 
-```
-
 *below command will add space with manual entry seperator between merged column values and rename columns from target db
 
-```
 
 SELECT
     title as 'Title', 
@@ -82,11 +77,7 @@ SELECT
             AS 'Full Name'
 FROM books;
 
-```
-
 *below command will add space with manual entry seperator between merged column values and rename columns from target db
-
-```
 
 SELECT
     author_fname AS 'First',
@@ -95,21 +86,13 @@ SELECT
             AS 'Full Name'
 FROM books;
 
-```
-
 *below command will add space (or whatever string value) between merged values of the columns together
-
-```
 
 SELECT
     CONCAT(<column_name>,' ', <column_name>)
 FROM books;
 
-```
-
 *below command will literally merge values of the columns together
-
-```
 
 SELECT
     CONCAT(<column_name>, <column_name>)
@@ -121,11 +104,11 @@ FROM books;
 
 *selects all title from books table, returns only a substring, and then concatenatesa string to all substring titles
 
-```
+
 
 ex:
 
-```
+
 
 SELECT
     CONCAT(
@@ -143,41 +126,25 @@ SELECT
     ) AS 'quantity'
 FROM books;
 
-```
-
 *index starts at 1 in mySQL not 0 like other programming languages
 
 *print out only a sebset of a target string from start_index to end_index
 
-```
-
 SELECT SUBSTRING(target_string, start_index, end_index);
-
-```
 
 *print out only a sebset of a target string from start_index to end
 
-```
-
 SELECT SUBSTRING(target_string, start_index);
-
-```
 
 *print out only a sebset of a target string starting from end and goes backwards
 
-```
-
 SELECT SUBSTRING(target_string, negative_number);
-
-```
 
 > REPLACE() is used to replace parts of string
 
 *print out only a sebset of a target string where defined remove_substring has been replaced by replace_substring in target_string 
 
 *replace is case-sensitive
-
-```
 
 SELECT
     REPLACE
@@ -188,13 +155,10 @@ SELECT
     );
 FROM <table_name>
 
-```
-
 *function selects all values from table books, next replaces all e in title with 3, then prints only 1-10 characters in string, under title STRANGE STRING
 
 ex:
 
-```
 SELECT
     SUBSTRING(
         REPLACE(title, 'e', '3'),
@@ -202,29 +166,22 @@ SELECT
         10
     ) AS 'STRANGE STRING'
 FROM books;
-```
+
 
 > SELECT REVERSE() prints out the string backwards
 
 ex:
 
-```
 SELECT REVERSE(target_string);
-```
 
 *below creates a palindrome, a word that reads forward the same as backwards
-
-```
 
 SELECT 
     CONCAT('woof', REVERSE('woof'))
     AS 'palindrome';
 
-```
-
 ex:
 
-```
 SELECT
     REVERSE(
         SUBSTRING(
@@ -234,25 +191,18 @@ SELECT
             )
     ) AS 'SUPER'
 FROM books;
-```
 
 > SELECT CHAR_LENGTH() returns number of characters in a target string
 
 ex:
 
-```
-
 SELECT
     CHAR_LENGTH(target_string)
 FROM <table_name>;
 
-```
-
 *prints out 2 columns, one of the columns being the respective length renamed as 'length' from books table
 
 ex:
-
-```
 
 SELECT
     author_lname,
@@ -260,12 +210,9 @@ SELECT
         AS 'length'
 FROM books;
 
-```
 *prints out a sentance using author last name and number of characters in last name
 
 ex:
-
-```
 
 SELECT
     CONCAT(
@@ -276,19 +223,11 @@ SELECT
     ) AS 'Title'
 FROM books;
 
-```
-
 > SELECT UPPER(target_string) = convert to all caps
-
-```
 
 SELECT UPPER(target_string);
 
-```
-
 ex:
-
-```
 
 SELECT
     UPPER(
@@ -296,11 +235,7 @@ SELECT
     ) AS 'full name in caps'
 FROM books;
 
-```
-
 ex:
-
-```
 
 SELECT
     REVERSE(
@@ -309,15 +244,6 @@ SELECT
         )
     ) AS 'Back Up';
 
-
-```
-
 > SELECT LOWER(target_string) = convert to all lower cases
 
-```
-
 SELECT LOWER(target_string);
-
-```
-
-

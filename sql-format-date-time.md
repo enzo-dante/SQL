@@ -54,7 +54,7 @@ https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_da
 
 **using TIMESTAMP is only really useful when DEFAULT NOW() is included**
 
-```
+
 CREATE TABLE comments(
     content VARCHAR(100),
     create_at TIMESTAMP DEFAULT NOW()
@@ -71,13 +71,12 @@ INSERT INTO comments(
 SELECT *
 FROM comments
 ORDER BY created_at DESC;
-```
 
 > TIMESTAMP DEFAULT NOW() ON UPDATE NOW()
 
 **ON UPDATE NOW() will update timestamp with current timestamp for each time a row is updated**
 
-```
+
 CREATE TABLE comments2(
     content VARCHAR(100),
     changed_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW()
@@ -100,8 +99,6 @@ UPDATE comments2
 SELECT * 
 FROM comments2 
 ORDER BY changed_at DESC;
-```
-
 # SQL DATE MATH
 
 https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html
@@ -110,7 +107,6 @@ https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html
 
 **very common function to use**
 
-```
 SELECT
    name,
    birthdate,
@@ -119,42 +115,35 @@ FROM
    people
 ORDER BY
    3 DESC;
-```
 
 > SELECT + INTERVAL adds specified interval to provided date
 
 **have to specify the interval and time type**
 
-```
 SELECT * FROM people;
 
 SELECT
     birthdt,
     birthdt + INTERVAL 1 MONTH AS 'adding 1 month'
 FROM people;
-```
 
 > SELECT - INTERVAL subtracts specified interval to provided date
 
 **have to specify the interval and time type**
 
-```
 SELECT * FROM people;
 
 SELECT
     birthdt,
     birthdt - INTERVAL 1 MONTH AS 'subtracting 1 month'
 FROM people;
-```
 
 > SELECT using both + and -
 
-```
 SELECT
     birthdt,
     birthdt - INTERVAL 1 MONTH + INTERVAL 10 HOUR
 FROM people;
-```
 
 # SQL DATE functions
 
@@ -164,22 +153,20 @@ highlight target code and on Mac press:
 
 CMD + /
 
-> SELECT DATE_FROMAT()
+> SELECT DATE_FORMAT()
 
 **using DATE_FORMAT is the best way to handle printing dates**
 
-```
 SELECT DATE_FORMAT(birthdt, 'Was born on a %W'
-FROM people
-```
+FROM people;
 
 ex:
 
-```
+
 SELECT
 DATE_FORMAT(birthdt, '%m/%d/%Y')
 FROM people;
-```
+
 
 > Get current date and time, date, or time
 
@@ -187,19 +174,19 @@ SELECT NOW() = give current date time,
 SELECT CURDATE() = give current date,
 SELECT CURTIME() = give current time,
 
-```
+
 INSERT INTO people(name, birthdate, birthtime, birthdt)
 VALUES('Microwave', CURDATE(), CURTIME(), NOW());
-```
+
 
 > SELECT DAY(), DAYNAME(), DAYOFWEEK()
 
 **get day and returns either a number or day from DATETIME or DATE**
 
-```
+
 SELECT name, DAY(<column_name>), DAYNAME(<column_name>), DAYOFWEEK(<column_name>)
 FROM <database_name>;
-```
+
 
 > SELECT MONTH(), MONTHNAME()
 
