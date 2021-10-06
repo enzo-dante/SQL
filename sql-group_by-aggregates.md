@@ -87,7 +87,6 @@ GROUP BY released_year;
 
 > MIN and MAX to find minimum and maximum respectively in a table
 
-
 SELECT MIN(<column_name>)
 FROM <database_name>;
 
