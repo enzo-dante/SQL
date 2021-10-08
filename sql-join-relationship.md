@@ -89,7 +89,7 @@ ex)
 > JOIN = take data from multiple tables and temporarily consolidate them in a meaningful way
 
 __The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
-```
+
 CREATE TABLE customers
   (
      id         INT NOT NULL auto_increment PRIMARY KEY,
@@ -106,7 +106,7 @@ CREATE TABLE orders
      customer_id INT,
      FOREIGN KEY(customer_id) REFERENCES customers(id)
   );
-```
+
 
 __logic for LEFT AND RIGHT JOIN(two most common types of JOIN):__
 https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
@@ -116,7 +116,7 @@ __The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGH
 __the below examples show how "flipping" LEFT and RIGHT JOIN would produce identical return tables if you just change the order__
 
 ex)
-```
+
 SELECT * FROM customers
 LEFT JOIN orders
     ON customers.id = orders.customer_id;
@@ -125,10 +125,10 @@ SELECT * FROM orders
 RIGHT JOIN customers
     ON customers.id = orders.customer_id;
 
-```
+
 
 ex)
-```
+
 SELECT * FROM orders
 LEFT JOIN customers
     ON customers.id = orders.customer_id;
@@ -136,7 +136,7 @@ LEFT JOIN customers
 SELECT * FROM customers
 RIGHT JOIN orders
     ON customers.id = orders.customer_id;
-```
+
 
 > cross join 
 
@@ -145,9 +145,9 @@ it simply adds each row in 1 table to each row in another table, effectively cro
 
 __the created tables from a join operate like a normal table that can use normal table functions__
 
-```
+
 SELECT * FROM customers, orders
-```
+
 
 > INNER JOIN = select all records from A and B where the JOIN condition is met
 >
@@ -159,7 +159,7 @@ __The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGH
 
 __explicit INNER JOIN, if you leave off INNER it will be implied that the JOIN is INNER__
 
-```
+
 SELECT first_name,
        last_name,
        order_date,
@@ -168,13 +168,13 @@ FROM   customers
        JOIN orders
          ON customers.id = orders.customer_id
 ORDER BY amount;
-```
+
 
 __this implicit inner JOIN is inferior to an explicit inner JOIN__ 
 
 be explicit in defining which column belongs to which table in a WHERE clause
 
-```
+
 SELECT first_name,
        last_name,
        order_date,
@@ -183,10 +183,10 @@ FROM   customers,
        orders
 WHERE  customers.id = orders.customer_id
 ORDER BY amount;
-```
+
 > again, an INNER JOIN would reperesent the middle section of a Venn Diagram with 2 intersecting circles
 
-```
+
 SELECT first_name,
        title,
        grade
@@ -195,14 +195,14 @@ FROM   students
                ON students.id = papers.student_id
 ORDER  BY grade DESC;
 
-```
+
 
 > ON DELETE CASCADE = allow the removal of an entire records that are shared by a FOREIGN key
 >
 
 __when CREATE TABLE and defining a FOREIGN KEY, if a record in table a is deleted, the corresponding record in table b will be deleted thus deleting entire record and preventing a thrown error__
 
-```
+
 CREATE TABLE orders
   (
      id          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -211,11 +211,11 @@ CREATE TABLE orders
      customer_id INT,
      FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE CASCADE
   );
-```
+
 
 > IFNULL(argument_to_validated, replacement_value_if_valid)
 
-```
+
 SELECT first_name,
        Ifnull(Avg(grade), 0) AS 'average'
 FROM   students
@@ -223,11 +223,11 @@ FROM   students
               ON students.id = papers.student_id
 GROUP  BY students.id, first_name
 ORDER BY 2 DESC; 
-```
 
-```
+
+
 IFNULL(SUM(amount), 0) AS total_spent
-```
+
 
 > LEFT JOIN = select everything from table A, along with any matching records in table B
 >
@@ -291,7 +291,7 @@ ex)
 reviewers table and series table are connected to each other by a review table
 - the tables are "connected" via JOIN using unique row id in reviewers and series tables
 
-```
+
 CREATE TABLE reviewers
   (
      id         INT NOT NULL auto_increment PRIMARY KEY,
@@ -316,9 +316,9 @@ CREATE TABLE reviews
      FOREIGN KEY(series_id) REFERENCES series(id) ON DELETE CASCADE,
      FOREIGN KEY(reviewer_id) REFERENCES reviewers(id) ON DELETE CASCADE
   );
-```
+
 exercise 1) join series and reviews
-```
+
 SELECT *
 FROM   series;
 
@@ -330,9 +330,9 @@ SELECT title,
 FROM   series
        INNNER JOIN reviews
          ON series.id = reviews.series_id;
-```
+
 exercise 2) join series and reviews that are GROUP BY series id
-```
+
 SELECT title,
        Avg(rating) AS 'avg_rating'
 FROM   series
@@ -340,9 +340,9 @@ FROM   series
          ON series.id = reviews.series_id
 GROUP  BY series.id
 ORDER  BY avg_rating;
-```
+
 exercise 3)
-```
+
 SELECT *
 FROM   reviewers
        INNER JOIN reviews
@@ -354,7 +354,7 @@ SELECT first_name,
 FROM   reviewers
        INNER JOIN reviews
          ON reviewers.id = reviews.reviewer_id;
-```
+
 exercise 4) find unreviewed series
 
 __The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
@@ -363,15 +363,15 @@ __since you need series without reviews, you need to use a LEFT JOIN (entire lef
 
 __also in the WHERE clause, to validate NULL use "rating IS NULL" because you CANNOT use "rating = NULL"__
 
-```
+
 SELECT title AS 'unreviewed series'
 FROM   series
        LEFT JOIN reviews
               ON series.id = reviews.series_id
 WHERE  rating IS NULL; 
-```
+
 exercise 5) ROUND(input, number_of_decimal_positions)
-```
+
 SELECT genre,
        Round(Avg(rating), 2) AS 'avg_rating'
 FROM   series
@@ -379,11 +379,11 @@ FROM   series
                ON series.id = reviews.series_id
 GROUP  BY genre
 ORDER  BY genre;
-```
+
 exercise 6) you can use CASE statements or IF()
 
 option 1
-```
+
 SELECT first_name,
        last_name,
        Ifnull(Count(reviews.id), 0)                         AS 'COUNT',
@@ -396,9 +396,9 @@ FROM   reviewers
               ON reviewers.id = reviews.reviewer_id
 GROUP  BY reviewers.id
 ORDER  BY 6 DESC; 
-```
+
 option 2
-```
+
 SELECT first_name,
        last_name,
        Ifnull(Count(reviews.id), 0)   AS 'COUNT',
@@ -415,9 +415,9 @@ FROM   reviewers
               ON reviewers.id = reviews.reviewer_id
 GROUP  BY reviewers.id
 ORDER BY 6 DESC;
-```
+
 exercise 7) INNER JOIN more than 2+ tables
-```
+
 SELECT title,
        rating,
        Concat_ws(' ', first_name, last_name) AS 'reviewer'
@@ -428,3 +428,15 @@ FROM   reviewers
                ON series.id = reviews.series_id
 ORDER  BY title;
 
+
+# do not hardcode, use subqueries for dynamic updating
+
+SELECT users.username AS 'users that liked every photo',
+       Count(*) AS 'total_likes'
+FROM   users
+       INNER JOIN likes
+               ON users.id = likes.user_id
+GROUP  BY likes.user_id
+HAVING total_likes = (SELECT Count(*)
+                      FROM   photos)
+ORDER  BY users.username;

@@ -99,6 +99,7 @@ UPDATE comments2
 SELECT * 
 FROM comments2 
 ORDER BY changed_at DESC;
+
 # SQL DATE MATH
 
 https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html
@@ -162,11 +163,9 @@ FROM people;
 
 ex:
 
-
 SELECT
 DATE_FORMAT(birthdt, '%m/%d/%Y')
 FROM people;
-
 
 > Get current date and time, date, or time
 
