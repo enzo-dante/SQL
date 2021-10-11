@@ -5,6 +5,6 @@ CREATE TABLE users(
      created_at TIMESTAMP DEFAULT Now()
   );
 
-SELECT *
+SELECT COUNT(*)
 FROM users
 ORDER BY email DESC;

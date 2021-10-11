@@ -1,5 +1,9 @@
 # npm install dependencies
 
+if downloaded from Github, package.json is already contains necessary packages and simply ignore below steps, cd into root project dir, and execute:
+
+npm install
+
 1. to instantiate a package.json file in project dir in goormIDE, execute: 
 
 npm init 
@@ -15,6 +19,28 @@ the option save will save the express package to the package.json file
 3. install faker and mysql packages by executing:
 
 npm install faker, mysql --save
+
+4. install ejs to build frontend
+
+npm install --save ejs
+
+5. install body-parser for express post requests
+
+npm install --save body-parser
+
+6. create public dir in root project dir
+
+mkdir public
+
+7. create an app.css file in public dir
+
+touch app.css
+
+8. in root dir, create an app.js file
+
+9. verify that app.js file has app.css file connected via express
+
+app.use(express.static_dirname + '/public');
 
 # mysql
 
@@ -47,3 +73,11 @@ const connection = mysql.createConnection({
   user     : 'root',
   database : 'tribe_called_sql'
 });
+
+# app listen on port 3000
+
+to start the app in goormIDE, cd into project dir from terminal and execute:
+
+node app.js
+
+to preview the app in goormIDE, select the prevew dropdown or copy the URL and manually enter the desired endpoint
