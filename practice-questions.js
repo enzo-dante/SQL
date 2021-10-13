@@ -137,3 +137,34 @@ CREATE TABLE users(
 // });
 
 // connection.end();
+
+/**
+ * ? create a tweets table
+ * * structure: username(15 max char), content(140 max char), num_favorites
+ */
+
+// CREATE TABLE tweets(
+//   username VARCHAR(15),
+//   content VARCHAR(140),
+//   favorites INT
+// );
+
+/**
+ * ? create, describe, and delete pastries table
+ * * structure: name(50 max), quantity
+ */
+
+// CREATE TABLE pastries(
+//   name VARCHAR(50),
+//   quantity INT
+// );
+
+// SHOW TABLES;
+
+// DESC pastries;
+
+// DROP TABLE pastries;
+
+
+
+

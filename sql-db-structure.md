@@ -1,3 +1,13 @@
+# sqlite3
+
+in terminal, to access if installed, execute:
+
+sqlite3
+
+to exit sqlite3 shell
+
+ctl+d
+
 # SQL vs mySQL
 
 - SQL is a query language, whereas MySQL is a relational database that uses SQL to query a database
