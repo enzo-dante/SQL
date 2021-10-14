@@ -165,6 +165,24 @@ CREATE TABLE users(
 
 // DROP TABLE pastries;
 
+/**
+ * ? create people table, insert into people table, verify new data
+ * * structure: first_name(20 char limit), last_name(20 char limit), age
+ * * new data: Tina Belcher 13
+ */
 
+// CREATE TABLE people(
+//   first_name VARCHAR(20),
+//   last_name VARCHAR(20),
+//   age INT
+// );
 
+// INSERT INTO people(first_name, last_name, age)
+// VALUES ('Tina', 'Belcher', 13), ('Bob', 'Belcher', 42);
 
+// // order of args is user defined, but new data has to align with provided order of args
+// INSERT INTO people(age, first_name, last_name)
+// VALUES (70, 'Calvin', 'Fish'), (38, 'Philip', 'Frond');
+
+// SELECT *
+// FROM people;
