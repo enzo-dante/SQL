@@ -186,3 +186,35 @@ CREATE TABLE users(
 
 // SELECT *
 // FROM people;
+
+/**
+ * ? create, view, and insert into employees table
+ * * structure: id (auto_increment number), first_name(255 char limit, mandatory), last_name(255 char limit, mandatory), 
+ * * middle_name (255 char limit, optional), age(number, mandatory), current_status(text, mandatory, defaults: employed)
+ */
+
+// // option 1 
+// CREATE TABLE employees (
+//   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+//   first_name VARCHAR(255) NOT NULL,
+//   last_name VARCHAR(255) NOT NULL,
+//   middle_name VARCHAR(255),
+//   age INT NOT NULL,
+//   current_status VARCHAR(255) NOT NULL DEFAULT 'employed'
+// );
+
+// // option 2
+// CREATE TABLE employees (
+//   id INT AUTO_INCREMENT NOT NULL,
+//   first_name VARCHAR(255) NOT NULL,
+//   last_name VARCHAR(255) NOT NULL,
+//   middle_name VARCHAR(255),
+//   age INT NOT NULL,
+//   current_status VARCHAR(255) NOT NULL DEFAULT 'employed',
+//   PRIMARY KEY(id)
+// );
+
+// DESC employees;
+
+// INSERT INTO employees(first_name, last_name, age) VALUES
+// ('Dora', 'Smith', 58);
