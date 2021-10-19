@@ -218,3 +218,30 @@ CREATE TABLE users(
 
 // INSERT INTO employees(first_name, last_name, age) VALUES
 // ('Dora', 'Smith', 58);
+
+/**
+ * ? create cats table, select only cat_id(s), select name and breed, select cats where cat_id = age
+ * * structure: cat_id (auto_increment), name(255 char limit), breed(255 char limit), age
+ */
+
+// CREATE TABLE cats(
+//   cat_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+//   name VARCHAR(255) NOT NULL DEFAULT 'MISSING',
+//   breed VARCHAR(255) NOT NULL DEFAULT 'TBD'
+//   age INT NOT NULL DEFAULT 0,
+// );
+
+// SELECT cat_id
+// FROM cats
+// ORDER BY cat_id;
+
+// SELECT name, breed
+// FROM cats;
+
+// SELECT name, age
+// FROM cats
+// WHERE breed = 'Tabby';
+
+// SELECT cat_id, age
+// FROM cats
+// WHERE cat_id = age;

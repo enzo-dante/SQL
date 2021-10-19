@@ -108,8 +108,6 @@ ORDER BY
 
 **the issue with the subquery approach below is that you are running to seperate SELECT querries which would be an issue in terms of performance for large datasets**
 
-
-
 SELECT
    title, pages
 FROM
@@ -123,8 +121,6 @@ WHERE
          books
    )
 ;
-
-
 
 > MIN & MAX with GROUP BY
 

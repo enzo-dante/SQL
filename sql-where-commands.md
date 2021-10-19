@@ -311,7 +311,6 @@ WHERE  released_year >= 2000
        AND released_year NOT IN ( 2000, 2002, 2004, 2006,
                                   2008, 2010, 2012, 2014, 2016 );
 
-
 > % = MODULO or remainder operator
 >
 > % allows you to test is something is even

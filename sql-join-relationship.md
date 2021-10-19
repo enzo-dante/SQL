@@ -125,8 +125,6 @@ SELECT * FROM orders
 RIGHT JOIN customers
     ON customers.id = orders.customer_id;
 
-
-
 ex)
 
 SELECT * FROM orders
@@ -137,7 +135,6 @@ SELECT * FROM customers
 RIGHT JOIN orders
     ON customers.id = orders.customer_id;
 
-
 > cross join 
 
 __an implicit/cross join does not consolidate data in any meaninfulway;
@@ -145,9 +142,7 @@ it simply adds each row in 1 table to each row in another table, effectively cro
 
 __the created tables from a join operate like a normal table that can use normal table functions__
 
-
 SELECT * FROM customers, orders
-
 
 > INNER JOIN = select all records from A and B where the JOIN condition is met
 >
@@ -158,7 +153,6 @@ https://dataschool.com/how-to-teach-people-sql/inner-join-animated/
 __The main difference between a LEFT/RIGHT JOIN and INNER JOIN is that LEFT/RIGHT joins will also show you where there IS NOT overlap while INNER JOIN only shows the overlap of a venn diagram__
 
 __explicit INNER JOIN, if you leave off INNER it will be implied that the JOIN is INNER__
-
 
 SELECT first_name,
        last_name,
@@ -186,7 +180,6 @@ ORDER BY amount;
 
 > again, an INNER JOIN would reperesent the middle section of a Venn Diagram with 2 intersecting circles
 
-
 SELECT first_name,
        title,
        grade
@@ -194,8 +187,6 @@ FROM   students
        INNER JOIN papers
                ON students.id = papers.student_id
 ORDER  BY grade DESC;
-
-
 
 > ON DELETE CASCADE = allow the removal of an entire records that are shared by a FOREIGN key
 >

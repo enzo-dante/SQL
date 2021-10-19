@@ -54,7 +54,6 @@ https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_da
 
 **using TIMESTAMP is only really useful when DEFAULT NOW() is included**
 
-
 CREATE TABLE comments(
     content VARCHAR(100),
     create_at TIMESTAMP DEFAULT NOW()
@@ -195,6 +194,4 @@ FROM <database_name>;
 > SELECT HOUR(), MINUTE(), SECOND()
 
 **extracts requested time interal from TIME data type**
-
-
 
