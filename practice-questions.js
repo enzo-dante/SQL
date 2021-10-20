@@ -245,3 +245,35 @@ CREATE TABLE users(
 // SELECT cat_id, age
 // FROM cats
 // WHERE cat_id = age;
+
+/**
+ * ? update cats table
+ * * structure: cat_id, name, breed, age
+ */
+
+// view data first, than update Jackson's name to Jack
+SELECT *
+FROM cats
+  WHERE name='Jackson';
+
+UPDATE cats
+  SET name='Jack'
+    WHERE name='Jackson';
+
+// view data first, than update Ringo's breed to British Shorthair
+SELECT *
+FROM cats
+WHERE name='Ringo';
+
+UPDATE cats
+  SET breed='British Shorthair'
+    WHERE name='Ringo';
+
+// view data first, than update both Maine Coons' ages to 12
+SELECT *
+FROM cats
+WHERE breed='Maine Coon';
+
+UPDATE cats
+  SET age=12
+    WHERE breed='Maine Coon';
