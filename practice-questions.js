@@ -252,28 +252,100 @@ CREATE TABLE users(
  */
 
 // view data first, than update Jackson's name to Jack
-SELECT *
-FROM cats
-  WHERE name='Jackson';
+// SELECT *
+// FROM cats
+//   WHERE name='Jackson';
 
-UPDATE cats
-  SET name='Jack'
-    WHERE name='Jackson';
+// UPDATE cats
+//   SET name='Jack'
+//     WHERE name='Jackson';
 
-// view data first, than update Ringo's breed to British Shorthair
-SELECT *
-FROM cats
-WHERE name='Ringo';
+// // view data first, than update Ringo's breed to British Shorthair
+// SELECT *
+// FROM cats
+//   WHERE name='Ringo';
 
-UPDATE cats
-  SET breed='British Shorthair'
-    WHERE name='Ringo';
+// UPDATE cats
+//   SET breed='British Shorthair'
+//     WHERE name='Ringo';
 
-// view data first, than update both Maine Coons' ages to 12
-SELECT *
-FROM cats
-WHERE breed='Maine Coon';
+// // view data first, than update both Maine Coons' ages to 12
+// SELECT *
+// FROM cats
+//   WHERE breed='Maine Coon';
 
-UPDATE cats
-  SET age=12
-    WHERE breed='Maine Coon';
+// UPDATE cats
+//   SET age=12
+//     WHERE breed='Maine Coon';
+
+/**
+ * ? delete data from cats table
+ * * structure: cat_id, name, breed, age
+ */
+
+// // delete all 4 year old cats
+// SELECT *
+// FROM cats
+//   WHERE age = 4;
+
+// DELETE FROM cats
+//   WHERE age = 4;
+
+// // delete all cats whose age is the same as their cat_id
+// SELECT *
+// FROM cats
+//   WHERE cat_id = age;
+
+// DELETE FROM cats
+//   WHERE cat_id = age;
+
+// // delete all cats
+// SELECT *
+// FROM cats;
+
+// DELETE *
+// FROM cats;
+
+/**
+ * ? CRUD challenge: create db, use db, create table shirts, and test insert data
+ * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
+ */
+
+// // create and use shirts db
+// SELECT database();
+
+// CREATE DATABASE shirts_db;
+// USE shirts_db;
+// SELECT database();
+
+// // create table
+// CREATE TABLE shirts(
+//   shirt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+//   article VARCHAR(100) NOT NULL,
+//   color VARCHAR(100) NOT NULL,
+//   shirt_size CHAR(4) NOT NULL,
+//   last_worn INT DEFAULT 0
+// );
+
+// DESC shirts;
+
+// INSERT INTO shirts(article, color, shirt_size, last_worn)
+// VALUES('t-shirt', 'white', 'S', 10);
+
+// SELECT *
+// FROM shirts;
+
+/**
+ * ? CRUD challenge: read data from shirts table
+ * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
+ */
+
+// // read all shirts but print only article and color
+// SELECT article, color
+// FROM shirts;
+
+// // read only medium shirts, print everything but print shirt_id
+// SELECT article, color, shirt_size, last_worn
+// FROM shirts
+// WHERE shirt_size = 'M'
+
