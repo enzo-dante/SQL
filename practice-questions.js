@@ -347,5 +347,68 @@ CREATE TABLE users(
 // // read only medium shirts, print everything but print shirt_id
 // SELECT article, color, shirt_size, last_worn
 // FROM shirts
-// WHERE shirt_size = 'M'
+// WHERE shirt_size = 'M';
 
+/**
+ * ? CRUD challenge: update data from shirts table
+ * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
+ */
+
+// // update all articles of polo shirts to size L
+// SELECT *
+// FROM shirts
+// WHERE shirt_size = 'L';
+
+// UPDATE shirts
+//   SET shirt_size = 'L'
+//   WHERE article = 'polo shirt';
+
+// // update the shirt last worn 15 days ago to last_worn = 0
+// SELECT *
+// FROM shirts
+// WHERE last_worn = 15;
+
+// UPDATE shirts
+//   SET last_worn = 0
+//   WHERE last_worn = 15;
+
+// // update multiple fields with all white shirts to have a shirt_size of 'XS' and color of 'off white'
+// SELECT *
+// FROM shirts
+// WHERE color = 'white';
+
+// UPDATE shirts
+//   SET shirt_size = 'XS', color = 'off white'
+//   WHERE color = 'white';
+
+/**
+ * ? CRUD challenge: delete data from shirts table
+ * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
+ */
+
+// delete all old shirts that were last_worn 200 days ago
+SELECT *
+FROM shirts
+WHERE last_worn = 200;
+
+DELETE FROM shirts
+WHERE last_worn = 200;
+
+// delete all tank tops
+SELECT *
+FROM shirts
+WHERE article='tank top';
+
+DELETE FROM shirts
+WHERE article = 'tank top';
+
+// delete all shirts but keep table
+SELECT * 
+FROM shirts;
+
+DELETE FROM shirts;
+
+// delete table
+DROP TABLE shirts;
+
+SHOW TABLES;
