@@ -386,29 +386,96 @@ CREATE TABLE users(
  * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
  */
 
-// delete all old shirts that were last_worn 200 days ago
-SELECT *
-FROM shirts
-WHERE last_worn = 200;
+// // delete all old shirts that were last_worn 200 days ago
+// SELECT *
+// FROM shirts
+// WHERE last_worn = 200;
+// 
+// DELETE FROM shirts
+// WHERE last_worn = 200;
+// 
+// // delete all tank tops
+// SELECT *
+// FROM shirts
+// WHERE article='tank top';
+// 
+// DELETE FROM shirts
+// WHERE article = 'tank top';
+// 
+// // delete all shirts but keep table
+// SELECT * 
+// FROM shirts;
+// 
+// DELETE FROM shirts;
+// 
+// // delete table
+// DROP TABLE shirts;
+// 
+// SHOW TABLES;
 
-DELETE FROM shirts
-WHERE last_worn = 200;
+/**
+ * ? string challenges
+ * * structure: title, author_fname, author_lname, released_year, stock_quantity
+ */
 
-// delete all tank tops
-SELECT *
-FROM shirts
-WHERE article='tank top';
+// reverse and uppercase the following sentence
+// "Why does my cat look at me with such hatred?"
 
-DELETE FROM shirts
-WHERE article = 'tank top';
+SELECT REVSERSE(UPPER('Why does my cat look at me with such hatred?'));
 
-// delete all shirts but keep table
-SELECT * 
-FROM shirts;
+// what does the below SQL query do?
 
-DELETE FROM shirts;
+SELECT
+  REPLACE(
+    CONCAT('I', ' ','like', ' ', 'cats'), ' ', '_')
+  );
 
-// delete table
-DROP TABLE shirts;
+output: I_like_cats
 
-SHOW TABLES;
+// replace spaces in titles with '->' with alias title
+
+SELECT
+  REPLACE(title, ' ', '->') AS title
+FROM books;
+
+// print out author_lname and backwards author_lname in respective columns forward and backwards
+
+SELECT 
+  author_lname AS forwards,
+  REVERSE(author_lname) AS backwards
+FROM books
+
+// print out full author name (author_fname, author_lname) in caps with alias full name in caps
+
+SELECT
+  UPPER(
+    CONCAT_WS(' ', author_fname, author_lname)
+  ) AS 'full name in caps'
+FROM books;
+
+// print alias blurb with row: {title} was released in {released_year}
+
+SELECT 
+  CONCAT(
+    title, ' was released in ', released_year
+  ) AS blurb
+FROM books;
+
+// print title and alias character count as the length of each title
+
+SELECT 
+  title,
+  CHAR_LENGTH(title) AS 'character count'
+FROM books;
+
+// print short title (first 10 chars and ...), author (author_lname, author_fname), quantity ({num_in_stock} in stock)
+
+SELECT
+  CONCAT(
+    SUNSTRING(title, 1, 10), 
+    '...'
+  ) AS 'short title',
+  CONCAT_WS(',', author_lname, author_fname) AS author,
+  CONCAT(stock_quantity, ' in stock'
+  ) AS quantity
+FROM books;

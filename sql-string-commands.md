@@ -104,11 +104,7 @@ FROM books;
 
 *selects all title from books table, returns only a substring, and then concatenatesa string to all substring titles
 
-
-
 ex:
-
-
 
 SELECT
     CONCAT(
