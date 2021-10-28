@@ -418,64 +418,129 @@ CREATE TABLE users(
  * * structure: title, author_fname, author_lname, released_year, stock_quantity
  */
 
-// reverse and uppercase the following sentence
-// "Why does my cat look at me with such hatred?"
+// // reverse and uppercase the following sentence
+// // "Why does my cat look at me with such hatred?"
 
-SELECT REVSERSE(UPPER('Why does my cat look at me with such hatred?'));
+// SELECT REVSERSE(UPPER('Why does my cat look at me with such hatred?'));
 
-// what does the below SQL query do?
+// // what does the below SQL query do?
 
-SELECT
-  REPLACE(
-    CONCAT('I', ' ','like', ' ', 'cats'), ' ', '_')
-  );
+// SELECT
+//   REPLACE(
+//     CONCAT('I', ' ','like', ' ', 'cats'), ' ', '_')
+//   );
 
-output: I_like_cats
+// output: I_like_cats
 
-// replace spaces in titles with '->' with alias title
+// // replace spaces in titles with '->' with alias title
 
-SELECT
-  REPLACE(title, ' ', '->') AS title
-FROM books;
+// SELECT
+//   REPLACE(title, ' ', '->') AS title
+// FROM books;
 
-// print out author_lname and backwards author_lname in respective columns forward and backwards
+// // print out author_lname and backwards author_lname in respective columns forward and backwards
 
-SELECT 
-  author_lname AS forwards,
-  REVERSE(author_lname) AS backwards
-FROM books
+// SELECT 
+//   author_lname AS forwards,
+//   REVERSE(author_lname) AS backwards
+// FROM books
 
-// print out full author name (author_fname, author_lname) in caps with alias full name in caps
+// // print out full author name (author_fname, author_lname) in caps with alias full name in caps
 
-SELECT
-  UPPER(
-    CONCAT_WS(' ', author_fname, author_lname)
-  ) AS 'full name in caps'
-FROM books;
+// SELECT
+//   UPPER(
+//     CONCAT_WS(' ', author_fname, author_lname)
+//   ) AS 'full name in caps'
+// FROM books;
 
-// print alias blurb with row: {title} was released in {released_year}
+// // print alias blurb with row: {title} was released in {released_year}
 
-SELECT 
-  CONCAT(
-    title, ' was released in ', released_year
-  ) AS blurb
-FROM books;
+// SELECT 
+//   CONCAT(
+//     title, ' was released in ', released_year
+//   ) AS blurb
+// FROM books;
 
-// print title and alias character count as the length of each title
+// // print title and alias character count as the length of each title
 
-SELECT 
-  title,
-  CHAR_LENGTH(title) AS 'character count'
-FROM books;
+// SELECT 
+//   title,
+//   CHAR_LENGTH(title) AS 'character count'
+// FROM books;
 
-// print short title (first 10 chars and ...), author (author_lname, author_fname), quantity ({num_in_stock} in stock)
+// // print short title (first 10 chars and ...), author (author_lname, author_fname), quantity ({num_in_stock} in stock)
 
-SELECT
-  CONCAT(
-    SUNSTRING(title, 1, 10), 
-    '...'
-  ) AS 'short title',
-  CONCAT_WS(',', author_lname, author_fname) AS author,
-  CONCAT(stock_quantity, ' in stock'
-  ) AS quantity
-FROM books;
+// SELECT
+//   CONCAT(
+//     SUNSTRING(title, 1, 10), 
+//     '...'
+//   ) AS 'short title',
+//   CONCAT_WS(',', author_lname, author_fname) AS author,
+//   CONCAT(stock_quantity, ' in stock'
+//   ) AS quantity
+// FROM books;
+
+/**
+ * ? Refining SELECT query for books db
+ * * structure: author_fname, author_lname, pages, title, released_year, stock_quantity
+ */
+
+// // select all story collections: titles that contain 'stories'
+
+// SELECT title
+// FROM   books
+// WHERE  title LIKE '%stories%'
+// ORDER  BY title DESC; 
+
+// // find the longest book: print out the title and page count
+
+// SELECT title, pages
+// FROM books
+// ORDER BY pages DESC;
+// LIMIT 1;
+
+// // print summary containing the title and released_year, for the 3 most recent books
+
+// SELECT
+//   CONCAT_WS(
+//     ' - ', title, released_year
+//   ) AS 'summary'
+// FROM books
+// ORDER BY released_year DESC
+// LIMIT 3;
+
+// // find all the books (title with an author_lname) that contains a space (" ")
+
+// SELECT title, author_lname
+// FROM books
+// WHERE author_lname LIKE '% %'
+// ORDER BY title DESC;
+
+// // find the 3 books with the lowest stock: select title, released_year, and stock
+
+// SELECT 
+//   title, 
+//   released_year, 
+//   stock_quantity
+// FROM books
+// ORDER BY stock_quantity
+// LIMIT 3;
+
+// // print the title, author_lname: sorted by author_lname and then by title
+
+// SELECT
+//   title,
+//   author_lname
+// FROM books
+// ORDER BY author_lname, title;
+
+// // sort alphabetically by last name and labeled as yell: 'MY FAVORITE AUTHOR IS {author_fname} {author_lname}!'
+
+// SELECT
+//     UPPER(
+//       CONCAT(
+//         'my favorite author is ' + author_fname + ' ' + author_lname + '!'
+//       )
+//     ) AS 'yell'
+// FROM books
+// ORDER BY author_lname;

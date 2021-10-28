@@ -350,9 +350,7 @@ SELECT title,
        END AS 'STOCK'
 FROM   books;
 
-
 __using GROUP BY, COUNT, CONCAT, ORDER BY with CASE__
-
 
 SELECT title,
        author_lname,
