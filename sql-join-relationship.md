@@ -431,3 +431,26 @@ GROUP  BY likes.user_id
 HAVING total_likes = (SELECT Count(*)
                       FROM   photos)
 ORDER  BY users.username;
+
+# CREATE VIEW {view_name} AS {query}= a view is a named query stored in the database catalog.
+
+> MySQL creates the view and stores it in the database.
+
+CREATE VIEW customerPayments
+AS
+SELECT
+    customerName,
+    checkNumber,
+    paymentDate,
+    amount
+FROM
+    customers
+INNER JOIN
+    payments USING (customerNumber);
+
+> Now, you can reference the view as a table in SQL statements. For example, you can query data from the customerPayments view using the SELECT statement:
+
+SELECT * FROM customerPayments;
+
+# DROP VIEW {view_name} = removes view but not refereced data
+

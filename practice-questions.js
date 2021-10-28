@@ -140,7 +140,7 @@ CREATE TABLE users(
 
 /**
  * ? create a tweets table
- * * structure: username(15 max char), content(140 max char), num_favorites
+ * * schema: username(15 max char), content(140 max char), num_favorites
  */
 
 // CREATE TABLE tweets(
@@ -151,7 +151,7 @@ CREATE TABLE users(
 
 /**
  * ? create, describe, and delete pastries table
- * * structure: name(50 max), quantity
+ * * schema: name(50 max), quantity
  */
 
 // CREATE TABLE pastries(
@@ -167,7 +167,7 @@ CREATE TABLE users(
 
 /**
  * ? create people table, insert into people table, verify new data
- * * structure: first_name(20 char limit), last_name(20 char limit), age
+ * * schema: first_name(20 char limit), last_name(20 char limit), age
  * * new data: Tina Belcher 13
  */
 
@@ -189,7 +189,7 @@ CREATE TABLE users(
 
 /**
  * ? create, view, and insert into employees table
- * * structure: id (auto_increment number), first_name(255 char limit, mandatory), last_name(255 char limit, mandatory), 
+ * * schema: id (auto_increment number), first_name(255 char limit, mandatory), last_name(255 char limit, mandatory), 
  * * middle_name (255 char limit, optional), age(number, mandatory), current_status(text, mandatory, defaults: employed)
  */
 
@@ -221,7 +221,7 @@ CREATE TABLE users(
 
 /**
  * ? create cats table, select only cat_id(s), select name and breed, select cats where cat_id = age
- * * structure: cat_id (auto_increment), name(255 char limit), breed(255 char limit), age
+ * * schema: cat_id (auto_increment), name(255 char limit), breed(255 char limit), age
  */
 
 // CREATE TABLE cats(
@@ -248,7 +248,7 @@ CREATE TABLE users(
 
 /**
  * ? update cats table
- * * structure: cat_id, name, breed, age
+ * * schema: cat_id, name, breed, age
  */
 
 // view data first, than update Jackson's name to Jack
@@ -280,7 +280,7 @@ CREATE TABLE users(
 
 /**
  * ? delete data from cats table
- * * structure: cat_id, name, breed, age
+ * * schema: cat_id, name, breed, age
  */
 
 // // delete all 4 year old cats
@@ -308,7 +308,7 @@ CREATE TABLE users(
 
 /**
  * ? CRUD challenge: create db, use db, create table shirts, and test insert data
- * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
+ * * schema: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
  */
 
 // // create and use shirts db
@@ -337,7 +337,7 @@ CREATE TABLE users(
 
 /**
  * ? CRUD challenge: read data from shirts table
- * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
+ * * schema: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
  */
 
 // // read all shirts but print only article and color
@@ -351,7 +351,7 @@ CREATE TABLE users(
 
 /**
  * ? CRUD challenge: update data from shirts table
- * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
+ * * schema: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
  */
 
 // // update all articles of polo shirts to size L
@@ -383,7 +383,7 @@ CREATE TABLE users(
 
 /**
  * ? CRUD challenge: delete data from shirts table
- * * structure: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
+ * * schema: shirt_id (auto_increment), article(max 100 char), color(max 100 char), shirt_size(max 4 char), last_worn(int default 0)
  */
 
 // // delete all old shirts that were last_worn 200 days ago
@@ -415,7 +415,7 @@ CREATE TABLE users(
 
 /**
  * ? string challenges
- * * structure: title, author_fname, author_lname, released_year, stock_quantity
+ * * schema: title, author_fname, author_lname, released_year, stock_quantity
  */
 
 // // reverse and uppercase the following sentence
@@ -482,7 +482,7 @@ CREATE TABLE users(
 
 /**
  * ? Refining SELECT query for books db
- * * structure: author_fname, author_lname, pages, title, released_year, stock_quantity
+ * * schema: author_fname, author_lname, pages, title, released_year, stock_quantity
  */
 
 // // select all story collections: titles that contain 'stories'
@@ -544,3 +544,59 @@ CREATE TABLE users(
 //     ) AS 'yell'
 // FROM books
 // ORDER BY author_lname;
+
+/**
+ * ? manage a music db 
+ * * schema: albums_table(_id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR NOT NULL, artist INT), artists_table(_id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR NOT NULL), songs_table(_id INT AUTO_INCREMENT PRIMARY KEY, track INT, title VARCHAR NOT NULL, album INT)
+ */
+
+// // create an artist_list as a view that prints the artists.name, albums.name, and songs.track from a single query using multiple tables and order by artist, album, and then songs
+
+// CREATE VIEW artist_list AS
+// SELECT artists.name, albums.name, songs.track FROM songs 
+// INNER JOIN albums ON songs.album = albums._id 
+// INNER JOIN artists ON albums.artist = artists._id
+// ORDER BY artists.name, albums.name, songs.track;
+
+// // remove arist_list
+
+// DROP VIEW artist_list;
+
+// // select the titles of all the songs on the album forbidden
+
+// SELECT title 
+// FROM songs 
+// INNER JOIN albums ON songs.album = albums._id;
+
+// select the titles of all the songs on the album forbidden but display in track order and include track number for verification
+
+SELECT songs.track, songs.title
+FROM songs
+INNER JOIN albums ON songs.album = albums._id
+ORDER BY songs.track;
+
+// display all songs by the band 'Deep Purple'
+
+SELECT songs.title 
+FROM songs
+INNER JOIN albums ON songs.album = albums._id
+INNER JOIN artists ON albums.artist = artists._id
+WHERE artist.name = 'Deep Purple';
+
+// rename band 'Mehitabel' to 'One Kitten' and verify
+
+// select titles by Aerosmith in alphabetical order, only print title
+
+// GET count: select titles by Aerosmith in alphabetical order, only print the count
+
+// search the internet on how to make query without duplicates for below:
+// select titles by Aerosmith in alphabetical order, only print title
+// hint: group by artist 
+
+// search the internet on how to make query without duplicates for below:
+// GET count: select titles by Aerosmith in alphabetical order, only print the count
+// hint: group by artist 
+
+// find number of artists and number of albums without duplicates
+// hint: group by artist and name
+

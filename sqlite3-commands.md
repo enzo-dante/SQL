@@ -1,80 +1,84 @@
-# SQL vs mySQL
+# sqlite3
 
-- SQL is a query language, whereas MySQL is a relational database that uses SQL to query a database
+in terminal, to access if installed, execute:
 
-- a database, like a MySQL database, is just a bunch of tables aka a relational database
+sqlite3
 
-- databases hold data tables: a collection of columns (headers) and rows (data)
+to exit sqlite3 shell
+
+ctl+d
+
+.quit
+
+> to list out all tables and respective structure (like DESC table), execute:
+
+.schema
+
+> to list out all tables, execute:
+
+.tables
+
+to list out commands need to create current state of db as a transaction, execute:
+
+.dump
+
+to list out headers of columns in sql shell, execute:
+
+.headers on
+
+to clear log, execute:
+
+ctl+ l
+
+to backup current db, execute:
+
+.backup {back_db_name}
+
+to restore db to previous state, execute:
+
+.restore {back_db_name}
+
+# SQLite 3 concat
+
+s1 || s2
+
+ex: 
+
+SELECT 'this is a ' || 'test' # 'this is a test'
+
+# SQLite 3 documentation
+
+https://www.sqlite.org/docs.html
 
 # SQL formatter
 
 https://www.dpriver.com/pp/sqlformat.htm
 
-# table data types
+# storage and data types
 
-> NUMERIC TYPES:
->
-> for accounting, use DECIMAL() as default
-> INTs, FLOATs, and BIGINTs are most common numeric data type
+Each value stored in an SQLite database (or manipulated by the database engine) has one of the following storage classes:
 
-INT, SMALLINT, TINYINT, MEDIUMINT, BIGINT,
+NULL. The value is a NULL value.
 
-DECIMAL(total_num_digits, digits_after_decimal),
+INTEGER. The value is a signed integer, stored in 1, 2, 3, 4, 6, or 8 bytes depending on the magnitude of the value.
 
-NUMERIC,
-FLOAT,
-DOUBLE,
-BIT
+REAL. The value is a floating point value, stored as an 8-byte IEEE floating point number.
 
-> STRING TYPES:
->
-> VARCHAR, not CHAR which requires a fixed length, is most common string data type
+TEXT. The value is a text string, stored using the database encoding (UTF-8, UTF-16BE or UTF-16LE).
 
-CHAR,
-VARCHAR(n-length),
+BLOB. The value is a blob of data, stored exactly as it was input.
 
-BINARY,
-VARBINARY,
-BLOB, TINYBLOB, MEDIUMBLOB, LONGBLOB,
-TEXT, TINYTEXT, MEDIUMTEXT, LONGTEXT,
-ENUM
+A storage class is more general than a datatype. The INTEGER storage class, for example, includes 6 different integer datatypes of different lengths. This makes a difference on disk. But as soon as INTEGER values are read off of disk and into memory for processing, they are converted to the most general datatype (8-byte signed integer). And so for the most part, "storage class" is indistinguishable from "datatype" and the two terms can be used interchangeably.
 
-> DATE TYPES:
+Any column in an SQLite version 3 database, except an INTEGER PRIMARY KEY column, may be used to store a value of any storage class.
 
-DATETIME = DATE and TIME,
-
-DATE = 'YYYY-MM-DD' format,
-
-NOW() = give current date time,
-
-TIME = 'HH:MM:SS',
-
-CURDATE() = give current date,
-CURTIME() = give current time,
-
-TIMESTAMP = only works in range 2038-1970,
-
-YEAR
+All values in SQL statements, whether they are literals embedded in SQL statement text or parameters bound to precompiled SQL statements have an implicit storage class. Under circumstances described below, the database engine may convert values between numeric storage classes (INTEGER and REAL) and TEXT during query execution.
 
 # general rules
 
 always end the command line with a semicolon or the code won't execute
 
 when creating a db, use a plural name
-
-# SQL formatter
-
-https://www.dpriver.com/pp/sqlformat.htm
-
-# mySQL Documentation
-
-> mySQL string commands
-
-https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
-
-> mySQL date and time functions
-
-https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format
 
 # SQL commands
 
@@ -87,7 +91,6 @@ CMD + /
 > CREATE DATABASE <plural_name>
 >
 > the sql commands don't have to be capatalized, but it helps distinguish
-
 
 CREATE DATABASE <database_name>;
 
@@ -518,5 +521,3 @@ INNER JOIN
 SELECT * FROM customerPayments;
 
 # DROP VIEW {view_name} = removes view but not refereced data
-
-DROP VIEW artist_list;
