@@ -573,9 +573,10 @@ CREATE TABLE users(
 SELECT songs.track, songs.title
 FROM songs
 INNER JOIN albums ON songs.album = albums._id
+WHERE albums.name = 'Forbidden'
 ORDER BY songs.track;
 
-// display all songs by the band 'Deep Purple'
+// display all tracks and respective songs by the band 'Deep Purple'
 
 SELECT songs.title 
 FROM songs
@@ -585,18 +586,63 @@ WHERE artist.name = 'Deep Purple';
 
 // rename band 'Mehitabel' to 'One Kitten' and verify
 
+SELECT *
+FROM artists
+WHERE name = 'Mehitabel';
+
+UPDATE artists
+  SET name = 'One Kitten'
+  WHERE name = 'Mehitabel';
+
+SELECT *
+FROM artists
+WHERE name = 'One Kitten';
+
 // select titles by Aerosmith in alphabetical order, only print title
 
-// GET count: select titles by Aerosmith in alphabetical order, only print the count
+SELECT song.titles
+FROM songs
+INNER JOIN albums ON songs.album = albums._id
+INNER JOIN artists ON albums.artist = artists._id
+WHERE artist.name = 'Aerosmith'
+ORDER BY songs.title ASC;
+
+// GET count of song titles by Aerosmith in alphabetical order, only print the count
+
+SELECT COUNT(*) AS 'count'
+FROM songs
+INNER JOIN ablums ON songs.album = albums._id
+INNER JOIN artists ON albums.artist = artists._id
+WHERE artists.name = 'Aerosmith'
 
 // search the internet on how to make query without duplicates for below:
 // select titles by Aerosmith in alphabetical order, only print title
-// hint: group by artist 
+
+SELECT DISTINCT songs.title AS 'count'
+FROM songs
+INNER JOIN ablums ON songs.album = albums._id
+INNER JOIN artists ON albums.artist = artists._id
+WHERE artists.name = 'Aerosmith'
+ORDER BY songs.title;
 
 // search the internet on how to make query without duplicates for below:
-// GET count: select titles by Aerosmith in alphabetical order, only print the count
-// hint: group by artist 
+// GET count of titles by Aerosmith
 
-// find number of artists and number of albums without duplicates
+SELECT COUNT(DISTINCT title) AS 'count'
+FROM songs
+INNER JOIN ablums ON songs.album = albums._id
+INNER JOIN artists ON albums.artist = artists._id
+WHERE artists.name = 'Aerosmith';
+
+// find number of unique albums by artist
 // hint: group by artist and name
+
+SELECT 
+  COUNT(DISTINCT album) AS 'artist count',
+FROM songs
+INNER JOIN ablums ON songs.album = albums._id
+INNER JOIN artists ON albums.artist = artists._id
+WHERE artists.name = 'Aerosmith';
+
+
 
