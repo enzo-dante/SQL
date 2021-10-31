@@ -107,9 +107,12 @@ USE <database_name>;
 
 SELECT database();
 
-> CREATE TABLE = instantiate a table in easy to read multi-line composition
+> CREATE TABLE IF NOT EXISTS = instantiate a table in easy to read multi-line composition
+>
 
-CREATE TABLE <tablename_in_plural_form>
+when creating a table, you can add a IF NOT EXISTS to the SQL command to prevent errors
+
+CREATE TABLE IF NOT EXISTS <tablename_in_plural_form>
 	(
 		column_name data_type, 
 		column_name data_type
@@ -117,7 +120,7 @@ CREATE TABLE <tablename_in_plural_form>
 
 ex:
 
-CREATE TABLE pastries
+CREATE TABLE IF NOT EXISTS pastries
     (
         name VARCHAR(50), 
         quantity INT
@@ -148,7 +151,7 @@ SHOW COLUMNS FROM <table_name>;
 
 > when in target db, remove target table
 
-DROP TABLE <table_name>;
+DROP TABLE IF EXISTS <table_name>;
 
 > insert data into a table in a target db
 

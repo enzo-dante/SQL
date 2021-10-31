@@ -1,0 +1,284 @@
+# java database connectivity (jdbc)
+
+JDBC acts like the middleman between a java application and the data source
+- JDBC works with databases, flat files, and spreadsheets
+
+to work with sqlite 3, JDBC needs the sqlite driver
+
+switching between drivers like SQLite and mySQL drivers is relatively easy
+
+# DB Browser for SQLite
+
+it is a GUI for handling a SQLite DB which is compatible with JDBC
+
+when you are using the GUI, the app will lock the DB file and wont be able to access the db from a java application
+- solution: open file drown down and select 'close database' to release lock
+
+# Intelli J
+
+__steps to connect SQLite 3 driver to JDBC__
+
+1. download sqlite-jdbc driver jar file from github and save to desired dir
+https://github.com/xerial/sqlite-jdbc/releases
+2. download DB Browser for SQLite from sqlite.org
+3. create a new Intelli J java project with the command line template
+4. open file drown down -> project structure -> Libraries -> plus symbol -> java
+5. open sqlite-jdbc driver from saved location -> OK
+6. define CONSTANTS for DB_NAME and CONNECTION_STRING outside of main method
+6. define try and catch block inside main method
+7. in try define and establish jdbc:sqlite connection
+
+# Constants 
+
+use Constants for static variables for scalability
+
+hard coding static variables is a bad practice because it makes updating very error-prone
+
+```
+    public static final String DB_NAME = "testjava.db";
+    public static final String CONNECTION_STRING = "jdbc:sqlite:/Users/enzo_dante/git/java/projects/TestDB/"+DB_NAME;
+
+    public static final String TABLE_CONTACTS = "contacts";
+
+    public static final String  COLUMN_NAME = "name";
+    public static final String  COLUMN_PHONE= "phone";
+    public static final String  COLUMN_EMAIL = "email";
+
+    public static void main(String[] args) {
+
+        // JDBC 4.0+ connectivity method
+        try {
+            // create new SQLite db and establish connection to new SQLite db in project dir
+            Connection connection = DriverManager.getConnection(CONNECTION_STRING);
+
+        } catch(SQLException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+    }
+```
+
+# error troubleshooting
+
+after adding new code, always run to make sure it doesn't break and reduce having to look for long periods of time
+
+if you get an error, execute in the catch block:
+- the bottom section of the error should highlight the line(s) in the code where there is an error
+
+```
+catch(SQLException e) {
+    System.out.println("Something went wrong: " + e.getMessage());
+    e.printStackTrace();
+}
+```
+
+# JDBC Statement and Execute 
+
+to execute SQL with JDBC, create Statement objects with the DriverManager connection
+
+__you can reuse a statement object to execute multiple CRUD SQL commands BUT not SELECT commands__
+- each SELECT having it's own statement ensures data integrity, especially if multiple SELECT are running concurrently
+
+> automatically commits all changes made to the connected db 
+
+```
+// unless explicitly disabled, will rollback to previous state if connection is closed
+connection.SetAutoCommit(false);
+```
+
+> SELECT superior option
+>
+> statement.executeQuery();
+
+superior because it uses less code and uses CONSTANTS
+
+```
+    // with new statement, SELECT target data
+    Statement statement = connection.createStatement();
+    statement.executeQuery("SELECT * FROM contacts;");
+
+    ResultSet results = statement.executeQuery("SELECT * FROM " + TABLE_CONTACTS);
+
+    while(results.next()) {
+        System.out.println(
+                results.getString(COLUMN_NAME) + " " + results.getString(COLUMN_PHONE) + " " + results.getString(COLUMN_EMAIL)
+        );
+    }
+
+    // make sure to always close ResultSet connection after a SELECT SQL statement
+    results.close();
+
+```
+> SELECT: inferior option
+>
+> statement.execute();
+
+```
+    // with new statement, SELECT target data
+    Statement statement = connection.createStatement();
+    statement.execute("SELECT * FROM contacts;");
+    ResultSet results = statement.getResultSet();
+    while(results.next()){
+        System.out.println(
+                results.getString("name") + " " +
+                results.getInt("phone") + " " +
+                results.getString("email")
+        );
+    }
+
+    // make sure to always close ResultSet connection after a SELECT SQL statement
+    results.close();
+```
+
+> DROP IF EXISTS
+
+```
+    statement.execute("DROP TABLE IF EXISTS" + TABLE_CONTACTS);
+
+    // close statement instances first and then db connection to prevent performance degradation
+    statement.close();
+    connection.close();
+```
+
+> CREATE IF NOT EXISTS
+
+```
+    // to execute SQL with JDBC, create Statement objects with the DriverManager connection
+    Statement statement = connection.createStatement();
+    statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_CONTACTS +
+            "(" + COLUMN_NAME + " TEXT, " + COLUMN_PHONE + " INTEGER, " + COLUMN_EMAIL + " TEXT " + ");"
+            );
+
+    // close statement instances first and then db connection to prevent performance degradation
+    statement.close();
+    connection.close();
+```
+
+> INSERT
+
+since Java uses double quotes for Strings, the String values need to be in single quotes
+
+it is also possible to break up a SQL command in JDBC with concatenating string connected by +
+
+```
+    statement.execute("INSERT INTO " + TABLE_CONTACTS + "(" + COLUMN_NAME + ", " + COLUMN_PHONE + ", " + COLUMN_EMAIL + ") VALUES('test', 1112223333, 'test@gmail.com')");
+
+    // close statement instances first and then db connection to prevent performance degradation
+    statement.close();
+    connection.close();
+```
+
+> UPDATE
+
+```
+    // reuse statement and update target row
+    statement.execute("UPDATE contacts SET phone=9998887777 WHERE name='Enzo';");
+
+    // close statement instances first and then db connection to prevent performance degradation
+    statement.close();
+    connection.close();
+```
+
+> DELETE 
+
+```
+    statement.execute("DELETE FROM contacts WHERE name='Ryan';");
+
+    // close statement instances first and then db connection to prevent performance degradation
+    statement.close();
+    connection.close();
+```
+
+# review SQL commands with DB Browser with SQLite
+
+1. open DB Browser with SQLite
+2. select Open Database panel and select & open target db
+2. select Browse Data view
+
+# modularizing code
+
+when possible for readability and scalability, avoid large blocks of code separate logic with insulated methods
+
+```
+    // note that the VALUES section is using single quotes so that the SQL double quotes command doesn't throw an error
+    private static void insertContact(Statement statement, String name, Integer phone, String email) throws SQLException {
+        statement.execute("INSERT INTO " + TABLE_CONTACTS + "(" + COLUMN_NAME + ", " + COLUMN_PHONE + ", " + COLUMN_EMAIL + ") VALUES('" + name + "', " + phone + ", '" + email + "');");
+    }
+```
+
+# source code for JDBC practice 
+
+__this is not the best implementation, but it does show how SQL and JDBC communication with best practice CONSTANTS__
+
+```
+package com.crownhoundz;
+
+import java.sql.*;
+
+public class Main {
+
+    public static final String DB_NAME = "testjava.db";
+    public static final String CONNECTION_STRING = "jdbc:sqlite:/Users/enzo_dante/git/java/projects/TestDB/"+DB_NAME;
+
+    public static final String TABLE_CONTACTS = "contacts";
+
+    public static final String  COLUMN_NAME = "name";
+    public static final String  COLUMN_PHONE= "phone";
+    public static final String  COLUMN_EMAIL = "email";
+
+    public static void main(String[] args) {
+
+        // JDBC 4.0+ connectivity method
+        try {
+            // create new SQLite db and establish connection to new SQLite db in project dir
+            Connection connection = DriverManager.getConnection(CONNECTION_STRING);
+
+            // to execute SQL with JDBC, create Statement objects with the DriverManager connection
+            Statement statement = connection.createStatement();
+
+            // remove table for clean db if it exists
+            statement.execute("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
+
+            // SQL CRUD
+            statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_CONTACTS +
+                   "(" + COLUMN_NAME + " TEXT, " + COLUMN_PHONE + " INTEGER, " + COLUMN_EMAIL + " TEXT " + ");"
+                    );
+
+
+//            statement.execute("INSERT INTO " + TABLE_CONTACTS + "(" + COLUMN_NAME + ", " + COLUMN_PHONE + ", " + COLUMN_EMAIL + ") VALUES('test', 1112223333, 'test@gmail.com')");
+            insertContact(statement, "test", 2224444, "test@gmail.com");
+            insertContact(statement, "admin", 2224444, "admin@gmail.com");
+
+            statement.execute("UPDATE " + TABLE_CONTACTS + " SET " + COLUMN_NAME + " = 'test 2'" + " WHERE name='test'");
+
+            statement.execute("DELETE FROM " + TABLE_CONTACTS + " WHERE name='test 2'");
+
+            // SELECT query
+            ResultSet results = statement.executeQuery("SELECT * FROM " + TABLE_CONTACTS);
+
+            while(results.next()) {
+                System.out.println(
+                        results.getString(COLUMN_NAME) + " " + results.getString(COLUMN_PHONE) + " " + results.getString(COLUMN_EMAIL)
+                );
+            }
+
+            // close statement instances first and then db connection to prevent performance degradation
+            statement.close();
+            connection.close();
+
+        } catch(SQLException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+            // the bottom section of the error should highlight the line(s) in the code where there is an error
+            e.printStackTrace();
+        }
+    }
+
+    // private = method cannot be accessed outside of scope of this class
+    // static = static methods are associated with the class itself, not with any particular object created from the class. As a result, you don’t have to create an object from a class before you can use static methods defined by the class.
+    // void = method does not return a value
+    // throw SQLException = since catch block will be handled in section that is calling this method
+    // note that the VALUES section is using single quotes so that the SQL double quotes command doesn't throw an error
+    private static void insertContact(Statement statement, String name, Integer phone, String email) throws SQLException {
+        statement.execute("INSERT INTO " + TABLE_CONTACTS + "(" + COLUMN_NAME + ", " + COLUMN_PHONE + ", " + COLUMN_EMAIL + ") VALUES('" + name + "', " + phone + ", '" + email + "');");
+    }
+}
+```
