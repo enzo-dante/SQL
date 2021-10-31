@@ -92,6 +92,14 @@ highlight target code and on Mac press:
 
 CMD + / 
 
+> COLLATE {arg}
+
+BINARY - Compares string data using memcmp(), regardless of text encoding.
+
+NOCASE - It is almost same as binary, except the 26 upper case characters of ASCII are folded to their lower case equivalents before the comparison is performed.
+
+RTRIM - The same as binary, except that trailing space characters, are ignored.
+
 > CREATE DATABASE <plural_name>
 >
 > the sql commands don't have to be capatalized, but it helps distinguish

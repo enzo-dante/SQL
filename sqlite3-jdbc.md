@@ -14,6 +14,16 @@ it is a GUI for handling a SQLite DB which is compatible with JDBC
 when you are using the GUI, the app will lock the DB file and wont be able to access the db from a java application
 - solution: open file drown down and select 'close database' to release lock
 
+# test SQL commands in DB Browser for SQLite
+
+always test SQL commands first, before coding them
+
+to execute SQL commands in the app:
+1. open the target db, and then select Execute SQL view 
+2. enter SQL command in top input box
+3. select play button (cmd+R on a mac)
+4. to manage multiple SQL commands: create new tab, with top left button in play button row
+
 # Intelli J
 
 __steps to connect SQLite 3 driver to JDBC__
