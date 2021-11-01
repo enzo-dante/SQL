@@ -1,3 +1,28 @@
+# SQL injection attack
+
+if user input isn't scrubbed the db is vulnerable to the user enter SQL commands into their input and getting private db data
+
+the below blindly concatenates to SQL command and since 1=1 would be true for every record all records would be returned
+
+ex:
+
+Enter a song title:
+Heartless' OR 1=1 OR '
+
+# SQL PreparedStatement
+
+A PreparedStatement can protect against SQL injection attacks because they are only pre-compiled once and the userInput is being treated as literal values and not as SQL
+
+A StringBuilder concatenates string to SQL command, while a PreparedStatement would substitute literal value as title
+
+ex:
+
+__vulnerable StringBuilder__
+SELECT name FROM artist_list WHERE title = 'Heartless' OR 1=1 OR ';
+
+__protected PreparedStatement__
+SELECT name FROM artist_list WHERE title = 'Heartless OR 1=1 OR ';
+
 # SQL vs mySQL
 
 - SQL is a query language, whereas MySQL is a relational database that uses SQL to query a database

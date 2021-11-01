@@ -19,10 +19,12 @@ when you are using the GUI, the app will lock the DB file and wont be able to ac
 always test SQL commands first, before coding them
 
 to execute SQL commands in the app:
+
 1. open the target db, and then select Execute SQL view 
 2. enter SQL command in top input box
 3. select play button (cmd+R on a mac)
 4. to manage multiple SQL commands: create new tab, with top left button in play button row
+5. TEST sql command on multiple records (minimum 3) to validate consistency of output
 
 # Intelli J
 
@@ -291,4 +293,24 @@ public class Main {
         statement.execute("INSERT INTO " + TABLE_CONTACTS + "(" + COLUMN_NAME + ", " + COLUMN_PHONE + ", " + COLUMN_EMAIL + ") VALUES('" + name + "', " + phone + ", '" + email + "');");
     }
 }
+```
+
+# getting metadata from ResultSet specifically in SQLite
+
+https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html
+
+```
+           statement = connection.createStatement();
+           results = statement.executeQuery(SONGS_SCHEMA);
+
+           // get and save metadate of songs query result
+           ResultSetMetaData metadata = results.getMetaData();
+           // get number of columns in songs table metadata
+           int numColumns = metadata.getColumnCount();
+
+           // iterate over numColumns, print column metadata
+           // ResultSet columns start at 1 and not 0
+           for(int i = 1; i <= numColumns; i++) {
+               System.out.format("Column %d in the songs table is names %s\n", i, metadata.getColumnName(i));
+           }
 ```
