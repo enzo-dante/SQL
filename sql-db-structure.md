@@ -1,28 +1,3 @@
-# SQL injection attack
-
-if user input isn't scrubbed the db is vulnerable to the user enter SQL commands into their input and getting private db data
-
-the below blindly concatenates to SQL command and since 1=1 would be true for every record all records would be returned
-
-ex:
-
-Enter a song title:
-Heartless' OR 1=1 OR '
-
-# SQL PreparedStatement
-
-A PreparedStatement can protect against SQL injection attacks because they are only pre-compiled once and the userInput is being treated as literal values and not as SQL
-
-A StringBuilder concatenates string to SQL command, while a PreparedStatement would substitute literal value as title
-
-ex:
-
-__vulnerable StringBuilder__
-SELECT name FROM artist_list WHERE title = 'Heartless' OR 1=1 OR ';
-
-__protected PreparedStatement__
-SELECT name FROM artist_list WHERE title = 'Heartless OR 1=1 OR ';
-
 # SQL vs mySQL
 
 - SQL is a query language, whereas MySQL is a relational database that uses SQL to query a database
@@ -87,10 +62,6 @@ always end the command line with a semicolon or the code won't execute
 
 when creating a db, use a plural name
 
-# SQL formatter
-
-https://www.dpriver.com/pp/sqlformat.htm
-
 # mySQL Documentation
 
 > mySQL string commands
@@ -100,6 +71,18 @@ https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
 > mySQL date and time functions
 
 https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_date-format
+
+# db transactions integrity
+
+database transactions must be ACID-compliant
+
+Atomicity = if a series of SQL statements change a db, either all of them are committed or none of them are committed
+
+Consistency = before and after a transaction, the database is in a valid functional state
+
+Isolation = until the changes are commited, the changes won't be visible to other connections: transactions cannot depend on each other
+
+Durability = once the changes performed by a transaction are committed to the database, they are permanent. if a db crashes and rebooted the transactions are still there once it comes back up.
 
 # SQL commands
 

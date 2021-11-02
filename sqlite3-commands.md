@@ -1,3 +1,7 @@
+# SQL formatter
+
+https://www.dpriver.com/pp/sqlformat.htm
+
 # sqlite3
 
 in terminal, to access if installed, execute:
@@ -54,10 +58,6 @@ SELECT 'this is a ' || 'test' # 'this is a test'
 
 https://www.sqlite.org/docs.html
 
-# SQL formatter
-
-https://www.dpriver.com/pp/sqlformat.htm
-
 # storage and data types
 
 Each value stored in an SQLite database (or manipulated by the database engine) has one of the following storage classes:
@@ -83,6 +83,20 @@ All values in SQL statements, whether they are literals embedded in SQL statemen
 always end the command line with a semicolon or the code won't execute
 
 when creating a db, use a plural name
+
+# SQLite transactions
+
+all committed changes to a database are known as a transaction
+
+# SQLite transaction commands 
+
+BEGIN TRANSACTION - manually start a transaction
+
+END TRANSACTION - ending a transaction automatically commits any changes to a db
+
+COMMIT - commit changes to a db, also ending it
+
+ROLLBACK - this rollsback any uncommitted changes and ends the transaction since the last commit
 
 # SQL commands
 

@@ -314,3 +314,53 @@ https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSetMetaData.html
                System.out.format("Column %d in the songs table is names %s\n", i, metadata.getColumnName(i));
            }
 ```
+
+# SQL injection attack
+
+if user input isn't scrubbed the db is vulnerable to the user enter SQL commands into their input and getting private db data
+
+the below blindly concatenates to SQL command and since 1=1 would be true for every record all records would be returned
+
+ex:
+
+Enter a song title:
+Heartless' OR 1=1 OR '
+
+# SQL PreparedStatement
+
+A PreparedStatement can protect against SQL injection attacks because they are only pre-compiled once and the userInput is being treated as literal values and not as SQL
+
+A StringBuilder concatenates string to SQL command, while a PreparedStatement would substitute literal value as title
+
+ex:
+
+__vulnerable StringBuilder__
+SELECT name FROM artist_list WHERE title = 'Heartless' OR 1=1 OR ';
+
+__protected PreparedStatement__
+SELECT name FROM artist_list WHERE title = 'Heartless OR 1=1 OR ';
+
+# PreparedStatement process
+
+1. declare a constant for th following SQL statement that contains the placeholders
+
+2. create a PreparedStatement instance using Connection.prepareStatement(SQL_STATEMENT_STRING)
+
+3. when we're ready to perform the query (or the insert, update, or delete) we call the appropriate setter methods to set the placeholders to the values we want to use in the statement
+
+4. we run the statement using PreparedStatement.execute() or PreparedStatement.executeQuery()
+
+5. we process the results the same way we do when using a regular old Statement
+
+```
+    ResultSet results = statement.executeQuery("SELECT * FROM " + TABLE_CONTACTS);
+
+    while(results.next()) {
+        System.out.println(
+                results.getString(COLUMN_NAME) + " " + results.getString(COLUMN_PHONE) + " " + results.getString(COLUMN_EMAIL)
+        );
+    }
+```
+
+
+
