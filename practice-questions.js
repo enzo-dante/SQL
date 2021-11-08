@@ -4,12 +4,12 @@
 // SQL formatter
 // https://www.dpriver.com/pp/sqlformat.htm
 
-const users_schema = `
-CREATE TABLE users(
-  email VARCHAR(255),
-  created_at TIMESTAMP DEFAULT NOW()
-);
-`;
+// const users_schema = `
+// CREATE TABLE users(
+//   email VARCHAR(255),
+//   created_at TIMESTAMP DEFAULT NOW()
+// );
+// `;
 
 /**
  * ? What is the earliest date a user joined in the bulk dataset?
@@ -421,7 +421,7 @@ CREATE TABLE users(
 // // reverse and uppercase the following sentence
 // // "Why does my cat look at me with such hatred?"
 
-// SELECT REVSERSE(UPPER('Why does my cat look at me with such hatred?'));
+// SELECT REVERSE(UPPER('Why does my cat look at me with such hatred?'));
 
 // // what does the below SQL query do?
 
@@ -568,81 +568,202 @@ CREATE TABLE users(
 // FROM songs 
 // INNER JOIN albums ON songs.album = albums._id;
 
-// select the titles of all the songs on the album forbidden but display in track order and include track number for verification
+// // select the titles of all the songs on the album forbidden but display in track order and include track number for verification
 
-SELECT songs.track, songs.title
-FROM songs
-INNER JOIN albums ON songs.album = albums._id
-WHERE albums.name = 'Forbidden'
-ORDER BY songs.track;
+// SELECT songs.track, songs.title
+// FROM songs
+// INNER JOIN albums ON songs.album = albums._id
+// WHERE albums.name = 'Forbidden'
+// ORDER BY songs.track;
 
-// display all tracks and respective songs by the band 'Deep Purple'
+// // display all tracks and respective songs by the band 'Deep Purple'
 
-SELECT songs.title 
-FROM songs
-INNER JOIN albums ON songs.album = albums._id
-INNER JOIN artists ON albums.artist = artists._id
-WHERE artist.name = 'Deep Purple';
+// SELECT songs.title 
+// FROM songs
+// INNER JOIN albums ON songs.album = albums._id
+// INNER JOIN artists ON albums.artist = artists._id
+// WHERE artist.name = 'Deep Purple';
 
-// rename band 'Mehitabel' to 'One Kitten' and verify
+// // rename band 'Mehitabel' to 'One Kitten' and verify
 
-SELECT *
-FROM artists
-WHERE name = 'Mehitabel';
+// SELECT *
+// FROM artists
+// WHERE name = 'Mehitabel';
 
-UPDATE artists
-  SET name = 'One Kitten'
-  WHERE name = 'Mehitabel';
+// UPDATE artists
+//   SET name = 'One Kitten'
+//   WHERE name = 'Mehitabel';
 
-SELECT *
-FROM artists
-WHERE name = 'One Kitten';
+// SELECT *
+// FROM artists
+// WHERE name = 'One Kitten';
 
-// select titles by Aerosmith in alphabetical order, only print title
+// // select titles by Aerosmith in alphabetical order, only print title
 
-SELECT song.titles
-FROM songs
-INNER JOIN albums ON songs.album = albums._id
-INNER JOIN artists ON albums.artist = artists._id
-WHERE artist.name = 'Aerosmith'
-ORDER BY songs.title ASC;
+// SELECT song.titles
+// FROM songs
+// INNER JOIN albums ON songs.album = albums._id
+// INNER JOIN artists ON albums.artist = artists._id
+// WHERE artist.name = 'Aerosmith'
+// ORDER BY songs.title ASC;
 
-// GET count of song titles by Aerosmith in alphabetical order, only print the count
+// // GET count of song titles by Aerosmith in alphabetical order, only print the count
 
-SELECT COUNT(*) AS 'count'
-FROM songs
-INNER JOIN ablums ON songs.album = albums._id
-INNER JOIN artists ON albums.artist = artists._id
-WHERE artists.name = 'Aerosmith'
+// SELECT COUNT(*) AS 'count'
+// FROM songs
+// INNER JOIN ablums ON songs.album = albums._id
+// INNER JOIN artists ON albums.artist = artists._id
+// WHERE artists.name = 'Aerosmith'
 
-// search the internet on how to make query without duplicates for below:
-// select titles by Aerosmith in alphabetical order, only print title
+// // search the internet on how to make query without duplicates for below:
+// // select titles by Aerosmith in alphabetical order, only print title
 
-SELECT DISTINCT songs.title AS 'count'
-FROM songs
-INNER JOIN ablums ON songs.album = albums._id
-INNER JOIN artists ON albums.artist = artists._id
-WHERE artists.name = 'Aerosmith'
-ORDER BY songs.title;
+// SELECT DISTINCT songs.title AS 'count'
+// FROM songs
+// INNER JOIN ablums ON songs.album = albums._id
+// INNER JOIN artists ON albums.artist = artists._id
+// WHERE artists.name = 'Aerosmith'
+// ORDER BY songs.title;
 
-// search the internet on how to make query without duplicates for below:
-// GET count of titles by Aerosmith
+// // search the internet on how to make query without duplicates for below:
+// // GET count of titles by Aerosmith
 
-SELECT COUNT(DISTINCT title) AS 'count'
-FROM songs
-INNER JOIN ablums ON songs.album = albums._id
-INNER JOIN artists ON albums.artist = artists._id
-WHERE artists.name = 'Aerosmith';
+// SELECT COUNT(DISTINCT title) AS 'count'
+// FROM songs
+// INNER JOIN ablums ON songs.album = albums._id
+// INNER JOIN artists ON albums.artist = artists._id
+// WHERE artists.name = 'Aerosmith';
 
-// find number of unique albums by artist
-// hint: group by artist and name
+// // find number of unique albums by artist
+// // hint: group by artist and name
 
-SELECT 
-  COUNT(DISTINCT album) AS 'artist count',
-FROM songs
-INNER JOIN ablums ON songs.album = albums._id
-INNER JOIN artists ON albums.artist = artists._id
-WHERE artists.name = 'Aerosmith';
+// SELECT 
+//   COUNT(DISTINCT album) AS 'artist count',
+// FROM songs
+// INNER JOIN ablums ON songs.album = albums._id
+// INNER JOIN artists ON albums.artist = artists._id
+// WHERE artists.name = 'Aerosmith';
 
+/**
+ * ? query one-to-many table from created students and papers table that uses prep data for respective table 
+ * * schema:
+ * *    students(id, first_name)
+ * *    papers(title, grade INT, student_id, foreign key (student_id))
+ */
 
+// // create student and papers table and populate them with starter data 
 
+// CREATE TABLE students (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     first_name VARCHAR(100)
+// );
+ 
+// CREATE TABLE papers (
+//     title VARCHAR(100),
+//     grade INT,
+//     student_id INT,
+//     FOREIGN KEY (student_id) 
+//         REFERENCES students(id)
+//         ON DELETE CASCADE
+// );
+
+// INSERT INTO students (first_name) VALUES 
+// ('Caleb'), 
+// ('Samantha'), 
+// ('Raj'), 
+// ('Carlos'), 
+// ('Lisa');
+ 
+// INSERT INTO papers (student_id, title, grade ) VALUES
+// (1, 'My First Book Report', 60),
+// (1, 'My Second Book Report', 75),
+// (2, 'Russian Lit Through The Ages', 94),
+// (2, 'De Montaigne and The Art of The Essay', 98),
+// (4, 'Borges and Magical Realism', 89);
+
+// // EXERCISE 1: get the paper title, paper grade, and student id of the respective paper
+
+// SELECT students.first_name, papers.title, papers.grade
+// FROM students
+// INNER JOIN papers
+//     ON students.id = papers.student_id
+// ORDER BY grade DESC;
+
+// // EXERCISE 1 ALT SOLUTION
+
+// SELECT students.first_name, papers.title, papers.grade
+// FROM students
+// RIGHT JOIN papers
+//     ON students.id = papers.student_id
+// ORDER BY grade DESC;
+
+// // EXERCISE 2: get first_name, title, and grade of ALL students and not just students that submitted a paper 
+
+// SELECT students.first_name, papers.title, papers.grade
+// FROM students
+// LEFT JOIN papers
+//     ON students.id = papers.student_id;
+
+// // EXERCISE 3: get first_name, title, and grade of ALL students and not just students that submitted a paper 
+// //             AND mark any missing papers as "MISSING" and 0 for paper's title and grade, respectively
+
+// SELECT
+//       students.first_name AS first_name,
+//       IFNULL(papers.title, UPPER('missing')) AS papers,
+//       IFNULL(papers.grade, 0) AS grade
+// FROM students
+// LEFT JOIN papers
+//       ON students.id = papers.student_id
+// ORDER BY paper.grade, students.first_name;
+
+// // EXERCISE 4: describe the students table and identify how to query for each and every student's average paper grade of their paper grades,
+// //             even if the student didn't submit a paper than rank from highest to lowest
+
+// DESC students;
+
+// SELECT
+//       students.first_name AS first_name,
+//       IFNULL(
+//         AVG(ROUND(papers.grade), 4),
+//       0) AS average
+// FROM students
+// LEFT JOIN papers
+//       ON students.id = papers.student_id
+// GROUP BY students.id
+// ORDER BY average DESC;
+
+// // EXERCISE 4: describe the students table and identify how to query for each and every student's average paper grade of their paper grades,
+// //             even if the student didn't submit a paper than rank from highest to lowest,
+// //             finally mark their passing status as 'PASSING' or 'FAILING' based on their average 
+
+// SELECT
+//       students.first_name AS first_name,
+//       IFNULL(
+//         AVG(
+//           ROUND(papers.grade), 4),
+//         0) AS average,
+//       WHEN
+//         CASE AVG(papers.grade) IS NULL
+//           THEN UPPER('failing')
+//         CASE AVG(papers.grade) >= 75
+//           THEN UPPER('passing')
+//         CASE AVG(papers.grade) < 75
+//           THEN UPPER('failing')
+//         ELSE
+//           UPPER('failing')
+//       END AS passing_status
+// FROM students
+// LEFT JOIN papers
+//       ON students.id = papers.student_id
+// GROUP BY student.id
+// ORDER BY average DESC;
+
+/**
+ * ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table 
+ * * schema:
+ * *    reviewer(id, first_name, last_name)
+ * *    series(id, title, released_year, genre) 
+ * *    review(id, rating, series_id, reviewer_id)
+ */
+
+// create reviewer, series, and review tables with the necessary connections for the review table
