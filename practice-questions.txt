@@ -417,483 +417,75 @@ FROM books;
 
 /**
  * ? Refining SELECT query for books db
- * * schema: 
- * *    author_fname, author_lname, 
- * *    pages, title, released_year, stock_quantity
+ * * schema: author_fname, author_lname, pages, title, released_year, stock_quantity
  */
 
-/**
- * ? select titles that contain 'stories' and order by descending
- */
-
-SELECT title
-FROM   books
-WHERE  title LIKE '%stories%'
-ORDER  BY title DESC;
-
-/**
- * ? find the longest book: print out the title and page count
- */
-
-SELECT title, pages
-FROM books
-ORDER BY pages DESC
-LIMIT 1;
-
-/**
- * ? print summary containing the title and released_year, 
- * ? for the 3 most recent books
- * 
- * * Mad Men-2013
- */
-
-SELECT
-  CONCAT_WS(
-    ' - ', title, released_year
-  ) AS 'summary'
-FROM books
-ORDER BY released_year DESC
-LIMIT 3;
-
-/**
- * ? find all the books (print only title and the author_lname)
- * ? that has an author_lname that contains a space (" ") and order by title descending
- */
-
-SELECT title, author_lname
-FROM books
-WHERE author_lname LIKE '% %'
-ORDER BY title DESC;
-
-/**
- * ? find the 3 books with the lowest stock: 
- * ?    print title, released_year, and stock
- */
-
-SELECT
-  title,
-  released_year,
-  stock_quantity
-FROM books
-ORDER BY stock_quantity
-LIMIT 3;
-
-/**
- * ? print the title, author_lname: 
- * ?    sorted by author_lname and then by title
- */
-
-SELECT
-  title,
-  author_lname
-FROM books
-ORDER BY author_lname, title;
-
-/**
- * ? sort alphabetically by last name
- * ?    labeled as yell: 
- * *      'MY FAVORITE AUTHOR IS {author_fname} {author_lname}!'
- */
-
-SELECT
-    UPPER(
-      CONCAT(
-        'my favorite author is ',
-        author_fname, 
-        ' ', 
-        author_lname, 
-        '!'
-      )
-    ) AS 'yell'
-FROM books
-ORDER BY author_lname;
-
-/**
- * ? query one-to-many table from created students and papers table that uses prep data for respective table
- */
-
-/**
- * ? create student and papers table 
- * 
- * * schema:
- * *    students(primary key(id), first_name)
- * *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
- */
-
-CREATE TABLE students (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(100)
-);
-
-CREATE TABLE papers (
-    title VARCHAR(100),
-    grade INT,
-    student_id INT,
-    FOREIGN KEY (student_id)
-        REFERENCES students(id)
-        ON DELETE CASCADE
-);
-
-/**
- * ? populate the students and papers(student_id, title, grade) tables with 2 starter data
- * 
- * * schema:
- * *    students(primary key(id), first_name)
- * *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
- */
-
-INSERT INTO students (first_name) VALUES
-('Caleb'),
-('Samantha'),
-('Raj'),
-('Carlos'),
-('Lisa');
-
-INSERT INTO papers (student_id, title, grade ) VALUES
-(1, 'My First Book Report', 60),
-(1, 'My Second Book Report', 75),
-(2, 'Russian Lit Through The Ages', 94),
-(2, 'De Montaigne and The Art of The Essay', 98),
-(4, 'Borges and Magical Realism', 89);
-
-/**
- * ? EXERCISE 1: 
- * ? get the student first_name, paper title, paper grade, 
- * ?    and student id of the respective paper and order by paper's grade DESC
- */
-
-SELECT students.first_name, papers.title, papers.grade
-FROM students
-INNER JOIN papers
-    ON students.id = papers.student_id
-ORDER BY grade DESC;
-
-/**
- * * EXERCISE 1 ALT SOLUTION
- */
-
-SELECT students.first_name, papers.title, papers.grade
-FROM students
-RIGHT JOIN papers
-    ON students.id = papers.student_id
-ORDER BY grade DESC;
-
-/**
- * ? EXERCISE 2: get first_name, title, and grade of ALL students
- * ?    and not just students that submitted a paper
- */
-
-SELECT students.first_name, papers.title, papers.grade
-FROM students
-LEFT JOIN papers
-    ON students.id = papers.student_id;
-
-/**
- * ? EXERCISE 3: get first_name, title, and grade of ALL students 
- * ?    and not just students that submitted a paper 
- * ?    AND mark any missing papers as "MISSING" 
- * ?    and 0 for paper's title and grade, respectively
- * ?    order by grade first than student name
- */
-
-SELECT
-      students.first_name AS first_name,
-      IFNULL(papers.title, UPPER('missing')) AS papers,
-      IFNULL(papers.grade, 0) AS grade
-FROM students
-LEFT JOIN papers
-      ON students.id = papers.student_id
-ORDER BY paper.grade, students.first_name;
-
-/**
- * ? EXERCISE 4: describe the students table
- * ?    print the name and each and every student's average paper grade, 
- * ?    even if the student didn't submit a paper 
- * ?    round the avg by 4 decimal positions and if missing, 0
- * ?    than rank from highest to lowest
- */
-
-DESC students;
-
-SELECT
-      students.first_name AS first_name,
-      IFNULL(
-        AVG(ROUND(papers.grade), 4),
-      0) AS average
-FROM students
-LEFT JOIN papers
-      ON students.id = papers.student_id
-GROUP BY students.id
-ORDER BY average DESC;
-
-/**
- * ? EXERCISE 5: describe the students table 
- * ?    get each and every student's average paper grade of their paper grades,
- * ?    even if the student didn't submit a paper than rank from highest to lowest,
- * ?    finally mark their 'passing status' as 'PASSING' or 'FAILING' based on their average
- * ?      passing if grade >= 75, failing if grade < 75, if null failing
- */
-
-SHOW TABLES;
-DESC students;
-
-SELECT
-      students.first_name AS first_name,
-      IFNULL(
-        AVG(
-          ROUND(papers.grade), 4),
-        0) AS average,
-      WHEN
-        CASE AVG(papers.grade) IS NULL
-          THEN UPPER('failing')
-        CASE AVG(papers.grade) >= 75
-          THEN UPPER('passing')
-        CASE AVG(papers.grade) < 75
-          THEN UPPER('failing')
-        ELSE
-          UPPER('failing')
-      END AS passing_status
-FROM students
-LEFT JOIN papers
-      ON students.id = papers.student_id
-GROUP BY student.id
-ORDER BY average DESC;
-
-/**
- * ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
- * * schema:
- * *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
- * *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
- * *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
- * 
- * * on delete cascade for relevant fields and tables
- */
-
-/**
- * ! create reviewer, series, and review tables with the many-to-many connections for the review table
- */
-
- SELECT database();
- USE imdb;
- 
- SHOW TABLES;
- 
- CREATE TABLE reviewers(
-     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-     first_name VARCHAR(100) NOT NULL DEFAULT 'MISSING',
-     last_name VARCHAR(100) NOT NULL DEFAULT 'MISSING'
- );
- 
- DESC reviewers;
- 
- CREATE TABLE series(
-     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-     title VARCHAR(100) NOT NULL DEFAULT "MISSING",
-     release_year YEAR(4) NOT NULL,
-     genre VARCHAR(100)
- );
- 
- DESC series;
- 
- CREATE TABLE reviews(
-     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-     rating DECIMAL(2, 1),
-     series_id INT,
-     reviewer_id INT,
-     FOREIGN KEY(series_id)
-         REFERENCES series(id)
-             ON DELETE CASCADE,
-     FOREIGN KEY(reviewer_id)
-         REFERENCES reviewers(id)
-             ON DELETE CASCADE
- );
-
-
-/**
- * ! insert test data into tables and inspect data in reviews
- */
-
- INSERT INTO reviewers(first_name, last_name)
- VALUES ("Ben", "Silver"), ("Carmen", "West");
- 
- INSERT INTO series(title, released_year, genre)
- VALUES ("Breaking Bad", 2007, "drama"), ("Game of Thrones", 2011, "comedy");
- 
- INSERT INTO reviews(rating, series_id, reviewer_id)
- VALUES (8.0, 1, 1), (6.5, 2, 1), (9.3, 1, 2);
-
- SELECT * FROM reviews;
-
- /**
-  * ! challenge 1: reproduce the table below (no nulls):
-  
-      title | rating
-
-      archer | 8.0
-      archer | 7.5
-      arrested development | 8.9
-      arrested development | 9.9
-  */
-
-SELECT
-    series.title,
-    reviews.rating
-FROM series
-INNER JOIN reviews
-    ON series.id = reviews.series_id
-ORDER BY title;
-
-/**
- * ! challenge 2: reproduce the table below (no nulls):
- 
-    title | avg_rating
-
-    General Hospital | 5.38000
-    Fargo | 9.40000
-    Halt and Catch Fire | 9.90000
-
- */
-
-SELECT
-    series.title,
-    AVG(reviews.rating) AS "avg_rating"
-FROM series
-INNER JOIN reviews
-    ON series.id = reviews.series_id
-GROUP BY series.id
-ORDER BY avg_rating;
-
-/**
- * ! challenge 3: reproduce the table below (no nulls):
-
-  first_name | last_name | rating
-
-  Thomas | Stoneman | 8.0
-  Wyat | Skaggs | 8.5
-  Wyat | Skaggs | 7.5
-  Wyat | Skaggs | 9.3
-  Kimbra | Masters | 7.1
-
- */
-
-SELECT
-  reviewers.first_name,
-  reviewers.last_name,
-  reviews.rating
-FROM reviews
-INNER JOIN reviewers
-  ON reviews.reviewer_id = reviewers.id
-ORDER BY reviewers.last_name DESC;
-
- /**
- * ! challenge 4: reproduce the table below (there will be nulls):
-
-    unreviewed_series
-
-    Malcolm in the Middle
-    Pushing Daisies
-
- */
-
-SELECT
-    series.title AS "unreviewed_series"
-FROM series
-LEFT JOIN reviews
-    ON series.id = reviews.series_id
-WHERE reviews.rating IS NULL
-ORDER BY unreviewed_series DESC;
- 
- /**
- * ! challenge 5: reproduce the table below (there will be nulls):
-
-    genre | avg_rating
-
-    Animation | 7.86
-    Comedy | 8.16
-    Drama | 8.04
-
- */
-
-SELECT
-    series.genre,
-    ROUND(
-      AVG(reviews.rating),
-      2
-    ) AS "avg_rating"
-FROM reviews
-INNER JOIN series
-    ON reviews.series_id = series.id
-GROUP BY reviews.id
-ORDER BY series.genre, avg_rating;
-
-/**
- * ! challenge 6: reproduce the table below (there will be nulls):
-
-    first_name | last_name | COUNT | MIN | MAX | AVG | STATUS
-
-    thomas  | stoneman | 5  | 7.0  | 9.5 | 8.02 | ACTIVE
-    wyatt   | skaggs   | 9  | 5.5  | 9.3 | 7.80 | ACTIVE
-    colt    | steele   | 10 | 4.5  | 9.9 | 8.77 | POWER USER
-    marlon  | crafford | 0  | 0    | 0   | 0.00 | INACTIVE
-
-  */
-
-
-SELECT
-    reviewers.first_name,
-    reviewers.last_name,
-    IFNULL(
-        COUNT(reviews.rating), 
-        0
-    ) AS "COUNT",
-    IFNULL(
-        MIN(reviews.rating),
-        0
-    ) AS "MIN",
-    IFNULL(
-        MAX(reviews.rating),
-        0
-    ) AS "MAX",
-    ROUND(
-        IFNULL(
-            AVG(reviews.rating),
-            0
-        ),
-        2
-    ) AS "AVG",
-    CASE
-        WHEN COUNT(reviews.rating) >= 10
-            THEN UPPER("power user") 
-        WHEN COUNT(reviews.rating) > 0 AND COUNT(reviews.rating) < 10
-            THEN UPPER("active")
-        ELSE UPPER("inactive")
-    END AS UPPER("status")
-FROM reviews
-LEFT JOIN reviewers
-    ON reviews.reviewer_id = reviewers.id
-LEFT JOIN series
-    ON reviews.series_id = series.id
-GROUP BY reviews.id
-ORDER BY "STATUS";
-
-/**
- * ! challenge 7: reproduce the table below (there will be nulls):
-
-
-  */
-
+// // select all story collections: titles that contain 'stories'
+
+// SELECT title
+// FROM   books
+// WHERE  title LIKE '%stories%'
+// ORDER  BY title DESC;
+
+// // find the longest book: print out the title and page count
+
+// SELECT title, pages
+// FROM books
+// ORDER BY pages DESC;
+// LIMIT 1;
+
+// // print summary containing the title and released_year, for the 3 most recent books
+
+// SELECT
+//   CONCAT_WS(
+//     ' - ', title, released_year
+//   ) AS 'summary'
+// FROM books
+// ORDER BY released_year DESC
+// LIMIT 3;
+
+// // find all the books (title with an author_lname) that contains a space (" ")
+
+// SELECT title, author_lname
+// FROM books
+// WHERE author_lname LIKE '% %'
+// ORDER BY title DESC;
+
+// // find the 3 books with the lowest stock: select title, released_year, and stock
+
+// SELECT
+//   title,
+//   released_year,
+//   stock_quantity
+// FROM books
+// ORDER BY stock_quantity
+// LIMIT 3;
+
+// // print the title, author_lname: sorted by author_lname and then by title
+
+// SELECT
+//   title,
+//   author_lname
+// FROM books
+// ORDER BY author_lname, title;
+
+// // sort alphabetically by last name and labeled as yell: 'MY FAVORITE AUTHOR IS {author_fname} {author_lname}!'
+
+// SELECT
+//     UPPER(
+//       CONCAT(
+//         'my favorite author is ' + author_fname + ' ' + author_lname + '!'
+//       )
+//     ) AS 'yell'
+// FROM books
+// ORDER BY author_lname;
 
 /**
  * ? manage a music db
  * * schema: albums_table(_id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR NOT NULL, artist INT), artists_table(_id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR NOT NULL), songs_table(_id INT AUTO_INCREMENT PRIMARY KEY, track INT, title VARCHAR NOT NULL, album INT)
  */
 
-/**
- * ? create an artist_list as a view that prints 
- * ?    artists.name, albums.name, 
- * ?    and songs.track from a single query 
- * ?    using multiple tables and order by artist, album, and then songs
- */
+// // create an artist_list as a view that prints the artists.name, albums.name, and songs.track from a single query using multiple tables and order by artist, album, and then songs
 
 // CREATE VIEW artist_list AS
 // SELECT artists.name, albums.name, songs.track FROM songs
@@ -994,6 +586,122 @@ ORDER BY "STATUS";
  * *    papers(title, grade INT, student_id, foreign key (student_id))
  */
 
+// // create student and papers table and populate them with starter data
+
+// CREATE TABLE students (
+//     id INT AUTO_INCREMENT PRIMARY KEY,
+//     first_name VARCHAR(100)
+// );
+
+// CREATE TABLE papers (
+//     title VARCHAR(100),
+//     grade INT,
+//     student_id INT,
+//     FOREIGN KEY (student_id)
+//         REFERENCES students(id)
+//         ON DELETE CASCADE
+// );
+
+// INSERT INTO students (first_name) VALUES
+// ('Caleb'),
+// ('Samantha'),
+// ('Raj'),
+// ('Carlos'),
+// ('Lisa');
+
+// INSERT INTO papers (student_id, title, grade ) VALUES
+// (1, 'My First Book Report', 60),
+// (1, 'My Second Book Report', 75),
+// (2, 'Russian Lit Through The Ages', 94),
+// (2, 'De Montaigne and The Art of The Essay', 98),
+// (4, 'Borges and Magical Realism', 89);
+
+// // EXERCISE 1: get the paper title, paper grade, and student id of the respective paper
+
+// SELECT students.first_name, papers.title, papers.grade
+// FROM students
+// INNER JOIN papers
+//     ON students.id = papers.student_id
+// ORDER BY grade DESC;
+
+// // EXERCISE 1 ALT SOLUTION
+
+// SELECT students.first_name, papers.title, papers.grade
+// FROM students
+// RIGHT JOIN papers
+//     ON students.id = papers.student_id
+// ORDER BY grade DESC;
+
+// // EXERCISE 2: get first_name, title, and grade of ALL students and not just students that submitted a paper
+
+// SELECT students.first_name, papers.title, papers.grade
+// FROM students
+// LEFT JOIN papers
+//     ON students.id = papers.student_id;
+
+// // EXERCISE 3: get first_name, title, and grade of ALL students and not just students that submitted a paper
+// //             AND mark any missing papers as "MISSING" and 0 for paper's title and grade, respectively
+
+// SELECT
+//       students.first_name AS first_name,
+//       IFNULL(papers.title, UPPER('missing')) AS papers,
+//       IFNULL(papers.grade, 0) AS grade
+// FROM students
+// LEFT JOIN papers
+//       ON students.id = papers.student_id
+// ORDER BY paper.grade, students.first_name;
+
+// // EXERCISE 4: describe the students table and identify how to query for each and every student's average paper grade of their paper grades,
+// //             even if the student didn't submit a paper than rank from highest to lowest
+
+// DESC students;
+
+// SELECT
+//       students.first_name AS first_name,
+//       IFNULL(
+//         AVG(ROUND(papers.grade), 4),
+//       0) AS average
+// FROM students
+// LEFT JOIN papers
+//       ON students.id = papers.student_id
+// GROUP BY students.id
+// ORDER BY average DESC;
+
+// // EXERCISE 4: describe the students table and identify how to query for each and every student's average paper grade of their paper grades,
+// //             even if the student didn't submit a paper than rank from highest to lowest,
+// //             finally mark their passing status as 'PASSING' or 'FAILING' based on their average
+
+// SELECT
+//       students.first_name AS first_name,
+//       IFNULL(
+//         AVG(
+//           ROUND(papers.grade), 4),
+//         0) AS average,
+//       WHEN
+//         CASE AVG(papers.grade) IS NULL
+//           THEN UPPER('failing')
+//         CASE AVG(papers.grade) >= 75
+//           THEN UPPER('passing')
+//         CASE AVG(papers.grade) < 75
+//           THEN UPPER('failing')
+//         ELSE
+//           UPPER('failing')
+//       END AS passing_status
+// FROM students
+// LEFT JOIN papers
+//       ON students.id = papers.student_id
+// GROUP BY student.id
+// ORDER BY average DESC;
+
+/**
+ * ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+ * * schema:
+ * *    reviewer(id, first_name, last_name)
+ * *    series(id, title, released_year, genre)
+ * *    review(id, rating, series_id, reviewer_id)
+ */
+
+// create reviewer, series, and review tables with the necessary connections for the review table
 
 /**
  * ! SQL with JS practice problems
