@@ -877,16 +877,89 @@ GROUP BY reviews.id
 ORDER BY "STATUS";
 
 /**
- * ! challenge 7: reproduce the table below (there will be nulls):
+ * ! challenge 7: reproduce the table below (no nulls):
+ 
+          title | rating | reviewer
 
+          archer | 8.0 | thomas stoneman
+          archer | 7.0 | domingo cortes
+          archer | 8.5 | kimbra masters
+          arrested development | 8.4 | pinkie petit
+          arrested development | 9.9 | colt steele
+          bobs burgers | 7.0 | thomas stoneman 
 
   */
 
+SELECT
+    series.title,
+    reviews.rating,
+    CONCAT(
+        reviewers.first_name,
+        " ",
+        reviewers.last_name,
+    ) AS "reviewer"
+FROM reviewers
+INNER JOIN reviews
+      ON reviewers.id = reviews.reviewer_id
+INNER JOIN series
+      ON reviews.series_id = series.id
+ORDER by series.title;
 
 /**
  * ? manage a music db
- * * schema: albums_table(_id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR NOT NULL, artist INT), artists_table(_id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR NOT NULL), songs_table(_id INT AUTO_INCREMENT PRIMARY KEY, track INT, title VARCHAR NOT NULL, album INT)
+
+ * * schema: 
+
+ * *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY, 
+ * *    name VARCHAR NOT NULL, artist INT), 
+
+ * *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY, 
+ * *    name VARCHAR NOT NULL), 
+
+ * *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY, 
+ * *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING", 
+ * *       album INT)
  */
+
+/**
+ * ? create a music db and create the 3 linked tables (many-to-many) in the music db
+ */
+
+ CREATE DATABASE music_db;
+ USE music_db;
+ SELECT database();
+ 
+ CREATE TABLE artists_table(
+     _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR(100) NOT NULL
+ );
+ 
+ DESC artists_table;
+ 
+ CREATE TABLE albums_table(
+     _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR(100) NOT NULL,
+     artist INT,
+     FOREIGN KEY(artist)
+         REERENCES artists_table(_id)
+         ON DELETE CASCADE
+ );
+ 
+ DESC albums_table;
+ 
+ CREATE TABLE songs_table(
+     _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY<
+     track INT NOT NULL,
+     title VARCHAR(100) NOT NULL DEFAULT "MISSING",
+     album INT,
+     FOREIGN KEY(album)
+         REFERENCES albums_table(_id)
+         ON DELETE CASCADE
+ );
+ 
+ DESC songs_table;
+ 
+ SHOW TABLES;
 
 /**
  * ? create an artist_list as a view that prints 
@@ -895,23 +968,28 @@ ORDER BY "STATUS";
  * ?    using multiple tables and order by artist, album, and then songs
  */
 
-// CREATE VIEW artist_list AS
 // SELECT artists.name, albums.name, songs.track FROM songs
 // INNER JOIN albums ON songs.album = albums._id
 // INNER JOIN artists ON albums.artist = artists._id
 // ORDER BY artists.name, albums.name, songs.track;
 
-// // remove arist_list
+/**
+ * ? remove arist_list
+ */
 
 // DROP VIEW artist_list;
 
-// // select the titles of all the songs on the album forbidden
+/**
+ * ? select the titles of all the songs on the album forbidden
+ */
 
 // SELECT title
 // FROM songs
 // INNER JOIN albums ON songs.album = albums._id;
 
-// // select the titles of all the songs on the album forbidden but display in track order and include track number for verification
+/**
+ * ? select the titles of all the songs on the album forbidden but display in track order and include track number for verification
+ */
 
 // SELECT songs.track, songs.title
 // FROM songs
@@ -919,7 +997,9 @@ ORDER BY "STATUS";
 // WHERE albums.name = 'Forbidden'
 // ORDER BY songs.track;
 
-// // display all tracks and respective songs by the band 'Deep Purple'
+/**
+ * ? display all tracks and respective songs by the band 'Deep Purple'
+ */
 
 // SELECT songs.title
 // FROM songs
@@ -927,7 +1007,9 @@ ORDER BY "STATUS";
 // INNER JOIN artists ON albums.artist = artists._id
 // WHERE artist.name = 'Deep Purple';
 
-// // rename band 'Mehitabel' to 'One Kitten' and verify
+/**
+ * ? rename band 'Mehitabel' to 'One Kitten' and verify
+ */
 
 // SELECT *
 // FROM artists
@@ -941,7 +1023,9 @@ ORDER BY "STATUS";
 // FROM artists
 // WHERE name = 'One Kitten';
 
-// // select titles by Aerosmith in alphabetical order, only print title
+/**
+ * ? select titles by Aerosmith in alphabetical order, only print title
+ */
 
 // SELECT song.titles
 // FROM songs
@@ -950,7 +1034,9 @@ ORDER BY "STATUS";
 // WHERE artist.name = 'Aerosmith'
 // ORDER BY songs.title ASC;
 
-// // GET count of song titles by Aerosmith in alphabetical order, only print the count
+/**
+ * ? GET count of song titles by Aerosmith in alphabetical order, only print the count
+ */
 
 // SELECT COUNT(*) AS 'count'
 // FROM songs
@@ -958,8 +1044,10 @@ ORDER BY "STATUS";
 // INNER JOIN artists ON albums.artist = artists._id
 // WHERE artists.name = 'Aerosmith'
 
-// // search the internet on how to make query without duplicates for below:
-// // select titles by Aerosmith in alphabetical order, only print title
+/**
+ * ? search the internet on how to make query without duplicates for below:
+ * ? select titles by Aerosmith in alphabetical order, only print title
+ */
 
 // SELECT DISTINCT songs.title AS 'count'
 // FROM songs
@@ -968,8 +1056,10 @@ ORDER BY "STATUS";
 // WHERE artists.name = 'Aerosmith'
 // ORDER BY songs.title;
 
-// // search the internet on how to make query without duplicates for below:
-// // GET count of titles by Aerosmith
+/**
+ * ? search the internet on how to make query without duplicates for below:
+ * ? GET count of titles by Aerosmith
+ */
 
 // SELECT COUNT(DISTINCT title) AS 'count'
 // FROM songs
@@ -977,8 +1067,10 @@ ORDER BY "STATUS";
 // INNER JOIN artists ON albums.artist = artists._id
 // WHERE artists.name = 'Aerosmith';
 
-// // find number of unique albums by artist
-// // hint: group by artist and name
+/**
+ * ? find number of unique albums by artist
+ * ? hint: group by artist and name
+ */
 
 // SELECT
 //   COUNT(DISTINCT album) AS 'artist count',
