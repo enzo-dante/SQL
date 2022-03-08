@@ -962,80 +962,99 @@ ORDER by series.title;
  SHOW TABLES;
 
 /**
- * ? create an artist_list as a view that prints 
+ * ! create an artist_list as a view that prints 
  * ?    artists.name, albums.name, 
  * ?    and songs.track from a single query 
  * ?    using multiple tables and order by artist, album, and then songs
  */
 
-// SELECT artists.name, albums.name, songs.track FROM songs
-// INNER JOIN albums ON songs.album = albums._id
-// INNER JOIN artists ON albums.artist = artists._id
-// ORDER BY artists.name, albums.name, songs.track;
+CREATE VIEW artist_list(
+
+);
+
+SELECT
+    artists.name,
+    albums.name,
+    songs.track
+FROM songs
+INNER JOIN albums
+    ON songs.ablum = albums.id
+        ON DELETE CASCADE
+INNER JOIN artists
+    ON albums.artist = artists.id
+        ON DELETE CASCADE
+ORDER BY artists.name, albums.name, songs.track;
 
 /**
  * ? remove arist_list
  */
 
-// DROP VIEW artist_list;
+DROP VIEW artist_list;
 
 /**
- * ? select the titles of all the songs on the album forbidden
+ * ? get the titles of all the songs on the album forbidden
  */
 
-// SELECT title
-// FROM songs
-// INNER JOIN albums ON songs.album = albums._id;
+SELECT titles
+FROM songs
+INNER JOIN albums
+    ON songs.album = albums.id
+WHERE album.name = "forbidden";
 
 /**
- * ? select the titles of all the songs on the album forbidden but display in track order and include track number for verification
+ * ? print the titles of all the songs on the album forbidden
+ * ? but display in track order and include track number for verification
  */
 
-// SELECT songs.track, songs.title
-// FROM songs
-// INNER JOIN albums ON songs.album = albums._id
-// WHERE albums.name = 'Forbidden'
-// ORDER BY songs.track;
+SELECT songs.track, songs.title
+FROM songs
+INNER JOIN albums ON songs.album = albums._id
+WHERE albums.name = 'Forbidden'
+ORDER BY songs.track;
 
 /**
  * ? display all tracks and respective songs by the band 'Deep Purple'
  */
 
-// SELECT songs.title
-// FROM songs
-// INNER JOIN albums ON songs.album = albums._id
-// INNER JOIN artists ON albums.artist = artists._id
-// WHERE artist.name = 'Deep Purple';
+SELECT songs.title
+FROM songs
+INNER JOIN albums 
+  ON songs.album = albums._id
+INNER JOIN artists 
+  ON albums.artist = artists._id
+WHERE artist.name = 'Deep Purple';
 
 /**
  * ? rename band 'Mehitabel' to 'One Kitten' and verify
  */
 
-// SELECT *
-// FROM artists
-// WHERE name = 'Mehitabel';
+SELECT *
+FROM artists
+WHERE name = 'Mehitabel';
 
-// UPDATE artists
-//   SET name = 'One Kitten'
-//   WHERE name = 'Mehitabel';
+UPDATE artists
+  SET name = 'One Kitten'
+  WHERE name = 'Mehitabel';
 
-// SELECT *
-// FROM artists
-// WHERE name = 'One Kitten';
+SELECT *
+FROM artists
+WHERE name = 'One Kitten';
 
 /**
- * ? select titles by Aerosmith in alphabetical order, only print title
+ * ? GET song titles by Aerosmith in alphabetical order, only print title
  */
 
-// SELECT song.titles
-// FROM songs
-// INNER JOIN albums ON songs.album = albums._id
-// INNER JOIN artists ON albums.artist = artists._id
-// WHERE artist.name = 'Aerosmith'
-// ORDER BY songs.title ASC;
+SELECT song.titles
+FROM songs
+INNER JOIN albums ON songs.album = albums._id
+INNER JOIN artists ON albums.artist = artists._id
+WHERE artist.name = 'Aerosmith'
+ORDER BY songs.title ASC;
 
 /**
- * ? GET count of song titles by Aerosmith in alphabetical order, only print the count
+ * ! NEED TO VERIFY if correct
+ * ? GET count of song titles by Aerosmith 
+ * ? only print the count as count
  */
 
 // SELECT COUNT(*) AS 'count'
