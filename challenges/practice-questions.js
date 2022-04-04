@@ -1,65 +1,3 @@
-// in goormIDE terminal from project directory, execute:
-// node app.js
-
-// SQL formatter
-// https://www.dpriver.com/pp/sqlformat.htm
-
-/**
- * ? create a tweets table
- * 
- * * schema:
- *      * username(15 max char),
- *      * content(140 max char), num_favorites
- */
-
-CREATE TABLE tweets(
-  username VARCHAR(15),
-  content VARCHAR(140),
-  favorites INT
-);
-
-/**
- * ? create, describe, and delete pastries table
- * 
- * * schema: name(50 max), quantity
- */
-
-CREATE TABLE pastries(
-  name VARCHAR(50),
-  quantity INT
-);
-
-SHOW TABLES;
-
-DESC pastries;
-
-DROP TABLE pastries;
-
-/**
- * ? create people table, insert into people table, verify new data
- * 
- * * schema:
- *      * first_name(20 char limit), last_name(20 char limit), age
- * * new data: Tina Belcher 13
- */
-
-CREATE TABLE people(
-  first_name VARCHAR(20),
-  last_name VARCHAR(20),
-  age INT
-);
-
-INSERT INTO people(first_name, last_name, age)
-VALUES ('Tina', 'Belcher', 13);
-
-// order of args is user defined, but new data has to align with provided order of args
-INSERT INTO people(age, first_name, last_name)
-VALUES (70, 'Calvin', 'Fish'),
-     (38, 'Philip', 'Frond');
-
-SELECT *
-FROM people;
-
 /**
  * ? create, inspect, and insert into employees table, review data
  * 
@@ -1160,25 +1098,6 @@ CREATE TABLE comments(
 
 DESC comments;
 SHOW TABLES;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * ? SQL Math
- */
-
-
 
 /**
  * ! SQL with JS practice problems
