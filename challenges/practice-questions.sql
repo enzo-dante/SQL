@@ -192,17 +192,134 @@ FROM books
 WHERE title LIKE "%the%"
 
 /**
-* ? LIMIT
+* ? How can I get the title and released year for the 5 most RECENTLY released books from the books table in the book_shop db?
 *
 * * schema: 
+*       * title
+*       * released_year
 */
 
+SELECT
+    title,
+    released_year
+FROM books
+ORDER BY released_year DESC
+LIMIT 5;
 
 /**
-* ? GROUP BY
+* ? How many books (title as numBooks) has each author has written? 
 *
 * * schema: 
+*       * author_fname
+*       * author_lname
+*
+* ! there are two authors with the same last name
 */
+
+SELECT
+    author_fname,
+    author_lname,
+    COUNT(*) AS numBooks
+FROM books
+GROUP BY author_lname, author_fname;
+
+/**
+* ? How can I get the 3rd through 7th titles from the books table that's in alphabetical order in the book_shop db?
+*
+* * schema: 
+*       * title
+*/
+
+SELECT title
+FROM books
+ORDER BY title
+LIMIT 2,6;
+
+/**
+* ? How can I get the author's full name, title, & released year for the 4 most recently released Harry Potter books in the books table in the book_shop db? 
+*
+* * schema: 
+*       * author_fname AND author_lname
+*       * title
+*       * released_year
+*/
+
+SELECT
+    CONCAT(author_fname, " ", author_lname) AS author,
+    title,
+    released_year
+FROM books
+ORDER BY released_year DESC
+WHERE title LIKE "%Harry Potter%"
+LIMIT 4;
+/**
+* ? How can I get the author first name & title for the author's whose first names SPECIFICALLY start with 'da' in the books table in the book_shop db? 
+*
+* ! David & Dan = start with 'da'; Freida != start with 'da'
+*
+* * schema: 
+*       * author_fname 
+*       * title
+*/
+
+/* 
+    * LIKE string is case-insensitive AND '%' symbol represents 'anything'
+
+        "da%" = da{anything}
+*/
+
+SELECT 
+    author_fname,
+    title
+FROM books
+WHERE author_fname LIKE "da%";
+
+/**
+* ? create, inspect, and insert into employees table in pet_store db, review data
+* 
+* * schema:
+*      * id (auto_increment number),
+*      * first_name(255 char limit, mandatory), last_name(255 char limit, mandatory),
+*      * middle_name (255 char limit, optional), age(number, mandatory),
+*      * current_status(text, mandatory, default: employed)
+*/
+
+SELECT database();
+SHOW DATABASES;
+
+CREATE DATABASE pet_store;
+USE pet_store;
+
+CREATE TABLE employees(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    middle_name VARCHAR(255),
+    age INT NOT NULL,
+    current_status VARCHAR(10) NOT NULL DEFAULT "employed"
+
+);
+
+-- CREATE TABLE employees (
+--   id INT AUTO_INCREMENT NOT NULL,
+--   first_name VARCHAR(255) NOT NULL,
+--   last_name VARCHAR(255) NOT NULL,
+--   middle_name VARCHAR(255),
+--   age INT NOT NULL,
+--   current_status VARCHAR(255) NOT NULL DEFAULT 'employed',
+--   PRIMARY KEY(id)
+-- );
+
+SHOW TABLES;
+DESC employees;
+
+INSERT INTO employees(age, first_name, current_status, last_name)
+VALUES (33, "Ben", "terminated", "Riley"), (21, "Gary", "employed", "Silver");
+
+SELECT *
+FROM employees;
+
+
 
 
 

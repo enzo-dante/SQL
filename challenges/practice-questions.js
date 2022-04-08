@@ -1,42 +1,4 @@
 /**
- * ? create, inspect, and insert into employees table, review data
- * 
- * * schema:
- *      * id (auto_increment number),
- *      * first_name(255 char limit, mandatory), last_name(255 char limit, mandatory),
- *      * middle_name (255 char limit, optional), age(number, mandatory),
- *      * current_status(text, mandatory, default: employed)
- */
-
-// // option 1
-CREATE TABLE employees (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
-  middle_name VARCHAR(255),
-  age INT NOT NULL,
-  current_status VARCHAR(255) NOT NULL DEFAULT 'employed'
-);
-
-// // option 2
-CREATE TABLE employees (
-  id INT AUTO_INCREMENT NOT NULL,
-  first_name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
-  middle_name VARCHAR(255),
-  age INT NOT NULL,
-  current_status VARCHAR(255) NOT NULL DEFAULT 'employed',
-  PRIMARY KEY(id)
-);
-
-DESC employees;
-
-INSERT INTO employees(first_name, last_name, age) VALUES
-('Dora', 'Smith', 58);
-
-SELECT * FROM employees;
-
-/**
  * ? create cats table, inpsect table, select only cat_id(s) and order by ascending,
  * ? select name and breed, select only cat's cat_id & age where cat_id = age
  *
