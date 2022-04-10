@@ -319,6 +319,64 @@ VALUES (33, "Ben", "terminated", "Riley"), (21, "Gary", "employed", "Silver");
 SELECT *
 FROM employees;
 
+/**
+* ? get all the book titles & respective stock_quantity that have a stock quanity that is 4 digits long from books table in book_shop db
+* 
+* * schema:
+*      * title
+*      * stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+/* 
+    ! underscores specify how many characters used with WHERE & LIKE
+*/
+SELECT
+    title,
+    stock_quantity
+FROM books
+WHERE stock_quantity LIKE "____";
+
+/**
+* ? create cats table, inpsect table, add test cats 
+* ? select name, age, and breed of only cat's where cat_id = age
+* ? drop table 
+*
+* * schema:
+*      * cat_id (auto_increment), name(255 char limit, default: "MISSING"),
+*      * breed(255 char limit, default: "TBD"), age (DEFAULT: 0)
+*/
+
+USE pets_db;
+
+CREATE TABLE cats(
+    cats_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL DEFAULT "MISSING",
+    breed VARCHAR(255) NOT NULL DEFAULT "TBD",
+    age INT NOT NULL DEFAULT 0
+);
+
+SHOW TABLES;
+DESC cats;
+
+INSERT INTO cats(name, age)
+VALUES ("Cassy", 3), ("Riley", 5);
+
+SELECT
+    name,
+    age,
+    breed,
+FROM cats
+WHERE cats_id = age;
+
+DROP TABLE cats;
+
+SHOW TABLES;
+
+
 
 
 

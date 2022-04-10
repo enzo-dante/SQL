@@ -1,35 +1,4 @@
 /**
- * ? create cats table, inpsect table, select only cat_id(s) and order by ascending,
- * ? select name and breed, select only cat's cat_id & age where cat_id = age
- *
- * * schema:
- *      * cat_id (auto_increment), name(255 char limit, default: "MISSING"),
- *      * breed(255 char limit, default: "TBD"), age (DEFAULT: 0)
- */
-
-CREATE TABLE cats(
-  cat_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL DEFAULT 'MISSING',
-  breed VARCHAR(255) NOT NULL DEFAULT 'TBD'
-  age INT NOT NULL DEFAULT 0,
-);
-
-SELECT cat_id
-FROM cats
-ORDER BY cat_id;
-
-SELECT name, breed
-FROM cats;
-
-SELECT name, age
-FROM cats
-WHERE breed = 'Tabby';
-
-SELECT cat_id, age
-FROM cats
-WHERE cat_id = age;
-
-/**
  * ? update cats table
  * ?    remember to always SELECT first before UPDATE
  * 
