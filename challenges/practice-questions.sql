@@ -376,11 +376,54 @@ DROP TABLE cats;
 
 SHOW TABLES;
 
+/**
+* ? update cats table
+* ?    remember to always SELECT first before UPDATE
+* 
+* ? than update Jackson's name to Jack
+*
+* * schema: cat_id, name, breed, age
+*/
 
+SELECT *
+FROM cats
+    WHERE name = "Jackson"
 
+UPDATE cats
+    SET name = "Jack"
+        WHERE name = "Jackson"
 
+/**
+* ? update cats table
+* ?    remember to always SELECT first before UPDATE
+* 
+* ? than update Ringo's breed to "British Shorthair"
+*
+* * schema: cat_id, name, breed, age
+*/
 
+SELECT *
+FROM cats
+    WHERE name = "Ringo"
 
+UPDATE cats
+    SET breed = "British Shorthair"
+        WHERE name = "Ringo"
 
+/**
+* ? update cats table
+* ?    remember to always SELECT first before UPDATE
+* 
+* ? than update both Maine Coons' ages to 12
+*
+* * schema: cat_id, name, breed, age
+*/
 
+SELECT *
+FROM cats
+    WHERE breed = "Maine Coons"
+
+UPDATE cats
+    SET age = 12
+        WHERE breed = "Maine Coons"
 
