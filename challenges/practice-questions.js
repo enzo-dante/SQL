@@ -1,91 +1,6 @@
 /**
- * ? delete data from cats table
- * ?    remember to always SELECT first before DELETE
- * 
- * * schema: cat_id, name, breed, age
- */
-
-// delete all 4 year old cats
-SELECT *
-FROM cats
-  WHERE age = 4;
-
-DELETE FROM cats
-  WHERE age = 4;
-
-// delete all cats whose age is the same as their cat_id
-SELECT *
-FROM cats
-  WHERE cat_id = age;
-
-DELETE FROM cats
-  WHERE cat_id = age;
-
-// delete all cats
-SELECT *
-FROM cats;
-
-DELETE *
-FROM cats;
-
-/**
- * ? CRUD challenge:
- * ?    create db, use db, create table shirts,
- * ?    and insert test data
- *
- * * schema:
- * *    shirt_id (auto_increment),
- * *    article(max 100 char),
- * *    color(max 100 char),
- * *    shirt_size(max 4 char), last_worn(int default 0)
- */
-
-// view, create and use shirts db
-SELECT database();
-
-CREATE DATABASE shirts_db;
-USE shirts_db;
-SELECT database();
-
-// create table
-CREATE TABLE shirts(
-  shirt_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  article VARCHAR(100),
-  color VARCHAR(100),
-  shirt_size CHAR(4),
-  last_worn INT NOT NULL DEFAULT 0
-);
-
-DESC shirts;
-
-INSERT INTO shirts(article, color, shirt_size, last_worn)
-VALUES('t-shirt', 'white', 'S', 10);
-
-SELECT *
-FROM shirts;
-
-/**
- * ? CRUD challenge: read data from shirts table
- * 
- * * schema:
- * *    shirt_id (auto_increment),
- * *    article(max 100 char),
- * *    color(max 100 char),
- * *    shirt_size(max 4 char), last_worn(int default 0)
- */
-
-// read all shirts but print only article and color
-SELECT article, color
-FROM shirts;
-
-// read only medium shirts, print everything but print shirt_id
-SELECT article, color, shirt_size, last_worn
-FROM shirts
-WHERE shirt_size = 'M';
-
-/**
  * ? CRUD challenge: update data from shirts table in shirts_db
- * 
+ *
  * * schema:
  * *    shirt_id (auto_increment),
  * *    article(max 100 char),
@@ -111,8 +26,8 @@ UPDATE shirts
   SET last_worn = 0
   WHERE last_worn = 15;
 
-// update multiple fields all white shirts to have 
-//    a shirt_size of 'XS' and 
+// update multiple fields all white shirts to have
+//    a shirt_size of 'XS' and
 //    color of 'off white'
 
 SELECT *
@@ -125,10 +40,10 @@ UPDATE shirts
 
 /**
  * ? CRUD challenge: delete data from shirts table
- * 
- * * schema: 
- * *    shirt_id (auto_increment), article(max 100 char), 
- * *    color(max 100 char), shirt_size(max 4 char), 
+ *
+ * * schema:
+ * *    shirt_id (auto_increment), article(max 100 char),
+ * *    color(max 100 char), shirt_size(max 4 char),
  * *    last_worn(int default 0)
  */
 
@@ -165,7 +80,7 @@ SHOW TABLES;
 // ? reverse and uppercase the following sentence
 // *    "Why does my cat look at me with such hatred?"
 
-SELECT 
+SELECT
   REVERSE(
     UPPER('Why does my cat look at me with such hatred?')
     );
@@ -183,13 +98,13 @@ SELECT
 
 // ! it concatenates the multiple strings together and replaces the spaces with underscores
 
-// output: 
+// output:
 //    I_like_cats
 
 /**
  * ? string challenges
- * 
- * * books table schema: 
+ *
+ * * books table schema:
  * *    title, author_fname, author_lname,
  * *    released_year, stock_quantity
  */
@@ -198,12 +113,12 @@ SELECT
 
 SELECT
   REPLACE(
-    title, 
-    ' ', 
+    title,
+    ' ',
     '->') AS title
 FROM books;
 
-// ? print out author_lname and backwards author_lname 
+// ? print out author_lname and backwards author_lname
 // ?    in respective columns forward and backwards
 
 SELECT
@@ -211,7 +126,7 @@ SELECT
   REVERSE(author_lname) AS backwards
 FROM books;
 
-// ? print out full author name (author_fname, author_lname) 
+// ? print out full author name (author_fname, author_lname)
 // ?    in caps with alias full name in caps
 
 SELECT
@@ -220,7 +135,7 @@ SELECT
   ) AS 'full name in caps'
 FROM books;
 
-// ? print alias blurb with row: 
+// ? print alias blurb with row:
 // ?    {title} was released in {released_year}
 
 SELECT
@@ -236,8 +151,8 @@ SELECT
   CHAR_LENGTH(title) AS 'character count'
 FROM books;
 
-// ? print short title (first 10 chars and ...), 
-// ?    author (author_lname, author_fname), 
+// ? print short title (first 10 chars and ...),
+// ?    author (author_lname, author_fname),
 // ?    quantity ({num_in_stock} in stock)
 
 SELECT
@@ -252,9 +167,9 @@ FROM books;
 
 /**
  * ? Refining SELECT query for books db
- * 
- * * schema: 
- * *    author_fname, author_lname, 
+ *
+ * * schema:
+ * *    author_fname, author_lname,
  * *    pages, title, released_year, stock_quantity
  */
 
@@ -277,9 +192,9 @@ ORDER BY pages DESC
 LIMIT 1;
 
 /**
- * ? print summary containing the title and released_year, 
+ * ? print summary containing the title and released_year,
  * ? for the 3 most recent books
- * 
+ *
  * * Mad Men-2013
  */
 
@@ -302,7 +217,7 @@ WHERE author_lname LIKE '% %'
 ORDER BY title DESC;
 
 /**
- * ? find the 3 books with the lowest stock: 
+ * ? find the 3 books with the lowest stock:
  * ?    print title, released_year, and stock
  */
 
@@ -315,7 +230,7 @@ ORDER BY stock_quantity
 LIMIT 3;
 
 /**
- * ? print the title, author_lname: 
+ * ? print the title, author_lname:
  * ?    sorted by author_lname and then by title
  */
 
@@ -327,8 +242,8 @@ ORDER BY author_lname, title;
 
 /**
  * ? sort alphabetically by last name
- * ?    labeled as yell: 
- * 
+ * ?    labeled as yell:
+ *
  * *      'MY FAVORITE AUTHOR IS {author_fname} {author_lname}!'
  */
 
@@ -336,9 +251,9 @@ SELECT
     UPPER(
       CONCAT(
         'my favorite author is ',
-        author_fname, 
-        ' ', 
-        author_lname, 
+        author_fname,
+        ' ',
+        author_lname,
         '!'
       )
     ) AS 'yell'
@@ -350,8 +265,8 @@ ORDER BY author_lname;
  */
 
 /**
- * ? create student and papers table 
- * 
+ * ? create student and papers table
+ *
  * * schema:
  * *    students(primary key(id), first_name)
  * *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
@@ -373,7 +288,7 @@ CREATE TABLE papers (
 
 /**
  * ? populate the students and papers(student_id, title, grade) tables with 2 starter data
- * 
+ *
  * * schema:
  * *    students(primary key(id), first_name)
  * *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
@@ -394,8 +309,8 @@ INSERT INTO papers (student_id, title, grade ) VALUES
 (4, 'Borges and Magical Realism', 89);
 
 /**
- * ? EXERCISE 1: 
- * ? get the student first_name, paper title, paper grade, 
+ * ? EXERCISE 1:
+ * ? get the student first_name, paper title, paper grade,
  * ?    and student id of the respective paper and order by paper's grade DESC
  */
 
@@ -426,9 +341,9 @@ LEFT JOIN papers
     ON students.id = papers.student_id;
 
 /**
- * ? EXERCISE 3: get first_name, title, and grade of ALL students 
- * ?    and not just students that submitted a paper 
- * ?    AND mark any missing papers as "MISSING" 
+ * ? EXERCISE 3: get first_name, title, and grade of ALL students
+ * ?    and not just students that submitted a paper
+ * ?    AND mark any missing papers as "MISSING"
  * ?    and 0 for paper's title and grade, respectively
  * ?    order by grade first than student name
  */
@@ -444,8 +359,8 @@ ORDER BY paper.grade, students.first_name;
 
 /**
  * ? EXERCISE 4: describe the students table
- * ?    print the name and each and every student's average paper grade, 
- * ?    even if the student didn't submit a paper 
+ * ?    print the name and each and every student's average paper grade,
+ * ?    even if the student didn't submit a paper
  * ?    round the avg by 4 decimal positions and if missing, 0
  * ?    than rank from highest to lowest
  */
@@ -464,7 +379,7 @@ GROUP BY students.id
 ORDER BY average DESC;
 
 /**
- * ? EXERCISE 5: describe the students table 
+ * ? EXERCISE 5: describe the students table
  * ?    get each and every student's average paper grade of their paper grades,
  * ?    even if the student didn't submit a paper than rank from highest to lowest,
  * ?    finally mark their 'passing status' as 'PASSING' or 'FAILING' based on their average
@@ -502,7 +417,7 @@ ORDER BY average DESC;
  * *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
  * *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
  * *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
- * 
+ *
  * * on delete cascade for relevant fields and tables
  */
 
@@ -512,26 +427,26 @@ ORDER BY average DESC;
 
  SELECT database();
  USE imdb;
- 
+
  SHOW TABLES;
- 
+
  CREATE TABLE reviewers(
      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      first_name VARCHAR(100) NOT NULL DEFAULT 'MISSING',
      last_name VARCHAR(100) NOT NULL DEFAULT 'MISSING'
  );
- 
+
  DESC reviewers;
- 
+
  CREATE TABLE series(
      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      title VARCHAR(100) NOT NULL DEFAULT "MISSING",
      release_year YEAR(4) NOT NULL,
      genre VARCHAR(100)
  );
- 
+
  DESC series;
- 
+
  CREATE TABLE reviews(
      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      rating DECIMAL(2, 1),
@@ -552,10 +467,10 @@ ORDER BY average DESC;
 
  INSERT INTO reviewers(first_name, last_name)
  VALUES ("Ben", "Silver"), ("Carmen", "West");
- 
+
  INSERT INTO series(title, released_year, genre)
  VALUES ("Breaking Bad", 2007, "drama"), ("Game of Thrones", 2011, "comedy");
- 
+
  INSERT INTO reviews(rating, series_id, reviewer_id)
  VALUES (8.0, 1, 1), (6.5, 2, 1), (9.3, 1, 2);
 
@@ -563,7 +478,7 @@ ORDER BY average DESC;
 
  /**
   * ! challenge 1: reproduce the table below (no nulls):
-  
+
       title | rating
 
       archer | 8.0
@@ -582,7 +497,7 @@ ORDER BY title;
 
 /**
  * ! challenge 2: reproduce the table below (no nulls):
- 
+
     title | avg_rating
 
     General Hospital | 5.38000
@@ -639,7 +554,7 @@ LEFT JOIN reviews
     ON series.id = reviews.series_id
 WHERE reviews.rating IS NULL
 ORDER BY unreviewed_series DESC;
- 
+
  /**
  * ! challenge 5: reproduce the table below (there will be nulls):
 
@@ -680,7 +595,7 @@ SELECT
     reviewers.first_name,
     reviewers.last_name,
     IFNULL(
-        COUNT(reviews.rating), 
+        COUNT(reviews.rating),
         0
     ) AS "COUNT",
     IFNULL(
@@ -700,7 +615,7 @@ SELECT
     ) AS "AVG",
     CASE
         WHEN COUNT(reviews.rating) >= 10
-            THEN UPPER("power user") 
+            THEN UPPER("power user")
         WHEN COUNT(reviews.rating) > 0 AND COUNT(reviews.rating) < 10
             THEN UPPER("active")
         ELSE UPPER("inactive")
@@ -715,7 +630,7 @@ ORDER BY "STATUS";
 
 /**
  * ! challenge 7: reproduce the table below (no nulls):
- 
+
           title | rating | reviewer
 
           archer | 8.0 | thomas stoneman
@@ -723,7 +638,7 @@ ORDER BY "STATUS";
           archer | 8.5 | kimbra masters
           arrested development | 8.4 | pinkie petit
           arrested development | 9.9 | colt steele
-          bobs burgers | 7.0 | thomas stoneman 
+          bobs burgers | 7.0 | thomas stoneman
 
   */
 
@@ -745,16 +660,16 @@ ORDER by series.title;
 /**
  * ? manage a music db
 
- * * schema: 
+ * * schema:
 
- * *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY, 
- * *    name VARCHAR NOT NULL, artist INT), 
+ * *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+ * *    name VARCHAR NOT NULL, artist INT),
 
- * *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY, 
- * *    name VARCHAR NOT NULL), 
+ * *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+ * *    name VARCHAR NOT NULL),
 
- * *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY, 
- * *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING", 
+ * *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+ * *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
  * *       album INT)
  */
 
@@ -765,14 +680,14 @@ ORDER by series.title;
  CREATE DATABASE music_db;
  USE music_db;
  SELECT database();
- 
+
  CREATE TABLE artists_table(
      _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      name VARCHAR(100) NOT NULL
  );
- 
+
  DESC artists_table;
- 
+
  CREATE TABLE albums_table(
      _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      name VARCHAR(100) NOT NULL,
@@ -781,9 +696,9 @@ ORDER by series.title;
          REERENCES artists_table(_id)
          ON DELETE CASCADE
  );
- 
+
  DESC albums_table;
- 
+
  CREATE TABLE songs_table(
      _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY<
      track INT NOT NULL,
@@ -793,16 +708,16 @@ ORDER by series.title;
          REFERENCES albums_table(_id)
          ON DELETE CASCADE
  );
- 
+
  DESC songs_table;
- 
+
  SHOW TABLES;
 
 /**
- * ! create an artist_list as a view that prints 
- * 
- * ?    artists.name, albums.name, 
- * ?    and songs.track from a single query 
+ * ! create an artist_list as a view that prints
+ *
+ * ?    artists.name, albums.name,
+ * ?    and songs.track from a single query
  * ?    using multiple tables and order by artist, album, and then songs
  */
 
@@ -856,9 +771,9 @@ ORDER BY songs.track;
 
 SELECT songs.title
 FROM songs
-INNER JOIN albums 
+INNER JOIN albums
   ON songs.album = albums._id
-INNER JOIN artists 
+INNER JOIN artists
   ON albums.artist = artists._id
 WHERE artist.name = 'Deep Purple';
 
@@ -890,7 +805,7 @@ WHERE artist.name = 'Aerosmith'
 ORDER BY songs.title ASC;
 
 /**
- * ? GET count of song titles by Aerosmith 
+ * ? GET count of song titles by Aerosmith
  * ? only print the count as count
  */
 
@@ -923,7 +838,7 @@ ORDER BY songs.title DESC;
  * ? GET count of titles by Aerosmith
  */
 
-SELECT 
+SELECT
     COUNT(DISTINCT songs.title) AS "count"
 FROM songs
 INNER JOIN albums
@@ -949,11 +864,11 @@ GROUP BY artists._id
 ORDER BY "album count" DESC;
 
 /**
- * ? create many-to-many tables from instagram project 
- * 
+ * ? create many-to-many tables from instagram project
+ *
  * * schema:
  * *   users: id, username mandatory, created_at *timestamp now
- * *   photos: id, image_url mandatory, user_id mandatory *foreign key, created_at  
+ * *   photos: id, image_url mandatory, user_id mandatory *foreign key, created_at
  * *   comments: id, comment_text, photo_id *foreign key, user_id *foreign key, created_at *timestamp now
  * *   likes: user_id *foreign key, photo_id *foreign key, created_at, primary key
  * *   follows: follow_id *foreign key, followee_id *foreign key, created_at *timestamp now, primary key
@@ -976,10 +891,10 @@ DESC users;
 CREATE TABLE photos(
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   image_url VARCHAR(100) NOT NULL,
-  created_at DATETIME DEFAULT NOW, 
+  created_at DATETIME DEFAULT NOW,
   user_id INT NOT NULL,
   FOREIGN KEY(user_id) REFERENCES users(id)
-); 
+);
 
 DESC photos;
 
@@ -1013,7 +928,7 @@ SHOW TABLES;
 
 /**
  * ? What is the earliest date a user joined in the bulk dataset?
- * 
+ *
  * * need clean dataset using CREATE TABLE users
  */
 
