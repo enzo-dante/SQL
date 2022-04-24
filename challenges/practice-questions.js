@@ -1,31 +1,3 @@
-/**
- * ? CRUD challenge: update data from shirts table in shirts_db
- *
- * * schema:
- * *    shirt_id (auto_increment),
- * *    article(max 100 char),
- * *    color(max 100 char),
- * *    shirt_size(max 4 char), last_worn(int default 0)
- */
-
-// update all articles of polo shirts to size L
-SELECT *
-FROM shirts
-WHERE shirt_size = 'L';
-
-UPDATE shirts
-  SET shirt_size = 'L'
-  WHERE article = 'polo shirt';
-
-// update the shirt last worn 15 days ago to last_worn = 0
-SELECT *
-FROM shirts
-WHERE last_worn = 15;
-
-UPDATE shirts
-  SET last_worn = 0
-  WHERE last_worn = 15;
-
 // update multiple fields all white shirts to have
 //    a shirt_size of 'XS' and
 //    color of 'off white'
@@ -102,38 +74,12 @@ SELECT
 //    I_like_cats
 
 /**
- * ? string challenges
- *
- * * books table schema:
- * *    title, author_fname, author_lname,
- * *    released_year, stock_quantity
- */
-
-// ? replace spaces in titles with '->' with alias title
-
-SELECT
-  REPLACE(
-    title,
-    ' ',
-    '->') AS title
-FROM books;
-
-// ? print out author_lname and backwards author_lname
-// ?    in respective columns forward and backwards
-
-SELECT
-  author_lname AS forwards,
-  REVERSE(author_lname) AS backwards
-FROM books;
-
-// ? print out full author name (author_fname, author_lname)
-// ?    in caps with alias full name in caps
-
-SELECT
-  UPPER(
-    CONCAT_WS(' ', author_fname, author_lname)
-  ) AS 'full name in caps'
-FROM books;
+* ? string challenges
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
 
 // ? print alias blurb with row:
 // ?    {title} was released in {released_year}
@@ -164,101 +110,6 @@ SELECT
   CONCAT(stock_quantity, ' in stock'
   ) AS quantity
 FROM books;
-
-/**
- * ? Refining SELECT query for books db
- *
- * * schema:
- * *    author_fname, author_lname,
- * *    pages, title, released_year, stock_quantity
- */
-
-/**
- * ? select titles that contain 'stories' and order by descending
- */
-
-SELECT title
-FROM   books
-WHERE  title LIKE '%stories%'
-ORDER  BY title DESC;
-
-/**
- * ? find the longest book: print out the title and page count
- */
-
-SELECT title, pages
-FROM books
-ORDER BY pages DESC
-LIMIT 1;
-
-/**
- * ? print summary containing the title and released_year,
- * ? for the 3 most recent books
- *
- * * Mad Men-2013
- */
-
-SELECT
-  CONCAT_WS(
-    ' - ', title, released_year
-  ) AS 'summary'
-FROM books
-ORDER BY released_year DESC
-LIMIT 3;
-
-/**
- * ? find all the books (print only title and the author_lname)
- * ? that has an author_lname that contains a space (" ") and order by title descending
- */
-
-SELECT title, author_lname
-FROM books
-WHERE author_lname LIKE '% %'
-ORDER BY title DESC;
-
-/**
- * ? find the 3 books with the lowest stock:
- * ?    print title, released_year, and stock
- */
-
-SELECT
-  title,
-  released_year,
-  stock_quantity
-FROM books
-ORDER BY stock_quantity
-LIMIT 3;
-
-/**
- * ? print the title, author_lname:
- * ?    sorted by author_lname and then by title
- */
-
-SELECT
-  title,
-  author_lname
-FROM books
-ORDER BY author_lname, title;
-
-/**
- * ? sort alphabetically by last name
- * ?    labeled as yell:
- *
- * *      'MY FAVORITE AUTHOR IS {author_fname} {author_lname}!'
- */
-
-SELECT
-    UPPER(
-      CONCAT(
-        'my favorite author is ',
-        author_fname,
-        ' ',
-        author_lname,
-        '!'
-      )
-    ) AS 'yell'
-FROM books
-ORDER BY author_lname;
 
 /**
  * ? query one-to-many table from created students and papers table that uses prep data for respective table

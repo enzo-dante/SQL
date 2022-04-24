@@ -618,3 +618,365 @@ SELECT
     last_worn
 FROM shirts
     WHERE shirt_size = "M";
+
+/**
+* ? select titles that contain 'stories' and order by descending
+*
+* * schema:
+* *    author_fname, author_lname,
+* *    pages, title, released_year, stock_quantity
+*/
+
+SELECT
+    title
+FROM books
+    WHERE title LIKE "%stories%"
+    ORDER BY title DESC;
+
+/**
+* ? find the longest book: print out the title and page count
+*
+* * schema:
+* *    author_fname, author_lname,
+* *    pages, title, released_year, stock_quantity
+*/
+
+SELECT
+    title,
+    pages
+FROM books
+    ORDER BY pages DESC 
+    LIMIT 1;
+
+
+/**
+* ? print summary containing the title and released_year,
+* ? for the 3 most recent books
+*
+* * Mad Men-2013
+*
+* * schema:
+* *    author_fname, author_lname,
+* *    pages, title, released_year, stock_quantity
+*/
+
+SELECT
+    CONCAT(title, "-", released_year) AS "summary"
+FROM books
+ORDER BY released_year DESC
+LIMIT 3;
+
+/**
+* ? find all the books (print only title and the author_lname) from books table in book_shop db
+* ? that has an author_lname that contains a space (" ") and order by title descending
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    title,
+    author_lname
+FROM books
+    WHERE author_lname LIKE "% %"
+    ORDER BY title DESC;
+
+
+/**
+* ? print the title, author_lname from books table in book_shop
+* ?    sorted by author_lname and then by title
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    title,
+    author_lname
+FROM books
+    ORDER BY author_lname, title;
+
+/**
+* ? sort alphabetically by last name from books table in book_shop db
+* ?    labeled as yell:
+*
+* !      'MY FAVORITE AUTHOR IS {author_fname} {author_lname}!'
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    UPPER(
+        CONCAT(
+            "my favorite author is ",
+            author_fname,
+            " ",
+            author_lname,
+            "!"
+        )
+    ) AS "yell"
+FROM books
+    ORDER BY author_lname;
+
+/**
+* ? sum all pages by each author fullname has written in books table in book_shop db
+* ? order by highest-to-lowest page count and limit it to 5
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    CONCAT(
+        author_fname, " ", author_lname
+    ) AS "author",
+    SUM(pages) AS "totalPages"
+FROM books
+    GROUP BY author_lname, author_fname
+    ORDER BY "totalPages"
+        LIMIT 5;
+
+/**
+ * ? find the 3 books with the lowest stock in books table from book_shop db
+ * ?    print title, released_year, and stock
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    title,
+    released_year,
+    stock_quantity
+FROM books
+    ORDER BY stock_quantity
+        LIMIT 3;
+
+/**
+* ? calculate avg stock_quantity for books released in the year from books table in book_shop db 
+* ?     print released_year, count of books, avg 
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    COUNT(*) AS "total books/year",
+    released_year,
+    AVG(stock_quantity) AS "Stock/Year"
+FROM books
+    GROUP BY released_year;
+
+/**
+* ? replace spaces in titles with '->' with alias title from books table in book_shop db
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    REPLACE(
+        title,
+        " ",
+        "->") AS "title"
+FROM books;
+
+/**
+* ? print out author_lname and backwards author_lname from books table in book_shop db
+* ?    in respective columns forward and backwards and order by backwards 
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASE;
+SELECT database();
+USE book_shop;
+
+SELECT
+    author_lname AS "forwards",
+    REVERSE(author_lname) AS "backwards"
+FROM books
+ORDER BY backwards; 
+
+/**
+* ? print out full author name from books table in book_shop db 
+* ?    in caps with alias full name in caps
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    UPPER(
+        CONCAT(
+            author_fname, author_lname
+            )
+        ) AS "full name in caps" 
+FROM books;
+
+/**
+* ? print number of books in books table from book_shop db
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SELECT
+    COUNT(*) AS "numBooks"
+FROM books;
+
+/**
+* ? print number of books released in each year in books table from book_shop db
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SHOW TABLES;
+
+SELECT
+    released_year,
+    COUNT(*) AS "books per year"
+FROM books
+    GROUP BY released_year
+    ORDER BY 2 DESC;
+
+/**
+* ? print total number of books in stock in books table from book_shop db
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE book_shop;
+
+SHOW TABLES;
+
+SELECT
+    SUM(stock_quantity)
+FROM books;
+
+/**
+* ? update all articles of polo shirts to size L
+* ?     from shirts table in shirts_db
+*
+* * schema:
+* *    shirt_id (auto_increment),
+* *    article(max 100 char),
+* *    color(max 100 char),
+* *    shirt_size(max 4 char),
+* *    last_worn(int default 0)
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE shirts_db;
+
+-- select data before update
+SELECT
+    articles,
+    shirt_size
+FROM shirts
+    WHERE articles = "polo shirts";
+
+UPDATE shirts
+    SET shirt_size = "L"
+    WHERE articles = "polo shirts";
+
+/**
+* ? update the shirt last worn 15 days ago to last_worn = 0
+* ?     from shirts table in shirts_db
+*
+* * schema:
+* *    shirt_id (auto_increment),
+* *    article(max 100 char),
+* *    color(max 100 char),
+* *    shirt_size(max 4 char),
+* *    last_worn(int default 0)
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE shirts_db;
+
+-- select before update
+SELECT *
+FROM shirts
+WHERE last_worn = 15;
+
+UPDATE shirts
+    SET last_worn = 0
+    WHERE last_worn = 15;
+
+/**
+* ? update multiple fields all white shirts to have
+* ?     a shirt_size of 'XS' and
+* ?     color of 'off white'
+* ?     from shirts table in shirts_db
+*
+* * schema:
+* *    shirt_id (auto_increment),
+* *    article(max 100 char),
+* *    color(max 100 char),
+* *    shirt_size(max 4 char),
+* *    last_worn(int default 0)
+*/
+
+
+
