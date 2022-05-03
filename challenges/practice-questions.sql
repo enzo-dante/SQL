@@ -955,7 +955,7 @@ SHOW DATABASES;
 SELECT database();
 USE shirts_db;
 
--- select before update
+-- select before UPDATE
 SELECT *
 FROM shirts
 WHERE last_worn = 15;
@@ -978,5 +978,427 @@ UPDATE shirts
 * *    last_worn(int default 0)
 */
 
+SHOW DATABASES;
+SELECT database();
+USE shirts;
 
+-- select data before UPDATE
+SELECT *
+FROM shirts
+    WHERE color = "white";
+
+UPDATE shirts
+    SET 
+        shirt_size = UPPER("xs"),
+        color = "off white"
+    WHERE color = "white";
+
+/**
+* ? delete all old shirts that were last_worn 200 days ago
+* ?     from shirts table in shirts_db
+*
+* * schema:
+* *    shirt_id (auto_increment),
+* *    article(max 100 char),
+* *    color(max 100 char),
+* *    shirt_size(max 4 char),
+* *    last_worn(int default 0)
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE shirts_db;
+
+-- select data before DELETE
+SELECT *
+FROM shirts
+    WHERE last_worn = 200;
+
+DELETE FROM shirts
+    WHERE last_worn = 200;
+
+/**
+* ? create table items with the shop_db with a price column that accepts decimal values 
+* ? insert data into the new table and review it 
+*
+* * schema:
+* *   price (decimal value format: xxx.xx) 
+*/
+
+SHOW DATABASES;
+CREATE DATABASE shop_db;
+SELECT database();
+USE shop_db;
+
+CREATE TABLE items(
+    price DECIMAL(5, 2)
+);
+
+SHOW TABLES;
+DESC items;
+
+INSERT INTO items(price)
+    VALUES (7), (8.99999), (123.4);
+
+SELECT *
+FROM items;
+
+/**
+* ? delete all tank tops
+* ?     from shirts table in shirts_db
+*
+* * schema:
+* *    shirt_id (auto_increment),
+* *    article(max 100 char),
+* *    color(max 100 char),
+* *    shirt_size(max 4 char),
+* *    last_worn(int default 0)
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE shirts_db;
+
+-- select data before DELETE
+SELECT *
+FROM shirts
+    WHERE article = "tank top";
+
+DELETE FROM shirts
+    WHERE article = "tank top";
+
+/**
+* ? delete all shirts but keep table
+* ?     from shirts table in shirts_db
+*
+* * schema:
+* *    shirt_id (auto_increment),
+* *    article(max 100 char),
+* *    color(max 100 char),
+* *    shirt_size(max 4 char),
+* *    last_worn(int default 0)
+*/
+
+SHOW DATABASES;
+SELECT database();
+USE shirts;
+
+-- select data before DELETE
+SELECT *
+FROM shirts;
+
+DELETE FROM shirts;
+
+/**
+* ? drop shirts table in shirts_db
+*
+* * schema:
+* *    shirt_id (auto_increment),
+* *    article(max 100 char),
+* *    color(max 100 char),
+* *    shirt_size(max 4 char),
+* *    last_worn(int default 0)
+*/
+
+DROP TABLE shirts;
+SHOW TABLES;
+
+/**
+* ! use DECIMAL, instead of DOUBLE or FLOAT for percision
+*
+* ? create sale table, insert double values, and review 
+*
+* * schema:
+* *     price DOUBLE 
+*/
+
+CREATE TABLE sale(
+    price DOUBLE
+);
+
+DESC sale;
+
+INSERT INTO sale(price)
+    VALUES (23), (100.68), (1.9999);
+
+SELECT * FROM sale;
+
+/**
+* ? print short title (first 10 chars and ...),
+* ?    author (author_lname, author_fname),
+* ?    quantity ({num_in_stock} in stock)
+* ?         in books table from book_shop db
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SELECT
+    CONCAT(
+        SUBSTRING(title, 1, 10),
+        "..."
+        ) AS "short title",
+    CONCAT(
+        author_fname, " ", author_lname
+    ) AS "author",
+    CONCAT(
+        stock_quantity,
+        " in stock"
+    ) AS "quantity"
+FROM books;
+
+/**
+* ? print title and alias character count as the length of each title
+* ?         in books table from book_shop db
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SELECT
+    title,
+    CHAR_LENGTH(title) AS "title character count"
+FROM books;
+
+/**
+* ? print alias blurb with row:
+* ?    {title} was released in {released_year}
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SELECT
+    CONCAT(
+        title,
+        " was released in ",
+        released_year
+    ) AS "blurb"
+FROM books;
+
+/**
+* ? reverse and uppercase the following sentence
+* ?    "Why does my cat look at me with such hatred?"
+*
+* * books table schema:
+* *    title, author_fname, author_lname,
+* *    released_year, stock_quantity
+*/
+
+SELECT
+    REVERSE(
+        UPPER("Why does my cat look at me with such hatred?")
+    ) AS "blurb";
+
+/**
+* ! query one-to-many table from created students and papers table that uses prep data for respective table
+* 
+* ? create students and papers table in school_db
+*
+* * schema:
+* *    students(primary key(id), first_name)
+* *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
+*/
+
+CREATE DATABASE school_db;
+SHOW DATABASES;
+USE school_db;
+
+CREATE TABLE students(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL DEFAULT "MISSING"
+); 
+
+DESC student;
+
+CREATE TABLE papers(
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    title VARCHAR(100),
+    grade INT NOT NULL DEFAULT 0,
+    student_id INT,
+    FOREIGN KEY(student_id)
+        REFERENCES students(id)
+        ON DELETE CASCADE
+);
+
+DESC papers;
+
+SHOW TABLES;
+
+/**
+* ! query one-to-many table from created students and papers table that uses prep data for respective table
+* 
+* ? populate the students and papers(student_id, title, grade) tables with 2 starter data
+*
+* * schema:
+* *    students(primary key(id), first_name)
+* *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
+*/
+
+INSERT INTO students(first_name)
+VALUES
+    ('Caleb'),
+    ('Samantha'),
+    ('Raj'),
+    ('Carlos'),
+    ('Lisa');
+
+INSERT INTO papers(title, grade, student_id)
+VALUES
+    (1, 'My First Book Report', 60),
+    (1, 'My Second Book Report', 75),
+    (2, 'Russian Lit Through The Ages', 94),
+    (2, 'De Montaigne and The Art of The Essay', 98),
+    (4, 'Borges and Magical Realism', 89);
+
+/**
+* ! query one-to-many table from created students and papers table that uses prep data for respective table
+* 
+* ? get the student first_name, paper title, paper grade,
+* ?    and student id of the respective paper 
+* ?    and order by paper's grade DESC
+*
+* * schema:
+* *    students(primary key(id), first_name)
+* *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
+*/
+
+SELECT
+    students.id,
+    students.first_name,
+    papers.title,
+    papers.grade
+FROM students
+INNER JOIN papers
+    ON students.id = papers.student_id
+    ORDER BY papers.grade DESC;
+
+/**
+* ! query one-to-many table from created students and papers table that uses prep data for respective table
+* 
+* ? get first_name, title, and grade of ALL students
+* ?    and not just students that submitted a paper
+* !    READ: return NULL for student's that didn't submit a paper 
+*
+* * schema:
+* *    students(primary key(id), first_name)
+* *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
+*/
+
+SELECT 
+    students.first_name,
+    papers.title,
+    papers.grade
+FROM students
+LEFT JOIN papers
+    ON students.id = papers.student_id;
+
+/**
+* ! query one-to-many table from created students and papers table that uses prep data for respective table
+*
+* ? get first_name, title, and grade of ALL students
+* ?    and not just students that submitted a paper
+* !         READ: return NULL for student's that didn't submit a paper 
+* ?    AND mark any missing papers as "MISSING"
+* ?    and 0 for paper's title and grade, respectively
+* ?    order by grade first than student name
+*
+* * schema:
+* *    students(primary key(id), first_name)
+* *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
+*/
+
+SELECT
+    students.first_name,
+    IFNULL(papers.title, UPPER("missing")) AS "title",
+    IFNULL(papers.grade, 0) AS "grade"
+FROM students
+LEFT JOIN papers 
+    ON students.id = papers.student_id
+ORDER BY "grade", students.first_name DESC;
+
+/**
+* ! query one-to-many table from created students and papers table that uses prep data for respective table
+*
+* ? describe the students table
+* ?    print the name and each and every student's average paper grade,
+* ?    even if the student didn't submit a paper
+* !         READ: return NULL for student's that didn't submit a paper 
+* ?    round the avg by 4 decimal positions and if missing, 0
+* ?    than rank from highest to lowest
+*
+* * schema:
+* *    students(primary key(id), first_name)
+* *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
+*/
+
+SHOW TABLES;
+DESC students;
+
+SELECT
+    students.first_name AS "first name",
+    IFNULL(
+        ROUND(AVG(papers.grade), 4),
+        0) AS "avg"
+FROM students
+LEFT JOIN papers
+    ON students.id = papers.student_id
+GROUP BY students.id
+    ORDER BY "avg" DESC;
+
+/**
+* ! query one-to-many table from created students and papers table that uses prep data for respective table
+*
+* ? describe the students table
+* ?    get each and every student's average paper grade of their paper grades,
+* ?    even if the student didn't submit a paper 
+* !         READ: return NULL for student's that didn't submit a paper 
+* ?    than rank from highest to lowest,
+* ?    finally mark their 'passing status' as 'PASSING' or 'FAILING' based on their average
+* ?      passing if grade >= 75, failing if grade < 75, if null failing
+*
+* * schema:
+* *    students(primary key(id), first_name)
+* *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
+*/
+
+SHOW TABLES;
+DESC students;
+
+SELECT
+    students.first_name AS "first name"
+    IFNULL(
+        ROUND(
+            AVG(papers.grade),
+            4),
+        0
+    ) AS "avg grade",
+    WHEN
+        CASE "avg grade" IS NULL
+            THEN UPPER("failing")
+        CASE "avg grade" >= 75
+            THEN UPPER("passing")
+        ELSE
+            UPPER("failing")
+    END AS "passing status"
+FROM students
+LEFT JOIN papers
+    ON students.id = papers.student_id
+GROUP BY students.id
+    ORDER BY "avg grade" DESC;
+
+/**
+* ! query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ? create reviewer, series, and review tables with the many-to-many connections for the review table
+* ?     on delete cascade for relevant fields and tables
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*/
 
