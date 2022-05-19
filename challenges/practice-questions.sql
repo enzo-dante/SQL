@@ -1393,7 +1393,7 @@ GROUP BY students.id
 /**
 * ! query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
 *
-* ? create reviewer, series, and review tables with the many-to-many connections for the review table
+* ? in imdb database, create reviewer, series, and reviews tables with the many-to-many connections for the review table
 * ?     on delete cascade for relevant fields and tables
 *
 * * schema:
@@ -1401,4 +1401,537 @@ GROUP BY students.id
 * *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
 * *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
 */
+
+SHOW DATABASES;
+SELECT database();
+
+CREATE DATABASE imbd;
+USE imdb;
+
+CREATE TABLE reviewers(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL DEFAULT "MISSING",
+    last_name VARCHAR(100) NOT NULL DEFAULT "MISSING",
+);
+
+DESC reviewers;
+
+CREATE TABLE series(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL DEFAULT "MISSING",
+    released_year YEAR(4) NOT NULL,
+    genre VARCHAR(100)
+);
+
+DESC series;
+
+CREATE TABLE reviews(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rating DECIMAL(2, 1),
+    series_id INT,
+    reviewer_id INT,
+    FOREIGN KEY(series_id) 
+        REFERENCES series(id)
+            ON DELETE CASCADE,
+    FOREIGN KEY(reviewer_id) 
+        REFERENCES reviewers(id)
+            ON DELETE CASCADE
+);
+
+DESC reviews;
+SHOW TABLES;
+
+/**
+* ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ! insert test data into tables and inspect data in reviews
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*
+* * on delete cascade for relevant fields and tables
+*/
+
+USE imdb;
+
+INSERT INTO reviewers(first_name, last_name)
+VALUES("Ben", "Silver"), ("Lisa", "Newman");
+
+SELECT *
+FROM reviewers;
+
+INSERT INTO series(title, released_year, genre)
+VALUES ("Breaking Bad", 2007, "drama"), ("Game of Thrones", 2011, "comedy");
+
+SELECT *
+FROM series;
+
+INSERT INTO reviews(rating, series_id, reviewer_id)
+VALUES (8.0, 1, 1), (6.5, 2, 1), (9.3, 1, 2);
+
+SELECT *
+FROM reviews;
+
+/**
+* ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ! challenge 1: reproduce the table below (no nulls):
+
+      title | rating
+
+      archer | 8.0
+      archer | 7.5
+      arrested development | 8.9
+      arrested development | 9.9
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*
+* * on delete cascade for relevant fields and tables
+*/
+
+SELECT
+    series.title AS "title",
+    reviews.rating AS "rating"
+FROM series
+INNER JOIN reviews
+    ON series.id = reviews.series_id
+ORDER BY series.title;
+
+/**
+* ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ! challenge 2: reproduce the table below (no nulls):
+
+    title | avg_rating
+
+    General Hospital | 5.38
+    Fargo | 9.40
+    Halt and Catch Fire | 9.90
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*
+* * on delete cascade for relevant fields and tables
+*/
+
+SELECT
+    series.title AS "title",
+    ROUND(AVG(reviews.rating), 3) AS "avg_rating"
+FROM series
+INNER JOIN reviews
+    ON series.id = reviews.series_id
+GROUP BY series.id
+    ORDER BY "avg_rating";
+
+/**
+* ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ! challenge 3: reproduce the table below (no nulls):
+
+  first_name | last_name | rating
+
+  Thomas | Stoneman | 8.0
+  Wyat | Skaggs | 8.5
+  Wyat | Skaggs | 7.5
+  Wyat | Skaggs | 9.3
+  Kimbra | Masters | 7.1
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*
+* * on delete cascade for relevant fields and tables
+*/
+
+SELECT
+    reviewers.first_name,
+    reviewers.last_name,
+    reviews.rating
+FROM reviewers
+INNER JOIN reviews
+    ON reviewers.id = reviews.reviewer_id
+ORDER BY reviewers.last_name DESC;
+
+/**
+* ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ! challenge 4: reproduce the table below (there will be nulls):
+
+    unreviewed_series
+
+    Malcolm in the Middle
+    Pushing Daisies
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*
+* * on delete cascade for relevant fields and tables
+*/
+
+SELECT
+    series.title AS "unreviewed_series"
+FROM series
+LEFT JOIN reviews
+    ON series.id = reviews.series_id
+WHERE reviews.rating IS NULL
+    ORDER BY unreviewed_series;
+
+/**
+* ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ! challenge 5: reproduce the table below (there will be nulls):
+
+   genre | avg_rating
+
+   Animation | 7.86
+   Comedy | 8.16
+   Drama | 8.04
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*
+* * on delete cascade for relevant fields and tables
+*/
+
+SELECT
+    series.genre,
+    ROUND(
+        AVG(rating),
+        2)
+    AS "avg_rating"
+FROM reviews
+LEFT JOIN series
+    ON reviews.series_id = series.id
+GROUP BY series.genre
+    ORDER BY series.genre, "avg_rating"; 
+
+/**
+* ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ! challenge 6: reproduce the table below (there will be nulls):
+
+   first_name | last_name | COUNT | MIN | MAX | AVG | STATUS
+
+   thomas  | stoneman | 5  | 7.0  | 9.5 | 8.02 | ACTIVE
+   wyatt   | skaggs   | 9  | 5.5  | 9.3 | 7.80 | ACTIVE
+   colt    | steele   | 10 | 4.5  | 9.9 | 8.77 | POWER USER
+   marlon  | crafford | 0  | 0    | 0   | 0.00 | INACTIVE
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*
+* * on delete cascade for relevant fields and tables
+*/
+
+SELECT
+    reviewers.first_name,
+    reviewers.last_name,
+    IFNULL(
+        COUNT(reviews.id),
+        0) AS "COUNT",
+    IFNULL(
+        ROUND(
+            MIN(reviews.rating),
+            1),
+         0) AS "MIN",
+    IFNULL(
+        ROUND(
+            MAX(reviews.rating),
+            1),
+         0) AS "MAX",
+    IFNULL(
+        ROUND(
+            AVG(reviews.rating),
+            2),
+        0.00) AS "AVG"
+    CASE
+        WHEN COUNT(reviews.rating) >= 10
+            THEN UPPER("power user")
+        WHEN COUNT(reviews.rating) > 0 
+            AND COUNT(reviews.rating) < 10
+                THEN UPPER("active")
+        ELSE
+            UPPER("inactive")
+    END AS UPPER("status")
+FROM reviews
+LEFT JOIN reviewers
+    ON reviews.reviewer_id = reviewer.id
+LEFT JOIN series
+    ON reviews.series_id = series.id 
+GROUP BY reviews.id
+    ORDER BY "MIN"
+
+/**
+* ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
+*
+* ! challenge 7: reproduce the table below (no nulls):
+
+    title | rating | reviewer
+
+    archer | 8.0 | thomas stoneman
+    archer | 7.0 | domingo cortes
+    archer | 8.5 | kimbra masters
+    arrested development | 8.4 | pinkie petit
+    arrested development | 9.9 | colt steele
+    bobs burgers | 7.0 | thomas stoneman
+*
+* * schema:
+* *    reviewers(id, first_name default 'MISSING', last_name default 'MISSING')
+* *    series(id, title default "MISSING", released_year 4-digit mandatory, genre)
+* *    reviews(id, rating MIN 0.0 to MAX 9.9, series_id, reviewer_id)
+*
+* * on delete cascade for relevant fields and tables
+*/
+
+SELECT
+    series.title,
+    reviews.rating,
+    CONCAT(reviewer.first_name, " ", reviewer.last_name) AS "reviewer"
+FROM reviews
+INNER JOIN series
+    ON reviews.series_id = series.id
+INNER JOIN reviewers
+    ON reviews.reviewer_id = reviewers.id 
+ORDER BY series.title
+
+/**
+* ! manage a music db
+*
+* ? create a music db and create the 3 linked tables (many-to-many) in the music db
+* ?     deleting row structure managed & order of table creation matters
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+CREATE DATABASE music_db;
+
+SHOW DATABASES;
+SELECT database();
+USE music_db;
+
+CREATE TABLE artists_table(
+    _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(10) NOT NULL
+);
+
+DESC artists_table;
+
+CREATE TABLE albums_table(
+    _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    artist INT NOT NULL,
+    FOREIGN KEY(artist) 
+        REFERENCES artists_table(_id)
+        ON DELETE CASCADE
+);
+
+DESC albums_table;
+
+CREATE TABLE songs_table(
+    _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    track INT NOT NULL,
+    title VARCHAR(20) NOT NULL DEFAULT "MISSING",
+    album INT,
+    FOREIGN KEY(album) 
+        REFERENCES albums_table(_id)
+        ON DELETE CASCADE
+);
+
+DESC songs_table;
+
+SHOW TABLES;
+
+/**
+* ! manage a music db
+*
+* ? create a music db and create the 3 linked tables (many-to-many) in the music db
+* ?     deleting row structure managed & order of table creation matters
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+/**
+* ! manage a music db
+*
+* ! create an artist_list as a view that prints
+*
+* ?    artists.name, albums.name,
+* ?    and songs.track for a single query
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+
+/**
+* ! manage a music db
+*
+* ! only get valid data for artists name, albums name, and songs.track 
+* ?     from artist_list view and order by artists, albums, and then songs
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+/**
+* ! manage a music db
+*
+* ? remove artists_list view
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+DROP VIEW artists_list;
+
+/**
+* ! manage a music db
+*
+* ? get the valid titles of all the songs on the album forbidden
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+SELECT
+    albums_table.name,
+    songs_table.title
+FROM songs_table
+INNER JOIN albums_table
+    ON songs_table.album = albums_table._id
+WHERE albums_table.name = "Forbidden";
+
+/**
+* ! manage a music db
+*
+* ? print the valid titles of all the songs on the album forbidden
+* ? but display in track order and include track number for verification
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+SELECT
+    albums_table.name,
+    songs_table.title,
+    songs_table.track
+FROM songs_table
+INNER JOIN albums_table
+    ON songs_table.album = albums_table._id
+WHERE albums_table.name = "Forbidden"
+    ORDER BY songs_table.track DESC;
+
+/**
+* ! manage a music db
+*
+* ? display all valid tracks and respective songs by the band 'Deep Purple'
+* ?     order of query structure matters
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+SELECT
+    artists_table.name AS "artist",
+    songs_table.track AS "track",
+    songs_table.title AS "title"
+FROM songs_table
+INNER JOIN albums_table
+    ON songs_table.album = albums_table._id
+INNER JOIN artists_table
+    ON albums_table.artist = artists_table._id
+WHERE artists_table.name = "Deep Purple"
+    ORDER BY songs_table.track DESC
+
+
+
+
 
