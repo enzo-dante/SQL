@@ -1931,7 +1931,92 @@ INNER JOIN artists_table
 WHERE artists_table.name = "Deep Purple"
     ORDER BY songs_table.track DESC
 
+/**
+* ! manage a music db
+*
+* ? rename band 'Mehitabel' to 'One Kitten' and verify
+*
+* * HINT: all data needs to be valid
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
 
+-- BEST PRACTICE: SELECT data first, that UPDATE db
 
+SELECT *
+FROM artists_table
+    WHERE artists_table.name = "Mehitabel";
 
+UPDATE artists_table
+    SET artists_table.name = "One Kitten"
+    WHERE artists_table.name = "Mehitabel";
+
+/**
+* ! manage a music db
+*
+* ? retrieve song titles by Aerosmith in alphabetical order, only print title
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+SELECT
+    songs_table.title
+FROM songs_table
+INNER JOIN albums_table
+    ON songs_table.album = albums_table._id 
+INNER JOIN artists_table
+    ON albums_table.artist = artists_table._id
+WHERE artists_table.name = "Aerosmith"
+    ORDER BY songs_table.title;
+
+/**
+* ! manage a music db
+*
+* ? retrieve the count of song titles by Aerosmith & only print the count as count
+*
+* * schema:
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL, artist INT),
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *    name VARCHAR NOT NULL),
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
+* *       album INT)
+*/
+
+-- COUNT(*) = count all data rows
+-- COUNT(*) w/ GROUP BY = count all subrows under a collective banner
+
+SELECT
+    COUNT(*) AS "count"
+FROM songs_table
+INNER JOIN albums_table
+    ON songs_table.album = albums_table._id
+INNER JOIN artists_table
+    ON albums_table.artist = artists_table._id
+GROUP BY artists_table._id
+    WHERE artists_table.name = "Aerosmith";
 

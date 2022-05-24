@@ -1,7 +1,8 @@
 /**
 * ! manage a music db
 *
-* ? display all tracks and respective songs by the band 'Deep Purple'
+* ? GET count of song titles by Aerosmith
+* ? only print the count as count
 *
 * * schema:
 *
@@ -32,48 +33,6 @@ INNER JOIN artists
     ON albums.artist = artists.id
         ON DELETE CASCADE
 ORDER BY artists.name, albums.name, songs.track;
-
-/**
- * ? rename band 'Mehitabel' to 'One Kitten' and verify
- */
-
-SELECT *
-FROM artists
-WHERE name = 'Mehitabel';
-
-UPDATE artists
-  SET name = 'One Kitten'
-  WHERE name = 'Mehitabel';
-
-SELECT *
-FROM artists
-WHERE name = 'One Kitten';
-
-/**
- * ? GET song titles by Aerosmith in alphabetical order, only print title
- */
-
-SELECT song.titles
-FROM songs
-INNER JOIN albums ON songs.album = albums._id
-INNER JOIN artists ON albums.artist = artists._id
-WHERE artist.name = 'Aerosmith'
-ORDER BY songs.title ASC;
-
-/**
- * ? GET count of song titles by Aerosmith
- * ? only print the count as count
- */
-
-SELECT
-    COUNT(DISTINCT songs.title) AS "count"
-FROM songs
-INNER JOIN albums
-    ON songs.album = albums._id
-INNER JOIN artists
-    ON albums.artist = artists._id
-GROUP BY artists._id
-WHERE artists.name = "Aerosmith";
 
 /**
  * ? search the internet on how to make query without duplicates for below:
