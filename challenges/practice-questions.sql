@@ -554,16 +554,71 @@ FROM cats;
 DELETE * FROM cats;
 
 /**
- * ? CRUD challenge:
- * ?    create db, use db, create table shirts,
- * ?    and insert test data
- *
- * * schema:
- * *    shirt_id (auto_increment),
- * *    article(max 100 char),
- * *    color(max 100 char),
- * *    shirt_size(max 4 char), last_worn(int default 0)
- */
+* ! query one-to-many table from created customers and orders table that uses prep data for respective table
+*
+* ? create linked tables customers & orders in the shop_db & validate
+*
+* * schema:
+* *     customers(id, first_name (100 characters), last_name (100 characters), email (100 characters))
+* *     orders(id, order_date(date & time), amount(decimal, max 999,999.99), customer_id)
+*/
+
+SHOW DATABASES;
+SELECT database();
+
+CREATE DATABASE shop_db;
+USE shop_db;
+
+CREATE TABLE customers(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+SHOW TABLES;
+DESC customers;
+
+CREATE TABLE orders(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    order_date DATETIME,
+    amount DECIMAL(8,2),
+    customer_id INT,
+    FOREIGN KEY(customer_id)
+        REFERENCES customers(id)
+);
+
+SHOW TABLES;
+DESC orders;
+
+INSERT INTO customers(first_name, last_name, email)
+VALUES("Test First 1", "Test Last 1", "one@gmail.com"), 
+    ("Test First 2", "Test Last 2", "two@gmail.com");
+
+SELECT *
+FROM customers;
+
+INSERT INTO orders(order_date, amount, customer_id)
+VALUES("12-04-22", 50212.33, 1)
+
+SELECT *
+FROM ORDERS;
+
+/**
+* ? DATETIME challenges:
+*/
+
+/**
+* ? CRUD challenge:
+* ?    create db, use db, create table shirts,
+* ?    and insert test data
+*
+* * schema:
+* *    shirt_id (auto_increment),
+* *    article(max 100 char),
+* *    color(max 100 char),
+* *    shirt_size(max 4 char), last_worn(int default 0)
+*/
 
 SELECT database();
 SHOW DATABASES;
