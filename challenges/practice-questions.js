@@ -35,35 +35,6 @@ INNER JOIN artists
 ORDER BY artists.name, albums.name, songs.track;
 
 /**
- * ? search the internet on how to make query without duplicates for below:
- * ? print titles by Aerosmith in alphabetical order, only print title
- */
-
-SELECT DISTINCT songs.titles
-FROM songs
-INNER JOIN albums
-    ON songs.album = albums._id
-INNER JOIN artists
-    ON albums.artist = artists._id
-WHERE artists.name = "Aerosmith"
-ORDER BY songs.title DESC;
-
-/**
- * ? search the internet on how to make query without duplicates for below:
- * ? GET count of titles by Aerosmith
- */
-
-SELECT
-    COUNT(DISTINCT songs.title) AS "count"
-FROM songs
-INNER JOIN albums
-    ON songs.album = albums._id
-INNER JOIN artists
-    ON albums.artist = albums._id
-GROUP BY artists._id
-WHERE artist.name = "Aerosmith"
-
-/**
  * ? find the number of unique albums by artist
  */
 

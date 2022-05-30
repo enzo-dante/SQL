@@ -586,6 +586,7 @@ CREATE TABLE orders(
     customer_id INT,
     FOREIGN KEY(customer_id)
         REFERENCES customers(id)
+        ON DELETE CASCADE
 );
 
 SHOW TABLES;
@@ -2075,3 +2076,68 @@ INNER JOIN artists_table
 GROUP BY artists_table._id
     WHERE artists_table.name = "Aerosmith";
 
+/**
+* ! manage a music db
+*
+* ? your customer only wants titles by Aerosmith in alphabetical order
+*
+* * search the internet on how to make query without duplicates for below:
+*
+* * schema:
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *                 name VARCHAR NOT NULL)
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *                 name VARCHAR NOT NULL, 
+* *                 artist INT)
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *               track INT NOT NULL, 
+* *               title VARCHAR NOT NULL DEFAULT "MISSING",
+* *               album INT)
+*/
+
+SELECT
+    DISTINCT titles
+FROM artists_table
+INNER JOIN albums_table
+    ON artists_table._id = albums_table.artist
+INNER JOIN songs_table
+    ON albums_table._id = songs_table.album
+WHERE artists_table.name = "Aerosmith"
+    ORDER BY songs_table.title DESC;
+
+/**
+* ! manage a music db
+*
+* ? your client wants to know the count of all the titles by Aerosmith; label as "title count"
+*
+* * search the internet on how to make query without duplicates for below:
+*
+* * schema:
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *                 name VARCHAR NOT NULL)
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *                 name VARCHAR NOT NULL, 
+* *                 artist INT)
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *               track INT NOT NULL, 
+* *               title VARCHAR NOT NULL DEFAULT "MISSING",
+* *               album INT)
+*/
+
+SELECT
+    COUNT(
+        DISTINCT songs_table.title
+    ) AS "title count"
+FROM songs_table
+INNER JOIN albums_table
+    ON songs_table.album = albums_table._id
+INNER JOIN artists_table
+    ON albums_table.artist = artists_table._id
+GROUP BY artists_table._id
+WHERE artists_table.name = "Aerosmith"
