@@ -2141,3 +2141,145 @@ INNER JOIN artists_table
     ON albums_table.artist = artists_table._id
 GROUP BY artists_table._id
 WHERE artists_table.name = "Aerosmith"
+
+/**
+* ! manage a music db
+*
+* ? find the number of unique albums by artist & order highest-to-lowest
+*
+* * search the internet on how to make query without duplicates for below:
+*
+* * schema:
+*
+* *    artists_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *                 name VARCHAR NOT NULL)
+*
+* *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *                 name VARCHAR NOT NULL, 
+* *                 artist INT)
+*
+* *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
+* *               track INT NOT NULL, 
+* *               title VARCHAR NOT NULL DEFAULT "MISSING",
+* *               album INT)
+*/
+
+SELECT
+    artists_table.name,
+    COUNT(
+        DISTINCT albums_table.name
+    ) AS "unique numAlbums"
+FROM albums_table
+INNER JOIN artists_table
+    ON albums_table.artist = artists_table._id
+GROUP BY artists_table._id
+    ORDER BY 2 DESC;
+
+/**
+* ? create many-to-many tables for ig_db 
+*
+* * schema:
+* *   users: id, username mandatory & one-of-a-kind, created_at *datetime now
+* *   photos: id, image_url mandatory, user_id mandatory *foreign key, created_at
+* *   comments: id, comment_text mandatory, photo_id *foreign key, user_id *foreign key, created_at *datetime now
+* *   likes: user_id *foreign key, photo_id *foreign key, created_at, primary key order: user_id & photo_id
+* *   follows: follow_id *foreign key, followee_id *foreign key, created_at *datetime now, primary key order: user_id & photo_id
+* *   tags: id, tag_name unique, created_at *datetime now
+* *   photo_tags: photo_id *foreign key, tag_id *foreign key, primary key order: user_id & photo_id
+*/
+
+SHOW DATABASES;
+SELECT database();
+
+CREATE DATABASE ig_db;
+USE ig_db;
+
+CREATE TABLE users(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(20) NOT NULL UNIQUE,
+    created_at DATETIME DEFAULT NOW()
+);
+
+DESC users;
+SHOW TABLES;
+
+CREATE TABLE photos(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    image_url VARCHAR(100) NOT NULL,
+    created_at DATETIME DEFAULT NOW(),
+    user_id INT NOT NULL,
+    FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
+DESC photos;
+
+CREATE TABLE comments(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    comment_text VARCHAR(500) NOT NULL,
+    created_at DATETIME DEFAULT NOW(),
+    photo_id INT NOT NULL,
+    user_id INT NOT NULL, 
+    FOREIGN KEY(photo_id)
+        REFERENCES photos(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
+DESC comments;
+
+CREATE TABLE likes(
+    created_at DATETIME DEFAULT NOW(),
+    user_id INT NOT NULL,
+    photo_id INT NOT NULL,
+    FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY(photo_id)
+        REFERENCES photos(id)
+        ON DELETE CASCADE,
+    PRIMARY KEY(user_id, photo_id)
+);
+
+DESC likes;
+
+CREATE TABLE follows(
+    created_at DATETIME DEFAULT NOW(),
+    follower_id INT NOT NULL,
+    followee_id INT NOT NULL,
+    FOREIGN KEY(follower_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY(followee_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+    PRIMARY KEY(follower_id, followee_id)
+);
+
+DESC follows;
+
+CREATE TABLE tags(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(255) UNIQUE,
+    created_at DATETIME DEFAULT NOW()
+);
+
+DESC tags;
+
+CREATE TABLE photo_tags(
+    photo_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    FOREIGN KEY(photo_id)
+        REFERENCES photos(id)
+        ON DELETE CASCADE,
+    FOREIGN KEY(tag_id)
+        REFERENCES tags(id)
+        ON DELETE CASCADE,
+    PRIMARY KEY(photo_id, tag_id)
+);
+
+DESC photo_tags;
+SHOW TABLES;

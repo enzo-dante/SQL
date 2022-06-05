@@ -35,67 +35,18 @@ INNER JOIN artists
 ORDER BY artists.name, albums.name, songs.track;
 
 /**
- * ? find the number of unique albums by artist
- */
+* ? create many-to-many tables from instagram project
+*
+* * schema:
+* *   users: id, username mandatory, created_at *timestamp now
+* *   photos: id, image_url mandatory, user_id mandatory *foreign key, created_at
+* *   comments: id, comment_text, photo_id *foreign key, user_id *foreign key, created_at *timestamp now
+* *   likes: user_id *foreign key, photo_id *foreign key, created_at, primary key
+* *   follows: follow_id *foreign key, followee_id *foreign key, created_at *timestamp now, primary key
+* *   tags: id, tag_name, created_at *timestamp now
+* *   photo_tags: photo_id *foreign key, tag_id *foreign key, primary key
+*/
 
-SELECT
-    artist.name,
-    COUNT(DISTINCT albums.title) AS "album count"
-FROM songs
-INNER JOIN albums
-    ON songs.album = albums._id
-INNER JOIN artists
-    ON albums.artist = artists._id
-GROUP BY artists._id
-ORDER BY "album count" DESC;
-
-/**
- * ? create many-to-many tables from instagram project
- *
- * * schema:
- * *   users: id, username mandatory, created_at *timestamp now
- * *   photos: id, image_url mandatory, user_id mandatory *foreign key, created_at
- * *   comments: id, comment_text, photo_id *foreign key, user_id *foreign key, created_at *timestamp now
- * *   likes: user_id *foreign key, photo_id *foreign key, created_at, primary key
- * *   follows: follow_id *foreign key, followee_id *foreign key, created_at *timestamp now, primary key
- * *   tags: id, tag_name, created_at *timestamp now
- * *   photo_tags: photo_id *foreign key, tag_id *foreign key, primary key
- */
-
-SELECT database();
-CREATE DATABASE instagram_db;
-USE instagram_db;
-
-CREATE TABLE users(
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50) NOT NULL,
-  created_at DATETIME DEFAULT NOW
-);
-
-DESC users;
-
-CREATE TABLE photos(
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  image_url VARCHAR(100) NOT NULL,
-  created_at DATETIME DEFAULT NOW,
-  user_id INT NOT NULL,
-  FOREIGN KEY(user_id) REFERENCES users(id)
-);
-
-DESC photos;
-
-CREATE TABLE comments(
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  comment_text VARCHAR(500),
-  created_at DATETIME DEFAULT NOW,
-  photo_id INT NOT NULL,
-  user_id INT NOT NULL,
-  FOREIGN KEY(photo_id) REFERENCES photos(id),
-  FOREIGN KEY(user_id) REFERENCES users(id)
-);
-
-DESC comments;
-SHOW TABLES;
 
 /**
  * ! SQL with JS practice problems
