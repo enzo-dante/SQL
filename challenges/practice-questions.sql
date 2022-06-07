@@ -1993,6 +1993,7 @@ WHERE artists_table.name = "Deep Purple"
 * ? rename band 'Mehitabel' to 'One Kitten' and verify
 *
 * * HINT: all data needs to be valid
+* * BEST PRACTICE: SELECT data first, that UPDATE db
 *
 * * schema:
 *
@@ -2006,8 +2007,6 @@ WHERE artists_table.name = "Deep Purple"
 * *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
 * *       album INT)
 */
-
--- BEST PRACTICE: SELECT data first, that UPDATE db
 
 SELECT *
 FROM artists_table
@@ -2046,6 +2045,7 @@ WHERE artists_table.name = "Aerosmith"
     ORDER BY songs_table.title;
 
 /**
+*
 * ! manage a music db
 *
 * ? retrieve the count of song titles by Aerosmith & only print the count as count
@@ -2077,6 +2077,7 @@ GROUP BY artists_table._id
     WHERE artists_table.name = "Aerosmith";
 
 /**
+*
 * ! manage a music db
 *
 * ? your customer only wants titles by Aerosmith in alphabetical order
@@ -2143,6 +2144,7 @@ GROUP BY artists_table._id
 WHERE artists_table.name = "Aerosmith"
 
 /**
+*
 * ! manage a music db
 *
 * ? find the number of unique albums by artist & order highest-to-lowest
@@ -2176,16 +2178,46 @@ GROUP BY artists_table._id
     ORDER BY 2 DESC;
 
 /**
+*
+* ! instagram challenges
+*
 * ? create many-to-many tables for ig_db 
 *
-* * schema:
-* *   users: id, username mandatory & one-of-a-kind, created_at *datetime now
-* *   photos: id, image_url mandatory, user_id mandatory *foreign key, created_at
-* *   comments: id, comment_text mandatory, photo_id *foreign key, user_id *foreign key, created_at *datetime now
-* *   likes: user_id *foreign key, photo_id *foreign key, created_at, primary key order: user_id & photo_id
-* *   follows: follow_id *foreign key, followee_id *foreign key, created_at *datetime now, primary key order: user_id & photo_id
-* *   tags: id, tag_name unique, created_at *datetime now
-* *   photo_tags: photo_id *foreign key, tag_id *foreign key, primary key order: user_id & photo_id
+* * db schema:
+*
+* *   users: 
+*       id,
+*       username (mandatory & one-of-a-kind),
+*       created_at (current date & time)
+* *   photos: 
+*       id, 
+*       image_url mandatory, 
+*       created_at,
+*       user_id (mandatory & foreign key)
+* *   comments: 
+*       id, 
+*       comment_text mandatory, 
+*       photo_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key), 
+* *   likes: 
+*       created_at (current date & time), 
+*       user_id (foreign key), 
+*       photo_id (foreign key), 
+*       primary key order: user_id & photo_id
+* *   follows: 
+*       created_at (current date & time), 
+*       follow_id *foreign key, 
+*       followee_id *foreign key, 
+*       primary key order: user_id & photo_id
+* *   tags: 
+*       id, 
+*       tag_name unique, 
+*       created_at (current date time) 
+* *   photo_tags: 
+*       photo_id (foreign key),
+*       tag_id (foreign key), 
+*       primary key order: user_id & photo_id
 */
 
 SHOW DATABASES;
@@ -2283,3 +2315,107 @@ CREATE TABLE photo_tags(
 
 DESC photo_tags;
 SHOW TABLES;
+
+/**
+*
+* ! instagram challenges
+*
+* ? we want to reward our users who have been around the longest, find the 5 oldest users 
+*
+* * db schema:
+*
+* *   users: 
+*       id,
+*       username (mandatory & one-of-a-kind),
+*       created_at (current date & time)
+* *   photos: 
+*       id, 
+*       image_url mandatory, 
+*       created_at,
+*       user_id (mandatory & foreign key)
+* *   comments: 
+*       id, 
+*       comment_text mandatory, 
+*       photo_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key), 
+* *   likes: 
+*       created_at (current date & time), 
+*       user_id (foreign key), 
+*       photo_id (foreign key), 
+*       primary key order: user_id & photo_id
+* *   follows: 
+*       created_at (current date & time), 
+*       follow_id *foreign key, 
+*       followee_id *foreign key, 
+*       primary key order: user_id & photo_id
+* *   tags: 
+*       id, 
+*       tag_name unique, 
+*       created_at (current date time) 
+* *   photo_tags: 
+*       photo_id (foreign key),
+*       tag_id (foreign key), 
+*       primary key order: user_id & photo_id
+*/
+
+SELECT *
+FROM users
+ORDER BY created_at DESC
+    LIMIT 5;
+
+/**
+*
+* ! instagram challenges
+*
+* ? what day of the week do most users register on (labeled: most popular registration day),
+* ? we need to figure out when to schedule an ad campaign 
+*
+* * HINT: https://www.mssqltips.com/sqlservertip/2655/format-sql-server-dates-with-format-function/
+*
+* * db schema:
+*
+* *   users: 
+*       id,
+*       username (mandatory & one-of-a-kind),
+*       created_at (current date & time)
+* *   photos: 
+*       id, 
+*       image_url mandatory, 
+*       created_at,
+*       user_id (mandatory & foreign key)
+* *   comments: 
+*       id, 
+*       comment_text mandatory, 
+*       photo_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key), 
+* *   likes: 
+*       created_at (current date & time), 
+*       user_id (foreign key), 
+*       photo_id (foreign key), 
+*       primary key order: user_id & photo_id
+* *   follows: 
+*       created_at (current date & time), 
+*       follow_id *foreign key, 
+*       followee_id *foreign key, 
+*       primary key order: user_id & photo_id
+* *   tags: 
+*       id, 
+*       tag_name unique, 
+*       created_at (current date time) 
+* *   photo_tags: 
+*       photo_id (foreign key),
+*       tag_id (foreign key), 
+*       primary key order: user_id & photo_id
+*/
+
+SELECT
+    DAYNAME(created_at) AS "most popular registration day",
+    COUNT(*) AS "total count" 
+FROM users
+GROUP BY DAYNAME(created_at) 
+    ORDER BY "total count" DESC
+    LIMIT 1;
+
+
