@@ -2418,4 +2418,161 @@ GROUP BY DAYNAME(created_at)
     ORDER BY "total count" DESC
     LIMIT 1;
 
+/**
+*
+* ! instagram challenges
+*
+* ? we want to target our inactive users with an email campaign
+* ? find the users who have never posted a photo
+*
+* * db schema:
+*
+* *   users: 
+*       id,
+*       username (mandatory & one-of-a-kind),
+*       created_at (current date & time)
+* *   photos: 
+*       id, 
+*       image_url mandatory, 
+*       created_at,
+*       user_id (mandatory & foreign key)
+* *   comments: 
+*       id, 
+*       comment_text mandatory, 
+*       photo_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key), 
+* *   likes: 
+*       created_at (current date & time), 
+*       user_id (foreign key), 
+*       photo_id (foreign key), 
+*       primary key order: user_id & photo_id
+* *   follows: 
+*       created_at (current date & time), 
+*       follow_id *foreign key, 
+*       followee_id *foreign key, 
+*       primary key order: user_id & photo_id
+* *   tags: 
+*       id, 
+*       tag_name unique, 
+*       created_at (current date time) 
+* *   photo_tags: 
+*       photo_id (foreign key),
+*       tag_id (foreign key), 
+*       primary key order: user_id & photo_id
+*/
+
+SELECT
+    users.username,
+FROM users
+LEFT JOIN photos
+    ON users.id = photos.user_id
+WHERE photos.id IS NULL;
+
+/**
+*
+* ! instagram challenges
+*
+* ? we're running a new contest to see 
+* ? who can get the most likes on a single photo, which user won? 
+*
+* * db schema:
+*
+* *   users: 
+*       id,
+*       username (mandatory & one-of-a-kind),
+*       created_at (current date & time)
+* *   photos: 
+*       id, 
+*       image_url mandatory, 
+*       created_at,
+*       user_id (mandatory & foreign key)
+* *   comments: 
+*       id, 
+*       comment_text mandatory, 
+*       photo_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key), 
+* *   likes: 
+*       created_at (current date & time), 
+*       user_id (foreign key), 
+*       photo_id (foreign key), 
+*       primary key order: user_id & photo_id
+* *   follows: 
+*       created_at (current date & time), 
+*       follow_id *foreign key, 
+*       followee_id *foreign key, 
+*       primary key order: user_id & photo_id
+* *   tags: 
+*       id, 
+*       tag_name unique, 
+*       created_at (current date time) 
+* *   photo_tags: 
+*       photo_id (foreign key),
+*       tag_id (foreign key), 
+*       primary key order: user_id & photo_id
+*/
+
+SELECT
+    users.username,
+    photos.image_url,
+    COUNT(*) AS "most liked photo"
+FROM users
+INNER JOIN photos
+    ON users.id = photos.user_id
+INNER JOIN likes
+    ON photos.id = likes.photo_id
+GROUP BY photos.id 
+    ORDER BY "most liked photo" DESC
+    LIMIT 1;
+
+/**
+*
+* ! instagram challenges
+*
+* ? our investors want to know, how many times does the average user post? 
+*
+* * HINT: calculate avg number of photos per user = totalNumPhotos / totalNumUsers
+*
+* * db schema:
+*
+* *   users: 
+*       id,
+*       username (mandatory & one-of-a-kind),
+*       created_at (current date & time)
+* *   photos: 
+*       id, 
+*       image_url mandatory, 
+*       created_at,
+*       user_id (mandatory & foreign key)
+* *   comments: 
+*       id, 
+*       comment_text mandatory, 
+*       photo_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key), 
+* *   likes: 
+*       created_at (current date & time), 
+*       user_id (foreign key), 
+*       photo_id (foreign key), 
+*       primary key order: user_id & photo_id
+* *   follows: 
+*       created_at (current date & time), 
+*       follow_id *foreign key, 
+*       followee_id *foreign key, 
+*       primary key order: user_id & photo_id
+* *   tags: 
+*       id, 
+*       tag_name unique, 
+*       created_at (current date time) 
+* *   photo_tags: 
+*       photo_id (foreign key),
+*       tag_id (foreign key), 
+*       primary key order: user_id & photo_id
+*/
+
+SELECT(
+    SELECT COUNT(*) FROM photos / SELECT COUNT(*) FROM users
+) AS avg;
+
 
