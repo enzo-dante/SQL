@@ -593,7 +593,7 @@ SHOW TABLES;
 DESC orders;
 
 INSERT INTO customers(first_name, last_name, email)
-VALUES("Test First 1", "Test Last 1", "one@gmail.com"), 
+VALUES("Test First 1", "Test Last 1", "one@gmail.com"),
     ("Test First 2", "Test Last 2", "two@gmail.com");
 
 SELECT *
@@ -701,7 +701,7 @@ SELECT
     title,
     pages
 FROM books
-    ORDER BY pages DESC 
+    ORDER BY pages DESC
     LIMIT 1;
 
 
@@ -835,8 +835,8 @@ FROM books
         LIMIT 3;
 
 /**
-* ? calculate avg stock_quantity for books released in the year from books table in book_shop db 
-* ?     print released_year, count of books, avg 
+* ? calculate avg stock_quantity for books released in the year from books table in book_shop db
+* ?     print released_year, count of books, avg
 *
 * * books table schema:
 * *    title, author_fname, author_lname,
@@ -875,7 +875,7 @@ FROM books;
 
 /**
 * ? print out author_lname and backwards author_lname from books table in book_shop db
-* ?    in respective columns forward and backwards and order by backwards 
+* ?    in respective columns forward and backwards and order by backwards
 *
 * * books table schema:
 * *    title, author_fname, author_lname,
@@ -890,10 +890,10 @@ SELECT
     author_lname AS "forwards",
     REVERSE(author_lname) AS "backwards"
 FROM books
-ORDER BY backwards; 
+ORDER BY backwards;
 
 /**
-* ? print out full author name from books table in book_shop db 
+* ? print out full author name from books table in book_shop db
 * ?    in caps with alias full name in caps
 *
 * * books table schema:
@@ -910,7 +910,7 @@ SELECT
         CONCAT(
             author_fname, author_lname
             )
-        ) AS "full name in caps" 
+        ) AS "full name in caps"
 FROM books;
 
 /**
@@ -1044,7 +1044,7 @@ FROM shirts
     WHERE color = "white";
 
 UPDATE shirts
-    SET 
+    SET
         shirt_size = UPPER("xs"),
         color = "off white"
     WHERE color = "white";
@@ -1074,11 +1074,11 @@ DELETE FROM shirts
     WHERE last_worn = 200;
 
 /**
-* ? create table items with the shop_db with a price column that accepts decimal values 
-* ? insert data into the new table and review it 
+* ? create table items with the shop_db with a price column that accepts decimal values
+* ? insert data into the new table and review it
 *
 * * schema:
-* *   price (decimal value format: xxx.xx) 
+* *   price (decimal value format: xxx.xx)
 */
 
 SHOW DATABASES;
@@ -1162,10 +1162,10 @@ SHOW TABLES;
 /**
 * ! use DECIMAL, instead of DOUBLE or FLOAT for percision
 *
-* ? create sale table, insert double values, and review 
+* ? create sale table, insert double values, and review
 *
 * * schema:
-* *     price DOUBLE 
+* *     price DOUBLE
 */
 
 CREATE TABLE sale(
@@ -1251,7 +1251,7 @@ SELECT
 
 /**
 * ! query one-to-many table from created students and papers table that uses prep data for respective table
-* 
+*
 * ? create students and papers table in school_db
 *
 * * schema:
@@ -1266,7 +1266,7 @@ USE school_db;
 CREATE TABLE students(
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL DEFAULT "MISSING"
-); 
+);
 
 DESC student;
 
@@ -1286,7 +1286,7 @@ SHOW TABLES;
 
 /**
 * ! query one-to-many table from created students and papers table that uses prep data for respective table
-* 
+*
 * ? populate the students and papers(student_id, title, grade) tables with 2 starter data
 *
 * * schema:
@@ -1312,9 +1312,9 @@ VALUES
 
 /**
 * ! query one-to-many table from created students and papers table that uses prep data for respective table
-* 
+*
 * ? get the student first_name, paper title, paper grade,
-* ?    and student id of the respective paper 
+* ?    and student id of the respective paper
 * ?    and order by paper's grade DESC
 *
 * * schema:
@@ -1334,17 +1334,17 @@ INNER JOIN papers
 
 /**
 * ! query one-to-many table from created students and papers table that uses prep data for respective table
-* 
+*
 * ? get first_name, title, and grade of ALL students
 * ?    and not just students that submitted a paper
-* !    READ: return NULL for student's that didn't submit a paper 
+* !    READ: return NULL for student's that didn't submit a paper
 *
 * * schema:
 * *    students(primary key(id), first_name)
 * *    papers(title 100 max chars, grade INT, student_id INT, foreign key (student_id))
 */
 
-SELECT 
+SELECT
     students.first_name,
     papers.title,
     papers.grade
@@ -1357,7 +1357,7 @@ LEFT JOIN papers
 *
 * ? get first_name, title, and grade of ALL students
 * ?    and not just students that submitted a paper
-* !         READ: return NULL for student's that didn't submit a paper 
+* !         READ: return NULL for student's that didn't submit a paper
 * ?    AND mark any missing papers as "MISSING"
 * ?    and 0 for paper's title and grade, respectively
 * ?    order by grade first than student name
@@ -1372,7 +1372,7 @@ SELECT
     IFNULL(papers.title, UPPER("missing")) AS "title",
     IFNULL(papers.grade, 0) AS "grade"
 FROM students
-LEFT JOIN papers 
+LEFT JOIN papers
     ON students.id = papers.student_id
 ORDER BY "grade", students.first_name DESC;
 
@@ -1382,7 +1382,7 @@ ORDER BY "grade", students.first_name DESC;
 * ? describe the students table
 * ?    print the name and each and every student's average paper grade,
 * ?    even if the student didn't submit a paper
-* !         READ: return NULL for student's that didn't submit a paper 
+* !         READ: return NULL for student's that didn't submit a paper
 * ?    round the avg by 4 decimal positions and if missing, 0
 * ?    than rank from highest to lowest
 *
@@ -1410,8 +1410,8 @@ GROUP BY students.id
 *
 * ? describe the students table
 * ?    get each and every student's average paper grade of their paper grades,
-* ?    even if the student didn't submit a paper 
-* !         READ: return NULL for student's that didn't submit a paper 
+* ?    even if the student didn't submit a paper
+* !         READ: return NULL for student's that didn't submit a paper
 * ?    than rank from highest to lowest,
 * ?    finally mark their 'passing status' as 'PASSING' or 'FAILING' based on their average
 * ?      passing if grade >= 75, failing if grade < 75, if null failing
@@ -1486,10 +1486,10 @@ CREATE TABLE reviews(
     rating DECIMAL(2, 1),
     series_id INT,
     reviewer_id INT,
-    FOREIGN KEY(series_id) 
+    FOREIGN KEY(series_id)
         REFERENCES series(id)
             ON DELETE CASCADE,
-    FOREIGN KEY(reviewer_id) 
+    FOREIGN KEY(reviewer_id)
         REFERENCES reviewers(id)
             ON DELETE CASCADE
 );
@@ -1671,7 +1671,7 @@ FROM reviews
 LEFT JOIN series
     ON reviews.series_id = series.id
 GROUP BY series.genre
-    ORDER BY series.genre, "avg_rating"; 
+    ORDER BY series.genre, "avg_rating";
 
 /**
 * ? query many-to-many table from created reviewers, series, review tables that uses prep data for respective table
@@ -1717,7 +1717,7 @@ SELECT
     CASE
         WHEN COUNT(reviews.rating) >= 10
             THEN UPPER("power user")
-        WHEN COUNT(reviews.rating) > 0 
+        WHEN COUNT(reviews.rating) > 0
             AND COUNT(reviews.rating) < 10
                 THEN UPPER("active")
         ELSE
@@ -1727,7 +1727,7 @@ FROM reviews
 LEFT JOIN reviewers
     ON reviews.reviewer_id = reviewer.id
 LEFT JOIN series
-    ON reviews.series_id = series.id 
+    ON reviews.series_id = series.id
 GROUP BY reviews.id
     ORDER BY "MIN"
 
@@ -1761,7 +1761,7 @@ FROM reviews
 INNER JOIN series
     ON reviews.series_id = series.id
 INNER JOIN reviewers
-    ON reviews.reviewer_id = reviewers.id 
+    ON reviews.reviewer_id = reviewers.id
 ORDER BY series.title
 
 /**
@@ -1800,7 +1800,7 @@ CREATE TABLE albums_table(
     _id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     artist INT NOT NULL,
-    FOREIGN KEY(artist) 
+    FOREIGN KEY(artist)
         REFERENCES artists_table(_id)
         ON DELETE CASCADE
 );
@@ -1812,7 +1812,7 @@ CREATE TABLE songs_table(
     track INT NOT NULL,
     title VARCHAR(20) NOT NULL DEFAULT "MISSING",
     album INT,
-    FOREIGN KEY(album) 
+    FOREIGN KEY(album)
         REFERENCES albums_table(_id)
         ON DELETE CASCADE
 );
@@ -1865,7 +1865,7 @@ SHOW TABLES;
 /**
 * ! manage a music db
 *
-* ! only get valid data for artists name, albums name, and songs.track 
+* ! only get valid data for artists name, albums name, and songs.track
 * ?     from artist_list view and order by artists, albums, and then songs
 *
 * * schema:
@@ -2038,7 +2038,7 @@ SELECT
     songs_table.title
 FROM songs_table
 INNER JOIN albums_table
-    ON songs_table.album = albums_table._id 
+    ON songs_table.album = albums_table._id
 INNER JOIN artists_table
     ON albums_table.artist = artists_table._id
 WHERE artists_table.name = "Aerosmith"
@@ -2090,11 +2090,11 @@ GROUP BY artists_table._id
 * *                 name VARCHAR NOT NULL)
 *
 * *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
-* *                 name VARCHAR NOT NULL, 
+* *                 name VARCHAR NOT NULL,
 * *                 artist INT)
 *
 * *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
-* *               track INT NOT NULL, 
+* *               track INT NOT NULL,
 * *               title VARCHAR NOT NULL DEFAULT "MISSING",
 * *               album INT)
 */
@@ -2122,11 +2122,11 @@ WHERE artists_table.name = "Aerosmith"
 * *                 name VARCHAR NOT NULL)
 *
 * *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
-* *                 name VARCHAR NOT NULL, 
+* *                 name VARCHAR NOT NULL,
 * *                 artist INT)
 *
 * *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
-* *               track INT NOT NULL, 
+* *               track INT NOT NULL,
 * *               title VARCHAR NOT NULL DEFAULT "MISSING",
 * *               album INT)
 */
@@ -2157,11 +2157,11 @@ WHERE artists_table.name = "Aerosmith"
 * *                 name VARCHAR NOT NULL)
 *
 * *    albums_table(_id INT AUTO_INCREMENT PRIMARY KEY,
-* *                 name VARCHAR NOT NULL, 
+* *                 name VARCHAR NOT NULL,
 * *                 artist INT)
 *
 * *    songs_table(_id INT AUTO_INCREMENT PRIMARY KEY,
-* *               track INT NOT NULL, 
+* *               track INT NOT NULL,
 * *               title VARCHAR NOT NULL DEFAULT "MISSING",
 * *               album INT)
 */
@@ -2181,42 +2181,42 @@ GROUP BY artists_table._id
 *
 * ! instagram challenges
 *
-* ? create many-to-many tables for ig_db 
+* ? create many-to-many tables for ig_db
 *
 * * db schema:
 *
-* *   users: 
+* *   users:
 *       id,
 *       username (mandatory & one-of-a-kind),
 *       created_at (current date & time)
-* *   photos: 
-*       id, 
-*       image_url mandatory, 
+* *   photos:
+*       id,
+*       image_url mandatory,
 *       created_at,
 *       user_id (mandatory & foreign key)
-* *   comments: 
-*       id, 
-*       comment_text mandatory, 
-*       photo_id (foreign key), 
-*       created_at (current date & time),
-*       user_id (foreign key), 
-* *   likes: 
-*       created_at (current date & time), 
-*       user_id (foreign key), 
-*       photo_id (foreign key), 
-*       primary key order: user_id & photo_id
-* *   follows: 
-*       created_at (current date & time), 
-*       follow_id *foreign key, 
-*       followee_id *foreign key, 
-*       primary key order: user_id & photo_id
-* *   tags: 
-*       id, 
-*       tag_name unique, 
-*       created_at (current date time) 
-* *   photo_tags: 
+* *   comments:
+*       id,
+*       comment_text mandatory,
 *       photo_id (foreign key),
-*       tag_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key),
+* *   likes:
+*       created_at (current date & time),
+*       user_id (foreign key),
+*       photo_id (foreign key),
+*       primary key order: user_id & photo_id
+* *   follows:
+*       created_at (current date & time),
+*       follow_id *foreign key,
+*       followee_id *foreign key,
+*       primary key order: user_id & photo_id
+* *   tags:
+*       id,
+*       tag_name unique,
+*       created_at (current date time)
+* *   photo_tags:
+*       photo_id (foreign key),
+*       tag_id (foreign key),
 *       primary key order: user_id & photo_id
 */
 
@@ -2252,7 +2252,7 @@ CREATE TABLE comments(
     comment_text VARCHAR(500) NOT NULL,
     created_at DATETIME DEFAULT NOW(),
     photo_id INT NOT NULL,
-    user_id INT NOT NULL, 
+    user_id INT NOT NULL,
     FOREIGN KEY(photo_id)
         REFERENCES photos(id)
         ON DELETE CASCADE,
@@ -2320,42 +2320,42 @@ SHOW TABLES;
 *
 * ! instagram challenges
 *
-* ? we want to reward our users who have been around the longest, find the 5 oldest users 
+* ? we want to reward our users who have been around the longest, find the 5 oldest users
 *
 * * db schema:
 *
-* *   users: 
+* *   users:
 *       id,
 *       username (mandatory & one-of-a-kind),
 *       created_at (current date & time)
-* *   photos: 
-*       id, 
-*       image_url mandatory, 
+* *   photos:
+*       id,
+*       image_url mandatory,
 *       created_at,
 *       user_id (mandatory & foreign key)
-* *   comments: 
-*       id, 
-*       comment_text mandatory, 
-*       photo_id (foreign key), 
-*       created_at (current date & time),
-*       user_id (foreign key), 
-* *   likes: 
-*       created_at (current date & time), 
-*       user_id (foreign key), 
-*       photo_id (foreign key), 
-*       primary key order: user_id & photo_id
-* *   follows: 
-*       created_at (current date & time), 
-*       follow_id *foreign key, 
-*       followee_id *foreign key, 
-*       primary key order: user_id & photo_id
-* *   tags: 
-*       id, 
-*       tag_name unique, 
-*       created_at (current date time) 
-* *   photo_tags: 
+* *   comments:
+*       id,
+*       comment_text mandatory,
 *       photo_id (foreign key),
-*       tag_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key),
+* *   likes:
+*       created_at (current date & time),
+*       user_id (foreign key),
+*       photo_id (foreign key),
+*       primary key order: user_id & photo_id
+* *   follows:
+*       created_at (current date & time),
+*       follow_id *foreign key,
+*       followee_id *foreign key,
+*       primary key order: user_id & photo_id
+* *   tags:
+*       id,
+*       tag_name unique,
+*       created_at (current date time)
+* *   photo_tags:
+*       photo_id (foreign key),
+*       tag_id (foreign key),
 *       primary key order: user_id & photo_id
 */
 
@@ -2369,52 +2369,52 @@ ORDER BY created_at DESC
 * ! instagram challenges
 *
 * ? what day of the week do most users register on (labeled: most popular registration day),
-* ? we need to figure out when to schedule an ad campaign 
+* ? we need to figure out when to schedule an ad campaign
 *
 * * HINT: https://www.mssqltips.com/sqlservertip/2655/format-sql-server-dates-with-format-function/
 *
 * * db schema:
 *
-* *   users: 
+* *   users:
 *       id,
 *       username (mandatory & one-of-a-kind),
 *       created_at (current date & time)
-* *   photos: 
-*       id, 
-*       image_url mandatory, 
+* *   photos:
+*       id,
+*       image_url mandatory,
 *       created_at,
 *       user_id (mandatory & foreign key)
-* *   comments: 
-*       id, 
-*       comment_text mandatory, 
-*       photo_id (foreign key), 
-*       created_at (current date & time),
-*       user_id (foreign key), 
-* *   likes: 
-*       created_at (current date & time), 
-*       user_id (foreign key), 
-*       photo_id (foreign key), 
-*       primary key order: user_id & photo_id
-* *   follows: 
-*       created_at (current date & time), 
-*       follow_id *foreign key, 
-*       followee_id *foreign key, 
-*       primary key order: user_id & photo_id
-* *   tags: 
-*       id, 
-*       tag_name unique, 
-*       created_at (current date time) 
-* *   photo_tags: 
+* *   comments:
+*       id,
+*       comment_text mandatory,
 *       photo_id (foreign key),
-*       tag_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key),
+* *   likes:
+*       created_at (current date & time),
+*       user_id (foreign key),
+*       photo_id (foreign key),
+*       primary key order: user_id & photo_id
+* *   follows:
+*       created_at (current date & time),
+*       follow_id *foreign key,
+*       followee_id *foreign key,
+*       primary key order: user_id & photo_id
+* *   tags:
+*       id,
+*       tag_name unique,
+*       created_at (current date time)
+* *   photo_tags:
+*       photo_id (foreign key),
+*       tag_id (foreign key),
 *       primary key order: user_id & photo_id
 */
 
 SELECT
     DAYNAME(created_at) AS "most popular registration day",
-    COUNT(*) AS "total count" 
+    COUNT(*) AS "total count"
 FROM users
-GROUP BY DAYNAME(created_at) 
+GROUP BY DAYNAME(created_at)
     ORDER BY "total count" DESC
     LIMIT 1;
 
@@ -2427,38 +2427,38 @@ GROUP BY DAYNAME(created_at)
 *
 * * db schema:
 *
-* *   users: 
+* *   users:
 *       id,
 *       username (mandatory & one-of-a-kind),
 *       created_at (current date & time)
-* *   photos: 
-*       id, 
-*       image_url mandatory, 
+* *   photos:
+*       id,
+*       image_url mandatory,
 *       created_at,
 *       user_id (mandatory & foreign key)
-* *   comments: 
-*       id, 
-*       comment_text mandatory, 
-*       photo_id (foreign key), 
-*       created_at (current date & time),
-*       user_id (foreign key), 
-* *   likes: 
-*       created_at (current date & time), 
-*       user_id (foreign key), 
-*       photo_id (foreign key), 
-*       primary key order: user_id & photo_id
-* *   follows: 
-*       created_at (current date & time), 
-*       follow_id *foreign key, 
-*       followee_id *foreign key, 
-*       primary key order: user_id & photo_id
-* *   tags: 
-*       id, 
-*       tag_name unique, 
-*       created_at (current date time) 
-* *   photo_tags: 
+* *   comments:
+*       id,
+*       comment_text mandatory,
 *       photo_id (foreign key),
-*       tag_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key),
+* *   likes:
+*       created_at (current date & time),
+*       user_id (foreign key),
+*       photo_id (foreign key),
+*       primary key order: user_id & photo_id
+* *   follows:
+*       created_at (current date & time),
+*       follow_id *foreign key,
+*       followee_id *foreign key,
+*       primary key order: user_id & photo_id
+* *   tags:
+*       id,
+*       tag_name unique,
+*       created_at (current date time)
+* *   photo_tags:
+*       photo_id (foreign key),
+*       tag_id (foreign key),
 *       primary key order: user_id & photo_id
 */
 
@@ -2473,43 +2473,43 @@ WHERE photos.id IS NULL;
 *
 * ! instagram challenges
 *
-* ? we're running a new contest to see 
-* ? who can get the most likes on a single photo, which user won? 
+* ? we're running a new contest to see
+* ? who can get the most likes on a single photo, which user won?
 *
 * * db schema:
 *
-* *   users: 
+* *   users:
 *       id,
 *       username (mandatory & one-of-a-kind),
 *       created_at (current date & time)
-* *   photos: 
-*       id, 
-*       image_url mandatory, 
+* *   photos:
+*       id,
+*       image_url mandatory,
 *       created_at,
 *       user_id (mandatory & foreign key)
-* *   comments: 
-*       id, 
-*       comment_text mandatory, 
-*       photo_id (foreign key), 
-*       created_at (current date & time),
-*       user_id (foreign key), 
-* *   likes: 
-*       created_at (current date & time), 
-*       user_id (foreign key), 
-*       photo_id (foreign key), 
-*       primary key order: user_id & photo_id
-* *   follows: 
-*       created_at (current date & time), 
-*       follow_id *foreign key, 
-*       followee_id *foreign key, 
-*       primary key order: user_id & photo_id
-* *   tags: 
-*       id, 
-*       tag_name unique, 
-*       created_at (current date time) 
-* *   photo_tags: 
+* *   comments:
+*       id,
+*       comment_text mandatory,
 *       photo_id (foreign key),
-*       tag_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key),
+* *   likes:
+*       created_at (current date & time),
+*       user_id (foreign key),
+*       photo_id (foreign key),
+*       primary key order: user_id & photo_id
+* *   follows:
+*       created_at (current date & time),
+*       follow_id *foreign key,
+*       followee_id *foreign key,
+*       primary key order: user_id & photo_id
+* *   tags:
+*       id,
+*       tag_name unique,
+*       created_at (current date time)
+* *   photo_tags:
+*       photo_id (foreign key),
+*       tag_id (foreign key),
 *       primary key order: user_id & photo_id
 */
 
@@ -2522,7 +2522,7 @@ INNER JOIN photos
     ON users.id = photos.user_id
 INNER JOIN likes
     ON photos.id = likes.photo_id
-GROUP BY photos.id 
+GROUP BY photos.id
     ORDER BY "most liked photo" DESC
     LIMIT 1;
 
@@ -2530,49 +2530,169 @@ GROUP BY photos.id
 *
 * ! instagram challenges
 *
-* ? our investors want to know, how many times does the average user post? 
+* ? our investors want to know, how many times does the average user post?
 *
 * * HINT: calculate avg number of photos per user = totalNumPhotos / totalNumUsers
 *
 * * db schema:
 *
-* *   users: 
+* *   users:
 *       id,
 *       username (mandatory & one-of-a-kind),
 *       created_at (current date & time)
-* *   photos: 
-*       id, 
-*       image_url mandatory, 
+* *   photos:
+*       id,
+*       image_url mandatory,
 *       created_at,
 *       user_id (mandatory & foreign key)
-* *   comments: 
-*       id, 
-*       comment_text mandatory, 
-*       photo_id (foreign key), 
-*       created_at (current date & time),
-*       user_id (foreign key), 
-* *   likes: 
-*       created_at (current date & time), 
-*       user_id (foreign key), 
-*       photo_id (foreign key), 
-*       primary key order: user_id & photo_id
-* *   follows: 
-*       created_at (current date & time), 
-*       follow_id *foreign key, 
-*       followee_id *foreign key, 
-*       primary key order: user_id & photo_id
-* *   tags: 
-*       id, 
-*       tag_name unique, 
-*       created_at (current date time) 
-* *   photo_tags: 
+* *   comments:
+*       id,
+*       comment_text mandatory,
 *       photo_id (foreign key),
-*       tag_id (foreign key), 
+*       created_at (current date & time),
+*       user_id (foreign key),
+* *   likes:
+*       created_at (current date & time),
+*       user_id (foreign key),
+*       photo_id (foreign key),
+*       primary key order: user_id & photo_id
+* *   follows:
+*       created_at (current date & time),
+*       follow_id *foreign key,
+*       followee_id *foreign key,
+*       primary key order: user_id & photo_id
+* *   tags:
+*       id,
+*       tag_name unique,
+*       created_at (current date time)
+* *   photo_tags:
+*       photo_id (foreign key),
+*       tag_id (foreign key),
 *       primary key order: user_id & photo_id
 */
 
 SELECT(
     SELECT COUNT(*) FROM photos / SELECT COUNT(*) FROM users
 ) AS avg;
+
+/**
+*
+* ! instagram challenges
+*
+* ? our brand advertisors want to know which hashtags to use in a post,
+* ? what are the top 5 most commonly used hashtags (label as 'total')?
+*
+* * db schema:
+*
+* *   users:
+*       id,
+*       username (mandatory & one-of-a-kind),
+*       created_at (current date & time)
+* *   photos:
+*       id,
+*       image_url mandatory,
+*       created_at,
+*       user_id (mandatory & foreign key)
+* *   comments:
+*       id,
+*       comment_text mandatory,
+*       photo_id (foreign key),
+*       created_at (current date & time),
+*       user_id (foreign key),
+* *   likes:
+*       created_at (current date & time),
+*       user_id (foreign key),
+*       photo_id (foreign key),
+*       primary key order: user_id & photo_id
+* *   follows:
+*       created_at (current date & time),
+*       follow_id *foreign key,
+*       followee_id *foreign key,
+*       primary key order: user_id & photo_id
+* *   tags:
+*       id,
+*       tag_name unique,
+*       created_at (current date time)
+* *   photo_tags:
+*       photo_id (foreign key),
+*       tag_id (foreign key),
+*       primary key order: user_id & photo_id
+*/
+
+USE ig_db;
+DESC tags;
+
+SELECT
+    tags.tag_name,
+    COUNT(*) AS total
+FROM tags
+INNER JOIN photo_tags
+    ON tags.id = photo_tags.tag_id
+GROUP BY tags.id
+    ORDER BY total DESC
+    LIMIT 5;
+
+/**
+*
+* ! instagram challenges
+*
+* ? we have a small problem w/ bots on our site,
+* ? find users who have liked every single photo on the site
+*
+* * HINT: we want overlap only; WHERE does not work bc WHERE goes before GROUP BY
+*
+* * db schema:
+*
+* *   users:
+*       id,
+*       username (mandatory & one-of-a-kind),
+*       created_at (current date & time)
+* *   photos:
+*       id,
+*       image_url mandatory,
+*       created_at,
+*       user_id (mandatory & foreign key)
+* *   comments:
+*       id,
+*       comment_text mandatory,
+*       photo_id (foreign key),
+*       created_at (current date & time),
+*       user_id (foreign key),
+* *   likes:
+*       created_at (current date & time),
+*       user_id (foreign key),
+*       photo_id (foreign key),
+*       primary key order: user_id & photo_id
+* *   follows:
+*       created_at (current date & time),
+*       follow_id *foreign key,
+*       followee_id *foreign key,
+*       primary key order: user_id & photo_id
+* *   tags:
+*       id,
+*       tag_name unique,
+*       created_at (current date time)
+* *   photo_tags:
+*       photo_id (foreign key),
+*       tag_id (foreign key),
+*       primary key order: user_id & photo_id
+*/
+
+SELECT
+    users.id,
+    users.username,
+    COUNT(*) AS "num_likes"
+FROM users
+INNER JOIN likes
+    ON users.id = likes.user_id
+GROUP BY users.id
+    HAVING num_likes = (
+        SELECT
+            COUNT(*) AS "total_likes"
+        FROM likes
+            ORDER BY "total_likes" DESC
+            LIMIT 1
+    );
+
 
 
