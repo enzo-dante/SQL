@@ -50,57 +50,7 @@ YEAR
 
 # 1-to-MANY relationship
 
-> CASE STATEMENTS, IFNULL, and JOIN
-
-__first case statement checks if value returns null and not 0__
-
-SELECT first_name,
-       Ifnull(Avg(grade), 0) AS 'average',
-       CASE
-         WHEN Avg(grade) IS NULL THEN Upper('failing')
-         WHEN Avg(grade) >= 75 THEN Upper('passing')
-         ELSE Upper('failing')
-       END                   AS 'passing_status'
-FROM   students
-       LEFT JOIN papers
-              ON students.id = papers.student_id
-GROUP  BY students.id,
-          first_name
-ORDER  BY 2 DESC;
-
 # Many-to-Many JOIN
-
-> JOIN/union tables = third external table that connect two other seperate tables in a many-to-many relationship
-
-ex) 
-reviewers table and series table are connected to each other by a review table
-- the tables are "connected" via JOIN using unique row id in reviewers and series tables
-
-
-CREATE TABLE reviewers
-  (
-     id         INT NOT NULL auto_increment PRIMARY KEY,
-     first_name VARCHAR(100),
-     last_name  VARCHAR(100)
-  );
-
-CREATE TABLE series
-  (
-     id            INT NOT NULL auto_increment PRIMARY KEY,
-     title         VARCHAR(100),
-     released_year YEAR(4),
-     genre         VARCHAR(100)
-  );
-
-CREATE TABLE reviews
-  (
-     id          INT NOT NULL auto_increment PRIMARY KEY,
-     rating      DECIMAL(2, 1),
-     series_id   INT,
-     reviewer_id INT,
-     FOREIGN KEY(series_id) REFERENCES series(id) ON DELETE CASCADE,
-     FOREIGN KEY(reviewer_id) REFERENCES reviewers(id) ON DELETE CASCADE
-  );
 
 exercise 1) join series and reviews
 
@@ -212,39 +162,3 @@ FROM   reviewers
        INNER JOIN series
                ON series.id = reviews.series_id
 ORDER  BY title;
-
-
-# do not hardcode, use subqueries for dynamic updating
-
-SELECT users.username AS 'users that liked every photo',
-       Count(*) AS 'total_likes'
-FROM   users
-       INNER JOIN likes
-               ON users.id = likes.user_id
-GROUP  BY likes.user_id
-HAVING total_likes = (SELECT Count(*)
-                      FROM   photos)
-ORDER  BY users.username;
-
-# CREATE VIEW {view_name} AS {query}= a view is a named query stored in the database catalog.
-
-> MySQL creates the view and stores it in the database.
-
-CREATE VIEW customerPayments
-AS
-SELECT
-    customerName,
-    checkNumber,
-    paymentDate,
-    amount
-FROM
-    customers
-INNER JOIN
-    payments USING (customerNumber);
-
-> Now, you can reference the view as a table in SQL statements. For example, you can query data from the customerPayments view using the SELECT statement:
-
-SELECT * FROM customerPayments;
-
-# DROP VIEW {view_name} = removes view but not refereced data
-

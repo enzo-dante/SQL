@@ -40,7 +40,7 @@ JOIN
             https://dataschool.com/how-to-teach-people-sql/left-right-join-animated/
 """
 
--- ONE-TO-MANY relationship
+-- ONE-TO-MANY JOIN relationship
 
 --      an example of 1-to-many relationship: 1 book-to-many reviews relationship
 
@@ -157,4 +157,127 @@ RIGHT JOIN orders
 GROUP BY customers.id
     ORDER BY "total spent";
 
--- CASE STATEMENTS, IFNULL, and JOIN
+-- CASE STATEMENTS 
+
+--      conditional logic: CASE WHEN true THEN result ELSE default_value END
+
+--      IS NULL = validation for NULL values 
+
+SELECT
+    students.first_name,
+    IFNULL(
+        AVG(papers.grade),
+        0
+    ) AS average,
+    CASE
+        WHEN AVG(papers.grade) IS NULL
+            THEN UPPER("failing")
+        WHEN AVG(papers.grade) >= 75
+            THEN UPPER("passing")
+        ELSE
+            UPPER("failing")
+    END AS "passing status"
+FROM students
+LEFT JOIN papers
+    ON students.id = papers.student_id
+GROUP BY
+    students.id,
+    students.first_name
+ORDER BY average DESC;
+
+-- Many-to-Many JOIN-UNION relationships
+
+--      ex: many authors-to-many books relationship (a book can have mulitple authors)
+
+--      JOIN-UNION tables = a 3-circle intersecting VENN DIAGRAM 
+
+--          ex) REVIEWERS + SERIES connected to REVIEWS via PRIMARY & FOREIGN KEYS for SELECT + JOINS 
+
+CREATE TABLE reviewers(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100)
+);
+
+CREATE TABLE series(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100),
+    released_year YEAR(4),
+    genre VARCHAR(100)
+);
+
+CREATE TABLE reviews(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rating DECIMAL(2,1),
+    series_id INT,
+    reviewer_id INT,
+    FOREIGN KEY(series_id)
+        REFERENCES series(id)
+            ON DELETE CASCADE,
+    FOREIGN KEY(reviewer_id)
+        REFERENCES reviewers(id)
+            ON DELETE CASCADE
+);
+
+SELECT
+    series.title,
+    reviews.rating,
+    CONCAT(
+        reviewers.first_name,
+        " ",
+        reviewers.last_name
+    ) AS reviewer
+FROM reviewers
+INNER JOIN reviews
+    ON reviewers.id = reviews.reviewer_id
+INNER JOIN series
+    ON series.id = reviews.series_id
+ORDER BY title DESC;
+
+-- SUBQUERIES 
+
+--      use SUBQUERIES for dynamic updating (NO hard coding)
+
+SELECT
+    users.username AS "users that liked every photo",
+    COUNT(*) AS total_likes
+FROM users
+INNER JOIN likes
+    ON users.id = likes.user_id
+GROUP BY likes.user_id
+HAVING total_likes = (
+    SELECT COUNT(*)
+    FROM photos
+)
+ORDER BY users.username DESC
+LIMIT 1;
+
+-- CREATE VIEW 
+
+--      a VIEW is a named query stored in the db catalog
+
+CREATE VIEW 
+    customer_payments AS
+SELECT
+    customers.customer_name,
+    payments.check_number,
+    payments.payment_date,
+    payments.amount
+FROM
+    customers
+INNER JOIN
+    payments USING (customers.customer_number)
+
+-- SELECT * FROM view_name
+
+--      reference the view as a table in SQL statements
+
+--          ex) query data from customerPayments VIEW using the SELECT statement
+
+SELECT * FROM customer_payments;
+
+-- DROP VIEW view_name
+
+--      removes view but not refereced data
+
+DROP VIEW customer_payments;

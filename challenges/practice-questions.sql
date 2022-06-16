@@ -1843,7 +1843,7 @@ SHOW TABLES;
 /**
 * ! manage a music db
 *
-* ! create an artist_list as a view that prints
+* ? create an artist_list as a view that prints only valid data
 *
 * ?    artists.name, albums.name,
 * ?    and songs.track for a single query
@@ -1861,11 +1861,22 @@ SHOW TABLES;
 * *       album INT)
 */
 
+CREATE VIEW
+    artist_list AS
+SELECT
+    artists_table.name AS artist,
+    albums_table.name AS album,
+    songs_table.track AS track
+FROM songs_table
+INNER JOIN albums_table
+    ON songs_table.album = albums_table._id
+INNER JOIN artists_table
+    ON albums_table.artist = artists_table._id;
 
 /**
 * ! manage a music db
 *
-* ! only get valid data for artists name, albums name, and songs.track
+* ? get data for artists name, albums name, and songs track
 * ?     from artist_list view and order by artists, albums, and then songs
 *
 * * schema:
@@ -1880,6 +1891,12 @@ SHOW TABLES;
 * *       track INT NOT NULL, title VARCHAR NOT NULL DEFAULT "MISSING",
 * *       album INT)
 */
+
+SELECT
+    artist,
+    album,
+    track
+FROM artist_list;
 
 /**
 * ! manage a music db
