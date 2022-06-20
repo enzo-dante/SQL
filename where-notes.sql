@@ -92,3 +92,137 @@ SELECT
     author_lname
 FROM books
 WHERE author_lname != "Harris";
+
+-- ! WILDCARDS + WHERE + LIKE
+
+--      WILDCARDS (%) are used with WHERE + LIKE to filter anything before or after the approximator string
+
+--          to use an actual % or _ symbol and the special character, than use an escape: \
+
+-- * pattern matches: "da" + anything
+
+SELECT
+    author_fname,
+    title
+FROM books
+WHERE author_fname LIKE "da%"
+ORDER BY author_fname;
+
+-- * pattern matche: anything + "da" 
+
+SELECT
+    author_fname,
+    title
+FROM books
+WHERE author_fname LIKE "%da"
+ORDER BY author_fname;
+
+-- * pattern matches: anything + "da" + anything
+
+SELECT
+    author_fname,
+    title
+FROM books
+WHERE author_fname LIKE "%da%"
+ORDER BY author_fname;
+
+
+-- ! SUBSTRING() + IN()
+
+--      you can use SUBSTRING() with IN as well, but LIKE/WILDCARD is superior
+
+-- * below examples produce the same output
+
+SELECT
+    title,
+    CONCAT(
+        author_lname, ", ", author_fname
+    ) AS "Full Name"
+FROM books
+WHERE author_lname LIKE "C%"
+    OR author_lname LIKE "S%"
+ORDER BY author_lname;
+
+SELECT
+    title,
+    CONCAT(
+        author_lname,
+        ", ",
+        author_fname
+    ) AS "Full Name"
+FROM books
+WHERE SUBSTRING(author_lname, 1, 1) IN("C", "S")
+ORDER BY author_lname;
+
+-- ! WHERE + _ 
+
+--      using "_" to specify number of characters in WHERE LIKE query
+
+--          to use an actual % or _ symbol and the special character, than use an escape: \
+
+-- * the example below filters for values of 4 index value length
+
+SELECT
+    title,
+    stock_quantity
+FROM books
+WHERE stock_quantity LIKE "____";
+
+-- ! WHERE + LIKE + special_characters 
+
+--      to use an actual % or _ symbol and the special character, than use an escape: \
+
+-- * anything%anything
+
+SELECT title
+FROM books
+WHERE title LIKE "%\%%";
+
+-- * anything_anything
+
+SELECT title
+FROM books
+WHERE title LIKE "%\_%";
+
+-- ! WHERE + NOT LIKE + WILDCARDS
+
+--      filter WHERE everything is NOT LIKE the provided WILDCARD
+
+SELECT
+    title
+FROM books
+WHERE title NOT LIKE "W%";
+
+-- ! WHERE + GREATER THAN/LESS THAN
+
+SELECT
+    title,
+    released_year
+FROM books
+WHERE released_year >= 2000;
+
+SELECT
+    title,
+    released_year
+FROM books
+WHERE released_year <= 2000;
+
+-- ! SELECT var1 > var2
+
+--      return a boolean: 
+
+--          1 (true) 
+
+--          0 (false)
+
+SELECT 1 > 2;
+
+-- ! NO STRING COMPARISONS
+
+--      avoid string comparisons since it varies by programming language
+
+-- * SQL does not recognize upper or lowercase as different
+
+SELECT 'A' > 'a';
+
+-- ! WHERE + AND
