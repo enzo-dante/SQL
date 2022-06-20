@@ -226,3 +226,80 @@ SELECT 1 > 2;
 SELECT 'A' > 'a';
 
 -- ! WHERE + AND
+
+--      using the AND operator with WHERE allows for chaining multiple operators
+
+--      generally, do NOT use more than 3 logical operators in a single WHERE  
+
+SELECT *
+FROM books
+WHERE author_lname="Eggers"
+    AND released_year > 2010
+    AND title LIKE "%novel%";
+
+-- ! WHERE + OR
+
+--      using the OR operator WHERE only 1 part of the expression has to be true to return true
+
+--      generally, do NOT use more than 3 logical operators in a single WHERE  
+
+SELECT
+    title,
+    author_lname,
+    released_year,
+    stock_quantity
+FROM books
+WHERE author_lname = "Eggers"
+    OR reelased_year > 2010
+    OR stock_quantity > 100;
+
+-- ! CAST()
+
+--      convert 1 data type to another data type
+
+SELECT CAST("2017-05-02" AS DATETIME);
+
+-- ! WHERE + BETWEEN x AND y
+
+--      inclusively, SELECT data in a range
+
+--      BETWEEN is a more efficient use of AND with >= or <= 
+
+SELECT
+    title,
+    released_year
+FROM books
+WHERE released_year BETWEEN 2004 AND 2015;
+
+-- ! BETWEEN x AND y + CAST()
+
+SELECT
+    name,
+    birth_date
+FROM people
+WHERE
+    birth_date BETWEEN CAST("1980-01-01" AS DATETIME)
+    AND CAST("2000-01-01" AS DATETIME);
+
+-- ! WHERE + NOT BETWEEN x AND y
+
+--      inclusively, SELECT data NOT in the lower AND upper range
+
+SELECT 
+    title,
+    released_year
+FROM books
+WHERE released_year NOT BETWEEN 2004 AND 2015;
+
+-- ! WHERE + IN (list)
+
+--      return set of values IN provided column
+
+--      using IN is a superior to OR with long comma seperated values
+
+SELECT
+    title,
+    author_lname
+FROM books
+WHERE author_lname IN("Carver", "Lahiri", "Smith");
+
