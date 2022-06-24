@@ -291,7 +291,7 @@ FROM books
     LIMIT 1;
 
 /**
-* ? sum all pages per author & organize by highest-to-lowest in the books table from the book_shop db
+* ? sum all pages per author full name & organize by highest-to-lowest in the books table from the book_shop db
 *
 * * schema:
 * *    pages
@@ -309,6 +309,68 @@ SELECT
 FROM books
     GROUP BY author_lname, author_fname
         ORDER BY sumPages DESC;
+
+/**
+* ? get "short title" of first 10 characters with "..." amended on the end, author fullname, and "{quantity} in stock"
+*
+* * schema:
+*       * title
+*       * author_fname
+*       * author_lname
+*       * quantity
+*/
+
+SELECT
+    CONCAT(
+        SUBSTRING(
+            title,
+            1,
+            10
+        ),
+        "..."
+    ) AS "Short Title",
+    CONCAT(author_fname, " ", author_lname),
+    CONCAT(quan)
+
+
+/**
+* ? replaces all instances of "e" in every book title with "3" in books table
+* ? print only first 10 characters in title & label query "STRANGE STRING"
+*
+* * HINT: start at center & solution is case-sensitive
+*
+* * schema:
+*       * title
+*/
+
+SELECT
+    SUBSTRING(
+        REPLACE(title, "e", "3"),
+        1,
+        10
+    ) AS UPPER("strange string")
+FROM books;
+
+/**
+* ? print out the sentance using each author last name and number of characters in last name
+* ? label the resulting table as "Last Name Length" & ordered highest-to-lowest
+*
+* !         "{author last name} is {author last name length} characters long"
+*
+* * schema:
+*       * author_lname
+*/
+
+SELECT
+    CONCAT(
+        author_lname,
+        " is ",
+        CHAR_LENGTH(author_lname)
+        " characters long"
+    ) AS "Last Name Length"
+FROM books
+ORDER BY "Last Name Length";
+
 
 /**
 * ? How can I get the author first name & title for the author's whose first names SPECIFICALLY start with 'da' in the books table in the book_shop db?
@@ -416,14 +478,6 @@ VALUES (33, "Ben", "terminated", "Riley"), (21, "Gary", "employed", "Silver");
 
 SELECT *
 FROM employees;
-
-/**
-* ? get all the book titles & respective stock_quantity that have a stock quanity that is 4 digits long from books table in book_shop db
-*
-* * schema:
-*      * title
-*      * stock_quantity
-*/
 
 SHOW DATABASES;
 SELECT database();

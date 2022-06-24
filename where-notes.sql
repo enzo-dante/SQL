@@ -295,11 +295,78 @@ WHERE released_year NOT BETWEEN 2004 AND 2015;
 
 --      return set of values IN provided column
 
---      using IN is a superior to OR with long comma seperated values
-
 SELECT
     title,
     author_lname
 FROM books
 WHERE author_lname IN("Carver", "Lahiri", "Smith");
 
+--      using IN is a superior to OR with long comma seperated values
+
+SELECT
+    title,
+    author_lname
+FROM books
+WHERE author_lname = "Carver"
+    OR author_lname = "Lahiri"
+    OR author_lname = "Smith";
+
+-- ! WHERE + NOT IN
+
+--      return set of values NOT IN provided column
+
+-- * example only returns odd released years after 2000
+
+SELECT
+    title,
+    released_year
+FROM books
+WHERE released_year NOT IN (2000, 2002, 2004, 2006);
+
+-- ! WHERE + MODULO operator
+
+--      the modulo (%) is the remainder operator after a division
+
+-- * is_odd, if there is a REMAINDER from a division of 2, else even
+
+SELECT
+    title,
+    released_year
+FROM books
+WHERE released_year % 2 != 0;
+
+-- ! WHERE + CASE_END_STATEMENTS + AS
+
+--      if expression asserts true execute case functionality
+
+-- * multiple WHEN = don't use commas
+
+SELECT
+    title,
+    released_year,
+    CASE
+        WHEN stock_quantity BETWEEN 0 AND 50
+            THEN "*"
+        WHEN stock_quanity BETWEEN 51 AND 100
+            THEN "**"
+        ELSE
+            "***"
+    END AS UPPER("Stock")
+FROM books;
+
+-- * using CASE_STATEMENTS with GROUP BY, COUNT, CONCAT, and ORDER BY 
+
+SELECT
+    title,
+    author_lname,
+    CASE
+        WHEN COUNT(title) >= 2
+            THEN CONCAT(
+                COUNT(title), " ", "books"
+            )
+        ELSE
+            CONCAT(COUNT(title), " ", "book")
+    END AS "COUNT"
+FROM books
+GROUP BY author_lname, author_fname
+ORDER BY "COUNT" DESC;
